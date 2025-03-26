@@ -1,0 +1,4 @@
+enum CustomDurationEnum {
+  minutes,
+  hours;
+}

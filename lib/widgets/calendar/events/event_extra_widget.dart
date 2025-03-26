@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/const/style.dart';
+import 'package:hously_flutter/enums/event/business_type_enum.dart';
+import 'package:hously_flutter/enums/event/visibility_type_enum.dart';
+import 'package:hously_flutter/state_managers/screen/calendar/popup_calendar_provider.dart';
+import 'package:hously_flutter/theme/apptheme.dart';
+import 'package:hously_flutter/widgets/calendar/dropdown_field_widget.dart';
+import 'package:hously_flutter/widgets/calendar/events/add_notification_widget.dart';
+import 'package:hously_flutter/widgets/calendar/events/event_web_option.dart';
+
+class EventExtraWidget extends ConsumerStatefulWidget {
+  final InputDecoration inputDecoration;
+
+  const EventExtraWidget({
+    super.key,
+    required this.inputDecoration,
+  });
+
+  @override
+  _EventExtraWidgetState createState() => _EventExtraWidgetState();
+}
+
+class _EventExtraWidgetState extends ConsumerState<EventExtraWidget> {
+  bool isFirstWidget = true;
+
+  void switchWidget() {
+    setState(() {
+      isFirstWidget = !isFirstWidget;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final eventDetails = ref.watch(popupCalendarProvider).event;
+    final theme = ref.watch(themeColorsProvider);
+
+    return AnimatedSwitcher(
+      duration: const Duration(seconds: 1),
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: child,
+      ),
+      child: isFirstWidget
+          ? EventWebOption(
+              iconData: Icons.calendar_today,
+              secondWidget: InkWell(
+                onTap: switchWidget,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'abbas jafary',
+                        style: TextStyle(
+                          color: theme.textFieldColor,
+                        ),
+                      ),
+                      Text(
+                        'Free . Default visibility . Do not notify',
+                        style: TextStyle(
+                          color: theme.textFieldColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Column(
+              children: [
+                SizedBox(
+                  child: EventWebOption(
+                    iconData: Icons.business_center_outlined,
+                    secondWidget: DropDownWidget(
+                      texts: BusinessTypeEnum.values
+                          .map((value) => value.type)
+                          .toList(),
+                      values: BusinessTypeEnum.values,
+                      isExpanded: false,
+                      hasUnderLine: true,
+                      decoration: dropdownStyle.copyWith(),
+                      currentValue: eventDetails.busy
+                          ? BusinessTypeEnum.free
+                          : BusinessTypeEnum.busy,
+                      onChanged: (repeatType) {},
+                    ),
+                  ),
+                ),
+                EventWebOption(
+                  iconData: Icons.lock_outline,
+                  secondWidget: SizedBox(
+                    height: 40,
+                    child: DropDownWidget(
+                      texts: VisibilityTypeEnum.values
+                          .map((value) => value.type)
+                          .toList(),
+                      values: VisibilityTypeEnum.values,
+                      isExpanded: false,
+                      hasUnderLine: true,
+                      decoration: dropdownStyle,
+                      currentValue: eventDetails.visibility,
+                      onChanged: (repeatType) {},
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const AddNotificationWidget(),
+              ],
+            ),
+    );
+  }
+}
