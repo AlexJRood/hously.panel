@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
@@ -1097,8 +1099,8 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                                                                             ),
                                                                           ),
                                                                           child:
-                                                                              const Icon(
-                                                                            Icons.arrow_forward,
+                                                                              SvgPicture.asset(
+                                                                            AppIcons.simpleArrowForward,
                                                                             color:
                                                                                 Colors.white,
                                                                           ),

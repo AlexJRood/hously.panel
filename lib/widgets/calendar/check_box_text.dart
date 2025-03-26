@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/colors.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/extensions/context_extension.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
@@ -24,7 +26,6 @@ class CheckBoxText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final theme = ref.watch(themeColorsProvider);
     return Row(
       crossAxisAlignment: crossAxisAlignment,
       children: [
@@ -44,7 +45,7 @@ class CheckBoxText extends ConsumerWidget {
               style: TextStyle(
                   fontSize: context.isMobile ? null : fontSize,
                   fontFamily: 'RobotoRegular',
-                  color: theme.textFieldColor),
+                  color: const Color.fromRGBO(255, 255, 255, 1)),
             ),
           )
         else
@@ -74,7 +75,6 @@ class CheckboxWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(themeColorsProvider);
     return InkWell(
       onTap: () => onChanged?.call(!isActive),
       child: Container(
@@ -86,8 +86,8 @@ class CheckboxWidget extends ConsumerWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         child: isActive
-            ? Icon(Icons.check,
-                size: iconSize, color: Theme.of(context).iconTheme.color)
+            ? SvgPicture.asset(AppIcons.check,
+                height: iconSize,width: iconSize, color: Theme.of(context).iconTheme.color)
             : null,
       ),
     );

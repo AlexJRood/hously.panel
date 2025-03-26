@@ -5,7 +5,6 @@ import 'package:hously_flutter/state_managers/screen/calendar/appointment_type_p
 import 'package:hously_flutter/state_managers/screen/calendar/appointments_provider.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/popup_calendar_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
-import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/widgets/calendar/events/event_tab_widget.dart';
 import 'package:hously_flutter/widgets/calendar/out_office_tab_widget.dart';
 import 'package:hously_flutter/widgets/calendar/scheduling_tab_widget.dart';
@@ -14,8 +13,10 @@ import 'package:hously_flutter/widgets/calendar/text_form_field_widget.dart';
 
 class SaveEventWidget extends ConsumerWidget {
   final int index;
+  final bool isMobile;
 
-  const SaveEventWidget({super.key, required this.index});
+  const SaveEventWidget(
+      {super.key, required this.index, this.isMobile = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,39 +24,49 @@ class SaveEventWidget extends ConsumerWidget {
     final popupCalendarWatch = ref.watch(popupCalendarProvider);
     final isEdit = ref.watch(appointmentsProvider).isEdit;
     final eventDetails = popupCalendarWatch.event;
-    final theme = ref.watch(themeColorsProvider);
+    final screenSize = MediaQuery.of(context).size;
     return Container(
-      color: theme.fillColor,
-      width: 400,
+      decoration: BoxDecoration(
+          color: const Color.fromRGBO(35, 35, 35, 1),
+          borderRadius: BorderRadius.circular(10)),
+      width: isMobile ? screenSize.width : 550,
+      height: isMobile ? screenSize.height * 0.65 : null,
       child: SingleChildScrollView(
         padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.only(
-                bottom: 2.0,
-                left: 5,
-                right: 5,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: theme.textFieldColor,
-                    ),
-                    onPressed: () => ref.read(navigationService).beamPop(),
+                  const Text(
+                    'Add Event',
+                    style: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const Spacer(),
+                  if (!isEdit)
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   if (isEdit)
                     IconButton(
-                      icon: Icon(Icons.delete, color: theme.textFieldColor),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
                       onPressed: () {
                         ref.read(appointmentsProvider).deleteAppointment(
                               eventDetails,
                             );
-                        ref.read(navigationService).beamPop();
+                        Navigator.pop(context);
                       },
                     ),
                 ],
@@ -69,20 +80,22 @@ class SaveEventWidget extends ConsumerWidget {
               child: Column(
                 children: [
                   TextFormFieldWidget(
-                    style: TextStyle(fontSize: 18, color: theme.textFieldColor),
+                    style: const TextStyle(
+                        fontSize: 18, color: Color.fromRGBO(255, 255, 255, 1)),
                     text: eventDetails.title,
                     inputDecoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromRGBO(0, 0, 0, 0.2),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                color: theme.textFieldColor, width: 1)),
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide.none),
                         hintText: 'Add title',
-                        hintStyle: TextStyle(
-                            fontSize: 18, color: theme.textFieldColor),
+                        hintStyle: const TextStyle(
+                            fontSize: 18,
+                            color: Color.fromRGBO(255, 255, 255, 1)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                                color: theme.textFieldColor, width: 1))),
+                            borderRadius: BorderRadius.circular(6),
+                            borderSide: BorderSide.none)),
                     onChanged: (title) {
                       final newEvent = eventDetails.copyWith(title: title);
 
@@ -119,7 +132,7 @@ class SaveEventWidget extends ConsumerWidget {
                                               .appointmentTypeEnum ==
                                           currentType
                                       ? Theme.of(context).primaryColor
-                                      : theme.textFieldColor.withOpacity(0.8),
+                                      : const Color.fromRGBO(255, 255, 255, 1),
                                 ),
                               ),
                             ),

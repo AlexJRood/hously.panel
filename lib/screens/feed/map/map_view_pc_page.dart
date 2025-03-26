@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/const/route_constant.dart';
+import 'package:hously_flutter/portal/browselist/widget/pc.dart';
+import 'package:hously_flutter/screens/feed/components/cards/selected_card.dart';
 
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
@@ -12,6 +14,7 @@ import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
 import 'package:hously_flutter/widgets/appbar/hously/pc/appbar_map.dart';
+import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 import 'package:hously_flutter/widgets/sidebar/sidebar.dart';
 import 'package:intl/intl.dart';
@@ -48,6 +51,13 @@ class MapViewPageState extends ConsumerState<MapViewPcPage> {
     final textFieldColor = themecolors.textFieldColor;
     final color = Theme.of(context).primaryColor;
     final isDefaultDarkSystem = ref.watch(isDefaultDarkSystemProvider);
+
+    
+    final cardType = ref.read(selectedCardProvider);
+
+
+
+
     return PieCanvas(
       theme: const PieTheme(
         rightClickShowsMenu: true,
@@ -113,14 +123,14 @@ class MapViewPageState extends ConsumerState<MapViewPcPage> {
                       Positioned(
                         top: 0,
                         left: 0,
-                        right: screenWidth * 0.4,
+                        right: screenWidth * 0.35,
                         child: const TopAppBarMap(),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          width: screenWidth * 0.4,
+                          width: screenWidth * 0.35,
                           height: MediaQuery.of(context).size.height,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -139,152 +149,32 @@ class MapViewPageState extends ConsumerState<MapViewPcPage> {
                               itemCount: filteredAds.length,
                               itemBuilder: (context, index) {
                                 final ad = filteredAds[index];
-                                final tag = 'mapView${ad.id}';
-                                return MouseRegion(
-                                  onEnter: (_) {
-                                    ref.read(hoveredPropertyProvider.notifier).state = ad; // Use the global provider
-                                  },
-                                  onExit: (_) {
-                                    ref.read(hoveredPropertyProvider.notifier).state = null; // Use the global provider
-                                  },
-                                  child: SizedBox(
-                                    child: PieMenu(
-                                      onPressedWithDevice: (kind) {
-                                        if (kind == PointerDeviceKind.mouse ||
-                                            kind == PointerDeviceKind.touch) {
-                                          handleDisplayedAction(ref, ad.id, context);
-                                          ref.read(navigationService).pushNamedScreen(
-                                            '${Routes.add}/${ad.id}', // Using HEAD's route as primary
-                                            data: {'tag': tag, 'ad': ad},
-                                          );
-                                        }
-                                      },
-                                      actions: buildPieMenuActions(ref, ad, context),
-                                      child: Hero(
-                                        tag: tag,
-                                        child: Container(
-                                          margin: const EdgeInsets.only(bottom: 10),
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
-                                            gradient: CustomBackgroundGradients.getaddpagebackground(
-                                              context,
-                                              ref,
-                                            ),
-                                          ),
-                                          child: AspectRatio(
-                                            aspectRatio: 16 / 9,
-                                            child: Stack(
-                                              children: [
-                                                // Container with border wrapping the image
-                                                Positioned.fill(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      border: ad.isPro
-                                                          ? Border.all(color: Colors.white, width: 5.0)
-                                                          : null,
+                                final tag = 'mapViewPc${ad.id}${UniqueKey().toString()}';
+
+                                final mainImageUrl = ad.images.isNotEmpty ? ad.images[0] : 'default_image_url';
+                                final isPro = ad.isPro;
+
+
+                                return  Container(
+                                          margin: const EdgeInsets.only(bottom: 8),
+                                    child: SelectedCardWidget(
+                                    isMobile: false,
+                                    aspectRatio: cardType.mapAspectRatio,
+                                    ad: ad, 
+                                    tag: tag, 
+                                    mainImageUrl: mainImageUrl, 
+                                    isPro: isPro, 
+                                    isDefaultDarkSystem: isDefaultDarkSystem, 
+                                    color: color, 
+                                    textColor: textColor, 
+                                    textFieldColor: textFieldColor, 
+                                    buildShimmerPlaceholder: ShimmerPlaceholder(
+                                                      width: screenWidth * 0.4,
+                                                      height: (screenWidth * 0.4) *(16 / 9),
                                                     ),
-                                                    child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      child: Image.network(
-                                                        ad.images.isNotEmpty ? ad.images[0] : 'default_image_url',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                // Sponsored badge for pro ads
-                                                if (ad.isPro)
-                                                  Positioned(
-                                                    right: 8,
-                                                    top: 8,
-                                                    child: Container(
-                                                      padding: const EdgeInsets.symmetric(
-                                                          vertical: 4, horizontal: 10),
-                                                      decoration: BoxDecoration(
-                                                        color: AppColors.light,
-                                                        borderRadius: BorderRadius.circular(5),
-                                                      ),
-                                                      child: Text(
-                                                        'Sponsored',
-                                                        style: AppTextStyles.interMedium12dark,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                // Bottom info container
-                                                Positioned(
-                                                  left: 2,
-                                                  bottom: 2,
-                                                  child: Container(
-                                                    padding: const EdgeInsets.only(
-                                                        top: 5, bottom: 5, right: 8, left: 8),
-                                                    decoration: BoxDecoration(
-                                                      color: isDefaultDarkSystem
-                                                          ? textFieldColor.withOpacity(0.5)
-                                                          : color.withOpacity(0.5),
-                                                      borderRadius: BorderRadius.circular(8),
-                                                    ),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          '${NumberFormat.decimalPattern().format(ad.price)} ${ad.currency}',
-                                                          style: AppTextStyles.interBold.copyWith(
-                                                            fontSize: 18,
-                                                            color: textColor,
-                                                            shadows: [
-                                                              Shadow(
-                                                                offset: const Offset(5.0, 5.0),
-                                                                blurRadius: 10.0,
-                                                                color: isDefaultDarkSystem
-                                                                    ? textFieldColor.withOpacity(0.5)
-                                                                    : color.withOpacity(0.5),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          ad.title,
-                                                          style: AppTextStyles.interSemiBold.copyWith(
-                                                            fontSize: 14,
-                                                            color: textColor,
-                                                            shadows: [
-                                                              Shadow(
-                                                                offset: const Offset(5.0, 5.0),
-                                                                blurRadius: 10.0,
-                                                                color: Colors.black.withOpacity(1),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '${ad.city}, ${ad.street}',
-                                                          style: AppTextStyles.interSemiBold.copyWith(
-                                                            color: textColor,
-                                                            fontSize: 14,
-                                                            shadows: [
-                                                              Shadow(
-                                                                offset: const Offset(5.0, 5.0),
-                                                                blurRadius: 10.0,
-                                                                color: isDefaultDarkSystem
-                                                                    ? textFieldColor.withOpacity(0.5)
-                                                                    : color.withOpacity(0.5),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                    buildPieMenuActions: buildPieMenuActions(ref, ad, context),
                                     ),
-                                  ),
+                                  
                                 );
                               },
                             ),
@@ -295,6 +185,7 @@ class MapViewPageState extends ConsumerState<MapViewPcPage> {
                   ),
                 ),
               ),
+              BrowseListPcWidget(isWhiteSpaceNeeded: false)
             ],
           ),
         ),

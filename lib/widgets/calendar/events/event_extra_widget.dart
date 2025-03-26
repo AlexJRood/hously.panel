@@ -46,7 +46,7 @@ class _EventExtraWidgetState extends ConsumerState<EventExtraWidget> {
               iconData: Icons.calendar_today,
               secondWidget: InkWell(
                 onTap: switchWidget,
-                child: SizedBox(
+                child: const SizedBox(
                   width: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,13 +54,13 @@ class _EventExtraWidgetState extends ConsumerState<EventExtraWidget> {
                       Text(
                         'abbas jafary',
                         style: TextStyle(
-                          color: theme.textFieldColor,
+                          color: Color.fromRGBO(255, 255, 255, 1),
                         ),
                       ),
                       Text(
                         'Free . Default visibility . Do not notify',
                         style: TextStyle(
-                          color: theme.textFieldColor,
+                          color: Color.fromRGBO(255, 255, 255, 1),
                           fontSize: 12,
                         ),
                       ),

@@ -1,7 +1,9 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -242,8 +244,8 @@ class _GradientPhoneNumberTwoFieldsState
     _country.addListener(_onFocusChangecountry);
 
     widget.countryCodeController.addListener(_handleCountryCodeChange);
-    if (widget.countryCodeController.text == "+1") {
-      _selectedCountry = CountryCode.fromCountryCode('US'); // Default to US\
+    if (widget.countryCodeController.text == "+48") {
+      _selectedCountry = CountryCode.fromCountryCode('PL'); // Default to US\
     } else {
       _selectedCountry =
           CountryCode.fromDialCode(widget.countryCodeController.text);
@@ -385,7 +387,7 @@ class _GradientPhoneNumberTwoFieldsState
                             hintText: "Search",
                             hintStyle:
                                 TextStyle(color: theme.popupcontainertextcolor),
-                            prefixIcon: Icon(Icons.search,
+                            prefixIcon: SvgPicture.asset(AppIcons.search,
                                 color: theme.popupcontainertextcolor),
                             enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide.none,

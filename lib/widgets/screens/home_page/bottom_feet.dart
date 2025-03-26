@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/design.dart';
 
@@ -142,7 +144,7 @@ final themecolors=ref.watch(themeColorsProvider);
                 const Spacer(),
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.facebook,
+                    icon: SvgPicture.asset(AppIcons.faceBookLogo,
                         color: isDefaultDarkSystem
                             ? Theme.of(context).iconTheme.color
                             : Theme.of(context).primaryColor)),
@@ -169,7 +171,7 @@ final themecolors=ref.watch(themeColorsProvider);
                 ),
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.youtube_searched_for_sharp,
+                    icon: SvgPicture.asset(AppIcons.search,
                         color: isDefaultDarkSystem
                             ? Theme.of(context).iconTheme.color
                             : Theme.of(context).primaryColor)),
@@ -178,7 +180,7 @@ final themecolors=ref.watch(themeColorsProvider);
                 ),
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.facebook,
+                    icon: SvgPicture.asset(AppIcons.faceBookLogo,
                         color: isDefaultDarkSystem
                             ? Theme.of(context).iconTheme.color
                             : Theme.of(context).primaryColor)),

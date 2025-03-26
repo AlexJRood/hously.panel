@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart'; // Import for PointerScrollEvent
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:photo_view/photo_view.dart';
@@ -108,7 +110,7 @@ class NMFullScreenImageViewState extends ConsumerState<NMFullScreenImageView> {
               child: CircleAvatar(
                 backgroundColor: Colors.black45,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_rounded,
+                  icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                       color: AppColors.light),
                   onPressed: () => ref.read(navigationService).beamPop(),
                 ),
@@ -120,8 +122,8 @@ class NMFullScreenImageViewState extends ConsumerState<NMFullScreenImageView> {
             top: MediaQuery.of(context).size.height * 0.5 - 30,
             child: SafeArea(
               child: IconButton(
-                icon: const Icon(Icons.chevron_left,
-                    size: 30, color: Colors.white),
+                icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                    height: 30,width: 30, color: Colors.white),
                 onPressed: _goToPreviousImage,
               ),
             ),
@@ -131,8 +133,8 @@ class NMFullScreenImageViewState extends ConsumerState<NMFullScreenImageView> {
             top: MediaQuery.of(context).size.height * 0.5 - 30,
             child: SafeArea(
               child: IconButton(
-                icon: const Icon(Icons.chevron_right,
-                    size: 30, color: Colors.white),
+                icon: SvgPicture.asset(AppIcons.iosArrowRight,
+                    height: 30,width: 30, color: Colors.white),
                 onPressed: _goToNextImage,
               ),
             ),

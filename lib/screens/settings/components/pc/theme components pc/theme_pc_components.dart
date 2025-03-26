@@ -61,27 +61,24 @@ class _ThemeTileSelectorState extends ConsumerState<ThemeTileSelector> {
                 gradient:
                     currentthememode == ThemeMode.dark && colorScheme == null
                         ? const LinearGradient(
-                            colors: [
-                              AppColors.backgroundgradient1Light,
-                              AppColors.backgroundgradient2Light
-                            ],
+                            colors: [Colors.black, Colors.black],
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
                           )
                         : LinearGradient(
-                            colors: [scheme.primary, Colors.black],
+                            colors: [Colors.black, Colors.black],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                 containercolor: Colors.black,
                 secondcolor: Colors.white,
-                currentheme: ThemeMode.dark,
+                currentheme: ThemeMode.light,
                 title: 'Ciemny motyw'.tr,
-                isSelected: currentthememode == ThemeMode.dark,
+                isSelected: currentthememode == ThemeMode.light,
                 groupValue: currentthememode,
                 onTap: () {
-                  themeModeNotifier.state = ThemeMode.dark;
-                  savecurrenttheme(ThemeMode.dark);
+                  savecurrentthemeDark(ref);
+                  themeModeNotifier.state = ThemeMode.light;
                 }),
           ),
           const SizedBox(width: 16),
@@ -101,16 +98,15 @@ class _ThemeTileSelectorState extends ConsumerState<ThemeTileSelector> {
                   title: 'Light Theme'.tr,
                   containercolor: Colors.white,
                   secondcolor: Colors.grey,
-                  currentheme: ThemeMode.light,
-                  isSelected: currentthememode == ThemeMode.light,
+                  currentheme: ThemeMode.dark,
+                  isSelected: currentthememode == ThemeMode.dark,
                   groupValue: currentthememode,
                   onTap: () {
-                    themeModeNotifier.state = ThemeMode.light;
-                    savecurrenttheme(ThemeMode.light);
+                    themeModeNotifier.state = ThemeMode.dark;
+                    savecurrenttheme(ThemeMode.dark);
                   }),
             ),
           ],
-          const Expanded(flex: 5, child: SizedBox()),
         ],
       ),
     );

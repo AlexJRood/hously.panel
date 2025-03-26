@@ -73,12 +73,10 @@ class DashboardSideButtons extends StatelessWidget {
             ),
             SideButtonsDashboard(
                 onPressed: () {
-                  ref
-                      .read(navigationHistoryProvider.notifier)
+                  ref.read(navigationHistoryProvider.notifier)
                       .addPage(Routes.addClientForm);
-                  ref
-                      .read(navigationService)
-                      .pushNamedScreen(Routes.addClientForm);
+                  ref.read(navigationService)
+                      .pushNamedScreen(Routes.addClientFormDashboard);
                 },
                 icon: Icons.add_box_outlined,
                 text: 'Dodaj'.tr),

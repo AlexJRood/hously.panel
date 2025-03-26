@@ -1,14 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/clients_pro.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
+import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -45,7 +50,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
   @override
   Widget build(BuildContext context) {
     final clientListAsyncValue = ref.watch(clientProvider);
-
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = ref.watch(themeColorsProvider);
     final Map<String, String> sortOptions = {
       'amount_asc': 'Kwota rosnąco',
       'amount_desc': 'Kwota malejąco',
@@ -66,23 +72,27 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
           onPressedWithDevice: (kind) {
             if (kind == PointerDeviceKind.mouse ||
                 kind == PointerDeviceKind.touch) {
-              ref
-                  .read(navigationService)
-                  .pushNamedScreen(Routes.proAddClient);
+                  ref.read(navigationService)
+                      .pushNamedScreen('${widget.routeName}${Routes.addClientForm}');
             }
           },
-          actions: buildPieMenuActionsClientsPro(ref, 1, 1, context),
+          actions: buildPieMenuActionsClientsPro(ref, 1, 1, context), //change to production
           child: Container(
             width: 32,
             height: 32,
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
-              gradient: CustomBackgroundGradients.crmadgradient(context, ref),
+              gradient: CustomBackgroundGradients.crmClientAppbarGradient(
+                  context, ref),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
-              child: Icon(Icons.add,
-                  color: Theme.of(context).iconTheme.color, size: 25),
+              child: SvgPicture.asset(
+                AppIcons.add,
+                color: theme.mobileTextcolor,
+                height: 25,
+                width: 25,
+              ),
             ),
           ),
         ),
@@ -98,7 +108,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
             height: 32,
             margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              gradient: CustomBackgroundGradients.crmadgradient(context, ref),
+              gradient: CustomBackgroundGradients.crmClientAppbarGradient(
+                  context, ref),
               borderRadius: BorderRadius.circular(8),
             ),
             child: isExpanded
@@ -134,12 +145,11 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                         hintStyle: AppTextStyles.interRegular12,
                       ),
                       style: AppTextStyles.interRegular12,
-                      textAlign:
-                          TextAlign.start, // Wyśrodkowanie horyzontalne
+                      textAlign: TextAlign.start, // Wyśrodkowanie horyzontalne
                     ),
                   )
-                : Icon(Icons.search,
-                    color: Theme.of(context).iconTheme.color, size: 25),
+                : SvgPicture.asset(AppIcons.search,
+                    color: theme.mobileTextcolor, height: 25, width: 25),
           ),
         ),
         Expanded(
@@ -168,13 +178,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                   ],
                 );
               }
-              return GestureDetector(
-                onHorizontalDragUpdate: (details) {
-                  // Manually scroll by dragging
-                  _scrollController.jumpTo(
-                    _scrollController.offset - details.delta.dx,
-                  );
-                },
+              return DragScrollView(
+                controller: _scrollController,
                 child: SingleChildScrollView(
                   controller: _scrollController,
                   scrollDirection: Axis.horizontal,
@@ -186,7 +191,7 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                             if (kind == PointerDeviceKind.mouse ||
                                 kind == PointerDeviceKind.touch) {
                               ref.read(navigationService).pushNamedScreen(
-                                '${widget.routeName}/${client.id}/dashboard',
+                                '${widget.routeName}/${client.id}/Dashboard',
                                 data: {'clientViewPop': client},
                               );
                             }
@@ -198,9 +203,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                             margin: const EdgeInsets.symmetric(horizontal: 4),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              gradient:
-                                  CustomBackgroundGradients.crmadgradient(
-                                      context, ref),
+                              gradient: CustomBackgroundGradients
+                                  .crmClientAppbarGradient(context, ref),
                             ),
                             child: Center(
                               child: Row(
@@ -214,8 +218,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4),
                                       image: DecorationImage(
-                                        image: NetworkImage(client.avatar ??
-                                            defaultAvatarUrl),
+                                        image: NetworkImage(
+                                            client.avatar ?? defaultAvatarUrl),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -224,16 +228,12 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                                   Text(client.name,
                                       style: AppTextStyles.interRegular14
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color)),
+                                              color: theme.mobileTextcolor)),
                                   const SizedBox(width: 5),
                                   Text(client.lastName.toString(),
                                       style: AppTextStyles.interRegular14
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color)),
+                                              color: theme.mobileTextcolor)),
                                   const SizedBox(width: 6),
                                 ],
                               ),
@@ -258,8 +258,9 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        gradient: CustomBackgroundGradients.crmadgradient(
-                            context, ref),
+                        gradient:
+                            CustomBackgroundGradients.crmClientAppbarGradient(
+                                context, ref),
                       ),
                       child: Center(
                         child: Row(
@@ -268,27 +269,27 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                           children: [
                             const SizedBox(width: 6),
                             Shimmer.fromColors(
-                              baseColor: Colors.grey[800]!,
-                              highlightColor: Colors.grey[100]!,
+                              baseColor: ShimmerColors.base(context),
+                              highlightColor: ShimmerColors.highlight(context),
                               child: Container(
                                 width: 24,
                                 height: 24,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
-                                  color: Colors.grey,
+                                  color: ShimmerColors.background(context),
                                 ),
                               ),
                             ),
                             const SizedBox(width: 6),
                             Shimmer.fromColors(
-                              baseColor: Colors.grey[800]!,
-                              highlightColor: Colors.grey[100]!,
+                              baseColor: ShimmerColors.base(context),
+                              highlightColor: ShimmerColors.highlight(context),
                               child: Container(
                                 width: 160,
                                 height: 16,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
-                                  color: Colors.grey,
+                                  color: ShimmerColors.background(context),
                                 ),
                               ),
                             ),
@@ -301,13 +302,8 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                 ),
               ),
             ),
-            error: (err, stack) => GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                // Manually scroll by dragging
-                _scrollController.jumpTo(
-                  _scrollController.offset - details.delta.dx,
-                );
-              },
+            error: (err, stack) => DragScrollView(
+              controller: _scrollController,
               child: SingleChildScrollView(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
@@ -319,8 +315,9 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        gradient: CustomBackgroundGradients.crmadgradient(
-                            context, ref),
+                        gradient:
+                            CustomBackgroundGradients.crmClientAppbarGradient(
+                                context, ref),
                       ),
                       child: Center(
                         child: Row(
@@ -331,15 +328,15 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                             Stack(
                               children: [
                                 Shimmer.fromColors(
-                                  baseColor: Colors.grey[800]!,
-                                  highlightColor: Colors.grey[100]!,
+                                  baseColor: ShimmerColors.base(context),
+                                  highlightColor:
+                                      ShimmerColors.highlight(context),
                                   child: Container(
                                     width: 24,
                                     height: 24,
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(4),
-                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: ShimmerColors.background(context),
                                     ),
                                   ),
                                 ),
@@ -356,14 +353,14 @@ class _ClientListAppBarState extends ConsumerState<ClientListAppBar> {
                             ),
                             const SizedBox(width: 6),
                             Shimmer.fromColors(
-                              baseColor: Colors.grey[800]!,
-                              highlightColor: Colors.grey[100]!,
+                              baseColor: ShimmerColors.base(context),
+                              highlightColor: ShimmerColors.highlight(context),
                               child: Container(
                                 width: 160,
                                 height: 16,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
-                                  color: Colors.grey,
+                                  color: ShimmerColors.background(context),
                                 ),
                               ),
                             ),

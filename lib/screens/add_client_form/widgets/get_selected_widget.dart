@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/screens/add_client_form/provider/add_client_form_provider.dart';
-import 'package:hously_flutter/screens/add_client_form/widgets/sell_widget.dart';
-import 'package:hously_flutter/screens/add_client_form/widgets/view_widget.dart';
-import 'buy_widget.dart';
+import 'package:hously_flutter/screens/add_client_form/provider/send_form_provider.dart';
+import 'package:hously_flutter/screens/add_client_form/widgets/sell.dart';
+import 'package:hously_flutter/screens/add_client_form/components/event/event_view_widget.dart';
+import 'buy.dart';
 
 class GetSelectedWidget extends ConsumerWidget {
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/filters/new_widgets/grid_view_additional_info.dart';
 import 'package:hously_flutter/screens/filters/new_widgets/grid_view_state_type.dart';
 import 'package:hously_flutter/screens/filters/new_widgets/mobile_filters_area_widget.dart';
@@ -74,9 +76,10 @@ class NewFilterPopMobile extends ConsumerWidget {
                                           8), // Rounded corners
                                       borderSide: BorderSide.none, // No border
                                     ),
-                                    suffixIcon: const Icon(Icons.search,
-                                        size: 18,
-                                        color: Color.fromRGBO(
+                                    suffixIcon: SvgPicture.asset(AppIcons.search,
+                                        height: 18,
+                                        width: 18,
+                                        color: const Color.fromRGBO(
                                             145, 145, 145, 1)), // Add search icon
                                   ),
                                 ),

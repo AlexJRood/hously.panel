@@ -13,6 +13,12 @@ class NavigationService {
 
   BuildContext get currentContext => navigatorKey.currentContext!;
 
+  /// Metoda zwracająca bieżącą ścieżkę (URL) z Beamera.
+  String get currentPath {
+    final location = Beamer.of(currentContext).configuration.location;
+    return location ?? '';
+  }
+
   void pushNamedScreen(
       String routeName, {
         Object? data,

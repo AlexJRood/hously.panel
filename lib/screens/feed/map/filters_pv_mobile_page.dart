@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart';
@@ -210,7 +212,7 @@ class _FiltersPagePopState extends ConsumerState<FiltersPvMobilePage> {
                                               fontSize: 14,
                                               color: AppColors
                                                   .dark), // Kolor etykiety na biały
-                                      prefixIcon: const Icon(Icons.search,
+                                      prefixIcon: SvgPicture.asset(AppIcons.search,
                                           color: Colors
                                               .black), // Ikona wyszukiwania na biały
                                       border: OutlineInputBorder(

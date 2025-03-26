@@ -1,5 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/widgets/invoice_pdf_generator/const.dart';
 import 'package:hously_flutter/widgets/invoice_pdf_generator/model/invoise_model.dart';
  // Import your Buyer model
@@ -38,10 +40,10 @@ class _BuyerSearchFieldState extends State<BuyerSearchField> {
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton2<Buyer>(
-            iconStyleData: const IconStyleData(
+            iconStyleData: IconStyleData(
               icon: Padding(
-                padding: EdgeInsets.only(right: 15),
-                child: Icon(Icons.keyboard_arrow_down_sharp),
+                padding: const EdgeInsets.only(right: 15),
+                child: SvgPicture.asset(AppIcons.iosArrowDown),
               ),
             ),
             hint: const Text('Select Buyer'), // Hint text before selection

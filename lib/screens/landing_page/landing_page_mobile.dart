@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/widgets/appbar/hously/mobile/appbar_mobile.dart';
 import 'package:hously_flutter/widgets/bottom_bar_mobile/bottom_bar.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
+import 'package:hously_flutter/widgets/screens/home_page/recently_viewed_ads.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 import 'package:pie_menu/pie_menu.dart';
 import '../../widgets/landing_page/landing_page_mobile/ai_precision_widget.dart';
@@ -17,12 +19,13 @@ import '../../widgets/landing_page/landing_page_pc/featured_properties_widget.da
 import '../../widgets/side_menu/slide_rotate_menu.dart';
 
 class LandingPageMobile extends StatelessWidget {
-  const LandingPageMobile({super.key});
+  final bool isUserLoggedIn;
+  const LandingPageMobile({super.key, required this.isUserLoggedIn});
 
   @override
   Widget build(BuildContext context) {
     final sideMenuKey = GlobalKey<SideMenuState>();
-
+    final scrollController = ScrollController();
     return PieCanvas(
       theme: const PieTheme(
         rightClickShowsMenu: true,
@@ -42,65 +45,90 @@ class LandingPageMobile extends StatelessWidget {
           menuKey: sideMenuKey,
           child: Stack(
             children: [
-              SingleChildScrollView(
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: Color.fromRGBO(232, 235, 242, 1)),
-                  child: Column(
-                    spacing: 20,
-                    children: [
-                      HeaderWidget(
-                        sideMenuKey: sideMenuKey,
-                      ),
-                      const ExclusiveOffersWidget(),
-                      const OverMissionWidget(),
-                      const AiPrecisionWidget(),
-                      const HereToHelpWidget(),
-                      const FeaturedPropertiesWidget(
-                        paddingDynamic: 16,
-                        isMobile: true,
-                      ),
-                      const GetHomeRecommendation(),
-                      const FeaturedNewsWidget(
-                        paddingDynamic: 16,
-                        isMobile: true,
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            color: const Color.fromRGBO(255, 255, 255, 1),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 50),
-                              child: FeaturedPropertiesWidget(
-                                paddingDynamic: 16,
-                                isMobile: true,
+              DragScrollView(
+                controller: scrollController,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(232, 235, 242, 1)),
+                    child: Column(
+                      spacing: 50,
+                      children: [
+                        const HeaderWidget(),
+                        
+                        if (isUserLoggedIn)
+                            RecentlyViewedAds(paddingDynamic: 16),
+                              
+                        // const SizedBox(height: 10.0),
+                        const ExclusiveOffersWidget(),
+
+                        
+                        if (isUserLoggedIn)
+                            const OverMissionWidget(),
+
+                        
+                        if(!isUserLoggedIn)
+                            const AiPrecisionWidget(),
+                            
+                        if(!isUserLoggedIn)
+                            const HereToHelpWidget(),
+
+                        const FeaturedPropertiesWidget(
+                          paddingDynamic: 16,
+                          isMobile: true,
+                        ),
+
+                        
+                        if(!isUserLoggedIn)
+                            const GetHomeRecommendation(),
+
+                        const FeaturedNewsWidget(
+                          paddingDynamic: 16,
+                          isMobile: true,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              color: const Color.fromRGBO(255, 255, 255, 1),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 50),
+                                child: FeaturedPropertiesWidget(
+                                  paddingDynamic: 16,
+                                  isMobile: true,
+                                ),
                               ),
                             ),
-                          ),
-                          Image.asset(
-                            'assets/images/mapa.png',
-                            height: 430,
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                      const AskUserWidget(),
-                      const FooterWidget()
-                    ],
+                            Image.asset(
+                              'assets/images/mapa.png',
+                              height: 430,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                        
+                        
+                        if(!isUserLoggedIn)
+                            const AskUserWidget(),
+
+                        const FooterWidget()
+                      ],
+                    ),
                   ),
                 ),
               ),
-
-                  const Positioned(
-                    bottom:0,
-                    right: 0,
-                    child: BottomBarMobile(),),
-
-
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: AppBarMobile(sideMenuKey: sideMenuKey,),),
+              const Positioned(
+                bottom: 0,
+                right: 0,
+                child: BottomBarMobile(),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: AppBarMobile(
+                  sideMenuKey: sideMenuKey,
+                ),
+              ),
             ],
           ),
         ),

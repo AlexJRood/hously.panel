@@ -365,6 +365,7 @@ final roomFilters = [
   {'text': '3', 'filterValue': '3'},
   {'text': '4', 'filterValue': '4'},
   {'text': '5', 'filterValue': '5'},
+  {'text': '6', 'filterValue': '6'},
 ];
 
 final additionalFilters = [
@@ -379,3 +380,40 @@ final additionalFilters = [
   {'text': 'Jacuzzi', 'filterKey': 'jacuzzi'},
   {'text': 'Sauna', 'filterKey': 'sauna'},
 ];
+
+final refurbishmentItems = [
+  "Planning",
+  "Demolition",
+  "Electrical/ Plumbing",
+  "Framing/ Drywall",
+  "Paint",
+  "Cabinets Fixtures"
+];
+
+final refurbishmentListData = [
+  {
+    'title': 'Purchase Price',
+    'amount': '\$50,000',
+    'subtext': '% of ARV',
+    'value': '20%',
+  },
+  {
+    'title': 'Cost per m²',
+    'amount': '\$50,000',
+    'subtext': '\$ per SF',
+    'value': '20%',
+  },
+  {
+    'title': 'After Repair Value',
+    'amount': '\$50,000',
+    'subtext': '\$ per SF',
+    'value': '20%',
+  },
+  {
+    'title': 'After Repair Value',
+    'amount': '\$50,000',
+    'subtext': '\$ per SF',
+    'value': '20%',
+  }
+];
+

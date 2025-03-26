@@ -26,27 +26,34 @@ class ClientsPc extends ConsumerWidget {
       body: SideMenuManager.sideMenuSettings(
         menuKey: sideMenuKey,
         child: Container(
-          decoration: BoxDecoration(
-              gradient: CustomBackgroundGradients.customcrmright(context, ref)),
+          color: const Color.fromRGBO(30, 30, 30, 1),
           child: Stack(
             children: [
               Row(
                 children: [
                   SidebarAgentCrm(sideMenuKey: sideMenuKey),
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       children: [
-                        const TopAppBarCRM(routeName: Routes.proClients),
+                        TopAppBarCRM(routeName: Routes.proClients),
                         Expanded(
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  width: screenWidth / 2,
-                                  child: const Row(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40.0),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 10),
+                                  Text('My Clients',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold
+
+                                  ),),
+                                  SizedBox(height: 10),
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -54,10 +61,10 @@ class ClientsPc extends ConsumerWidget {
                                       StatusFilterWidget(),
                                     ],
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Flexible(child: ClientList()),
-                              ],
+                                  SizedBox(height: 10),
+                                  Expanded(child: ClientList()),
+                                ],
+                              ),
                             ),
                           ),
                         ),

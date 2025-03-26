@@ -7,7 +7,9 @@ import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
@@ -105,8 +107,10 @@ class RegisterMobilePop extends ConsumerWidget {
                                           ? MemoryImage(avatarBytes)
                                           : null,
                                       child: avatarBytes == null
-                                          ? const Icon(Icons.add_a_photo,
-                                              size: 50)
+                                          ? SvgPicture.asset(AppIcons.camera,
+                                              width: 50,
+                                              height: 50,
+                                      )
                                           : null,
                                     ),
                                   ),

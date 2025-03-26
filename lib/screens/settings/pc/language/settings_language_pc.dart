@@ -35,8 +35,9 @@ class _SettingsLanguagePcState extends ConsumerState<SettingsLanguagePc> {
               text: 'Wybierz preferowaną opcję wyświetlania i komunikacji'.tr,
             ),
             const SizedBox(height: 15),
-            LanguageTile(
+            LanguageTile(isPc: false,
               onTap: () {
+
                 ref.read(languageProvider.notifier).setLanguage('en');
                 //widget.languageindex = 0;
                 toggleBoolean(ref);
@@ -47,7 +48,7 @@ class _SettingsLanguagePcState extends ConsumerState<SettingsLanguagePc> {
               countrycode: 'GB',
             ),
             const SizedBox(height: 15),
-            LanguageTile(
+            LanguageTile(isPc: false,
               onTap: () {
                 ref.read(languageProvider.notifier).setLanguage('pl');
 

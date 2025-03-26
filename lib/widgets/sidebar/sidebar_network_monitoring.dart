@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
@@ -142,9 +144,11 @@ class SidebarNetworkMonitoring extends ConsumerWidget {
                           Transform.rotate(
                             angle: -30 * 3.141592653589793238 / 180,
                             child: IconButton(
-                              icon: Icon(Icons.send_rounded,
+                              icon: SvgPicture.asset(AppIcons.send,
                                   color: Theme.of(context).iconTheme.color,
-                                  size: 25.0),
+                                  height: 25.0,
+                                  width: 25.0,
+                              ),
                               onPressed: () {
                                 Navigator.of(context).push(
                                   PageRouteBuilder(

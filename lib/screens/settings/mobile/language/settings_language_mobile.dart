@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/language/language_provider.dart';
 import 'package:hously_flutter/screens/settings/components/mobile/mobile_settings_appbar.dart';
 
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/screens/settings/components/pc/components/settings_tile_providers.dart';
 import 'package:hously_flutter/screens/settings/components/pc/language%20components%20pc/language_pc_components.dart';
-import 'package:hously_flutter/screens/settings/components/pc/profile%20components%20pc/profile_pc_components.dart';
-import 'package:hously_flutter/screens/settings/components/security_screen_button.dart';
+
 import 'package:hously_flutter/theme/apptheme.dart';
 
 class SettingsLanguageMobile extends ConsumerWidget {
@@ -18,8 +18,10 @@ class SettingsLanguageMobile extends ConsumerWidget {
     final theme = ref.watch(themeColorsProvider);
     final language = ref.watch(languageProvider);
     return Scaffold(
-      backgroundColor: theme.mobileBackground,
-      body: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+            gradient:
+                CustomBackgroundGradients.getMainMenuBackground(context, ref)),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
@@ -40,7 +42,7 @@ class SettingsLanguageMobile extends ConsumerWidget {
                       Text(
                         'Język'.tr,
                         style: TextStyle(
-                          color: theme.popupcontainertextcolor,
+                          color: theme.mobileTextcolor,
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -48,7 +50,7 @@ class SettingsLanguageMobile extends ConsumerWidget {
                         'Wybierz preferowaną opcję wyświetlania i komunikacji'
                             .tr,
                         style: TextStyle(
-                            color: theme.popupcontainertextcolor, fontSize: 12),
+                            color: theme.mobileTextcolor, fontSize: 12),
                       ),
                       const SizedBox(height: 15),
                       LanguageTile(

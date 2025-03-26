@@ -1,33 +1,33 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/data/design/design.dart';
+import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapAd extends StatefulWidget {
+class MapAd extends ConsumerStatefulWidget {
   final double latitude;
   final double longitude;
-  final Function()? onMapActivated; // Callback do aktywacji mapy
+  final Function()? onMapActivated;
 
   const MapAd({
     super.key,
     required this.latitude,
     required this.longitude,
-    this.onMapActivated, // Opcjonalny callback
+    this.onMapActivated,
   });
 
   @override
-  MapAdState createState() => MapAdState();
+  ConsumerState<MapAd> createState() => _MapAdState();
 }
 
-class MapAdState extends State<MapAd> {
+class _MapAdState extends ConsumerState<MapAd> {
   bool _ignoreMapInteraction = true;
 
   void _toggleMapInteraction() {
     if (_ignoreMapInteraction && widget.onMapActivated != null) {
-      widget.onMapActivated!(); // Wywołanie callbacka przed zmianą stanu
+      widget.onMapActivated!();
     }
     setState(() {
       _ignoreMapInteraction = !_ignoreMapInteraction;
@@ -36,20 +36,21 @@ class MapAdState extends State<MapAd> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(themeColorsProvider);
     return Column(
       children: [
         Expanded(
           child: IgnorePointer(
-            ignoring:
-                _ignoreMapInteraction, // Kontroluje, czy mapa ignoruje interakcje
+            ignoring: _ignoreMapInteraction,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(widget.latitude, widget.longitude),
-                  zoom: 13.0,
-                  interactiveFlags: InteractiveFlag.all &
-                      ~InteractiveFlag.rotate, // Wyłącza obracanie mapy
+                  initialCenter: LatLng(widget.latitude, widget.longitude),
+                  initialZoom: 13.0,
+                  interactionOptions:InteractionOptions(
+                      flags:  InteractiveFlag.pinchZoom | InteractiveFlag.drag
+                  ),
                 ),
                 children: [
                   TileLayer(
@@ -77,15 +78,15 @@ class MapAdState extends State<MapAd> {
           ),
         ),
         GestureDetector(
-          onTap:
-              _toggleMapInteraction, // Pozwala na włączenie interakcji z mapą tylko po kliknięciu na tekst
+          onTap: _toggleMapInteraction,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _ignoreMapInteraction
                   ? "Kliknij tutaj, aby aktywować interakcje z mapą".tr
                   : "Interakcja z mapą jest aktywna".tr,
-              style: AppTextStyles.interMedium,
+              style: AppTextStyles.interMedium
+                  .copyWith(color: theme.popUpIconColor),
             ),
           ),
         ),

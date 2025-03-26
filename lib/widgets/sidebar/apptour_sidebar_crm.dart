@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/chat/new_chat/chat_page.dart';
 import 'package:hously_flutter/state_managers/data/Keyboardshortcuts.dart';
 import 'package:hously_flutter/const/route_constant.dart';
@@ -14,6 +16,7 @@ import 'package:hously_flutter/routes/navigation_history_provider.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/state_managers/data/user_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -219,14 +222,17 @@ class ApptourSidebarCrm extends ConsumerWidget {
                           children: [
                             Transform.rotate(
                               angle: -30 * 3.141592653589793238 / 180,
-                              child: IconButton(icon:Icon(Icons.send_rounded,
+                              child: IconButton(icon:SvgPicture.asset(AppIcons.send,
                                   color: Theme.of(context).iconTheme.color,
-                                  size: 25.0),
+                                  height: 25.0,
+                                  width: 25.0,
+                              ),
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
                                       opaque: false,
-                                      pageBuilder: (_, __, ___) => const ChatPage(),
+                                      pageBuilder: (_, __, ___) =>
+                                          const ChatPage(),
                                       transitionsBuilder: (_, anim, __, child) {
                                         return FadeTransition(
                                             opacity: anim, child: child);
@@ -346,6 +352,7 @@ class CustomShowcaseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.watch(themeColorsProvider);
     return Showcase.withWidget(
       targetPadding: const EdgeInsets.all(5),
       targetBorderRadius: BorderRadius.circular(5),
@@ -377,7 +384,7 @@ class CustomShowcaseWidget extends StatelessWidget {
             Text(
               title,
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).iconTheme.color,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -385,8 +392,8 @@ class CustomShowcaseWidget extends StatelessWidget {
             // Description text
             Text(
               description,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).iconTheme.color,
               ),
             ),
             const Spacer(), // Push the button to the bottom
@@ -396,7 +403,7 @@ class CustomShowcaseWidget extends StatelessWidget {
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: theme.fillColor,
                       padding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 32),
                       shape: RoundedRectangleBorder(
@@ -404,10 +411,10 @@ class CustomShowcaseWidget extends StatelessWidget {
                       ),
                     ),
                     onPressed: () => ShowCaseWidget.of(context).dismiss(),
-                    child: const Text(
+                    child: Text(
                       "Skip",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: theme.textFieldColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -419,7 +426,7 @@ class CustomShowcaseWidget extends StatelessWidget {
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor:theme.fillColor,
                       padding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 32),
                       shape: RoundedRectangleBorder(
@@ -427,10 +434,10 @@ class CustomShowcaseWidget extends StatelessWidget {
                       ),
                     ),
                     onPressed: onSkip, // Function passed to skip button
-                    child: const Text(
+                    child:  Text(
                       "next",
                       style: TextStyle(
-                        color: Colors.black,
+                        color:theme.textFieldColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -5,9 +5,10 @@ import 'package:flutter/services.dart'; // Importujemy dla schowka
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/displayed/provider.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/fav/provider.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/hide/provider.dart';
+import 'package:hously_flutter/network_monitoring/browselist/utils/api.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/displayed/provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/fav/provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/hide/provider.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:share_plus/share_plus.dart';
@@ -26,6 +27,10 @@ List<PieAction> buildPieMenuActionsNM(
         data: (ads) => ads.any((ad) => ad.id == action.id),
         orElse: () => false,
       );
+  final isOnBrowseList = ref.watch(networkMonitoringBrowseListProvider).maybeWhen(
+        data: (ads) => ads.any((ad) => ad.id == action.id),
+        orElse: () => false,
+      );
   final isHidden = ref.watch(nMHideAdsProvider).maybeWhen(
         data: (ads) => ads.any((ad) => ad.id == action.id),
         orElse: () => false,
@@ -39,6 +44,15 @@ List<PieAction> buildPieMenuActionsNM(
       },
       child: FaIcon(
         isFavorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+      ),
+    ),
+    PieAction(
+      tooltip: Text('Dodaj do listy przeglądania'.tr),
+      onSelect: () {
+        handleBrowseListActionNM(ref, action, context);
+      },
+      child: FaIcon(
+        isOnBrowseList ? FontAwesomeIcons.list : FontAwesomeIcons.listCheck,
       ),
     ),
     PieAction(
@@ -78,6 +92,21 @@ Future<void> handleFavoriteActionNM(
     context.showSnackBarLikeSection(
         'Musisz być zalogowany, aby dodać ogłoszenie do ulubionych'.tr);
   }
+}
+
+
+
+Future<void> handleBrowseListActionNM(
+    WidgetRef ref, dynamic ad, BuildContext context) async {
+  final isUserLoggedIn = ApiServices.isUserLoggedIn();
+  if (!isUserLoggedIn) {
+    context.showSnackBarLikeSection(
+        'Musisz być zalogowany, aby dodać ogłoszenie do listy przeglądania'.tr);
+    return;
+  }
+
+  final notifier = ref.read(networkMonitoringBrowseListProvider.notifier);
+  await notifier.toggleBrowseListNM(ad,context);
 }
 
 Future<void> handleHideActionNM(

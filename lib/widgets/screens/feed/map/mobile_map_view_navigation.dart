@@ -16,7 +16,7 @@ class NavigationBarMapMobile extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         BuildNavigationOption(
-          tag: 'FilterMobile',
+          tag: 'FilterMobile-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
           icon: Icons.search,
           label: 'Filtruj'.tr,
           onTap: () =>
@@ -24,7 +24,7 @@ class NavigationBarMapMobile extends ConsumerWidget {
         ),
         const SizedBox(height: 15),
         BuildNavigationOption(
-          tag: 'SortMobile',
+          tag: 'SortMobile-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
           icon: Icons.sort,
           label: 'Sortuj'.tr,
           onTap: () =>

@@ -14,6 +14,7 @@ final themeProvider = StateProvider<ThemeMode?>((ref) => null);
 
 class ThemeColors {
   final Color bordercolor;
+  final Color sideBarbackground;
   final Color deviceinfocolor;
   final Color taskHeaderColor;
   final Color filterPageColor;
@@ -42,8 +43,11 @@ class ThemeColors {
   final Color clientbuttoncolor;
   final Color checkoutbackground;
   final Color mobileBackground;
+  final Color mobileTextcolor;
   final Color settingsMenutile;
   const ThemeColors({
+    required this.sideBarbackground,
+    required this.mobileTextcolor,
     required this.settingsMenutile,
     required this.mobileBackground,
     required this.bordercolor,
@@ -82,7 +86,6 @@ class AppTheme {
     final colorScheme = FlexColorScheme.light(
       scheme: scheme,
       fontFamily: GoogleFonts.inter().fontFamily,
-
       subThemesData: const FlexSubThemesData(
         elevatedButtonSchemeColor: SchemeColor.onPrimary,
         interactionEffects: true,
@@ -97,8 +100,6 @@ class AppTheme {
     return colorScheme.toTheme.copyWith(
       textTheme: _textTheme(),
       primaryTextTheme: _textTheme(),
-      
-      
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: const TextStyle(
           color: Colors.black,
@@ -128,7 +129,6 @@ class AppTheme {
   static ThemeData light(FlexScheme scheme, WidgetRef ref) {
     final colorScheme = FlexColorScheme.dark(
       fontFamily: GoogleFonts.inter().fontFamily,
-     
       scheme: scheme,
       subThemesData: const FlexSubThemesData(
         elevatedButtonSchemeColor: SchemeColor.onPrimary,
@@ -144,7 +144,6 @@ class AppTheme {
     return colorScheme.toTheme.copyWith(
       textTheme: _textTheme(),
       primaryTextTheme: _textTheme(),
-      
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: const TextStyle(
           color: Colors.white,
@@ -177,7 +176,6 @@ class AppTheme {
       fontFamily: GoogleFonts.inter().fontFamily,
       textTheme: _textTheme(),
       primaryTextTheme: _textTheme(),
-     
       iconTheme: IconThemeData(
           color: currentthememode == ThemeMode.system
               ? Colors.white
@@ -219,20 +217,22 @@ class AppTheme {
   /// ✅ **Text Theme that applies inter to all text**
   static TextTheme _textTheme() {
     return TextTheme(
-      headlineLarge: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      headlineSmall: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      displayLarge: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      displayMedium: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      displaySmall: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      titleLarge: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      titleMedium: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      titleSmall: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      bodyLarge: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      bodyMedium: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      bodySmall: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      labelLarge: GoogleFonts.inter(fontWeight: FontWeight.w500),
-      labelMedium: GoogleFonts.inter(fontWeight: FontWeight.normal),
-      labelSmall: GoogleFonts.inter(fontWeight: FontWeight.normal),
+      headlineLarge: GoogleFonts.libreCaslonText(
+        color: Colors.white,
+      ),
+      headlineSmall: GoogleFonts.libreCaslonText(),
+      displayLarge: GoogleFonts.inter(),
+      displayMedium: GoogleFonts.inter(),
+      displaySmall: GoogleFonts.inter(),
+      titleLarge: GoogleFonts.inter(),
+      titleMedium: GoogleFonts.inter(),
+      titleSmall: GoogleFonts.inter(),
+      bodyLarge: GoogleFonts.inter(),
+      bodyMedium: GoogleFonts.inter(),
+      bodySmall: GoogleFonts.inter(),
+      labelLarge: GoogleFonts.inter(),
+      labelMedium: GoogleFonts.inter(),
+      labelSmall: GoogleFonts.inter(),
     );
   }
 }
@@ -251,6 +251,7 @@ final themeColorsProvider = Provider<ThemeColors>((ref) {
 
   if (currentthememode == ThemeMode.system) {
     return ThemeColors(
+      mobileTextcolor: Colors.white,
       settingsMenutile: const Color(0xff212020),
       mobileBackground: const Color(0xff131313),
       clientbuttoncolor: const Color(0xff373636),
@@ -258,7 +259,7 @@ final themeColorsProvider = Provider<ThemeColors>((ref) {
       clientbackground: Colors.black,
       clientTilecolor: const Color(0xff212020),
       checkoutbackground: const Color(0xff131313),
-    
+      sideBarbackground: AppColors.dark,
       settingsButtoncolor: AppColors.settingsButtoncolor,
       deviceinfocolor: AppColors.deviceinfocolor,
       bordercolor: AppColors.bordercolor,
@@ -285,14 +286,15 @@ final themeColorsProvider = Provider<ThemeColors>((ref) {
     );
   } else if (currentthememode == ThemeMode.light) {
     return ThemeColors(
-      settingsMenutile: AppColors.usertileLightMode,
-      mobileBackground: AppColors.settingstileLightMode,
+      sideBarbackground: AppColors.dark,
+      mobileTextcolor: Colors.white,
+      settingsMenutile: AppColors.dark,
+      mobileBackground: Colors.black,
       clientbuttoncolor: AppColors.dark50,
-      clientbackground: const Color.fromARGB(255, 49, 49, 49),
-      clientTilecolor: const Color.fromARGB(255, 208, 207, 207),
+      clientbackground: const Color.fromARGB(255, 56, 55, 55),
+      clientTilecolor: Colors.black,
       clientplaceholdercolor: const Color(0xff212121),
-     
-      checkoutbackground: Colors.grey[500]!,
+      checkoutbackground: AppColors.dark,
       settingsButtoncolor: AppColors.lightSettingsButtoncolor,
       deviceinfocolor: AppColors.darkerLightBlueAccent,
       bordercolor: AppColors.lighterBorderColor,
@@ -302,7 +304,7 @@ final themeColorsProvider = Provider<ThemeColors>((ref) {
       popupcontainertextcolor: Colors.black,
       togglebuttoncolor: AppColors.togglebuttoncolorlight,
       popupcontainercolor: Colors.white,
-      settingstile: AppColors.settingstileLightMode,
+      settingstile: AppColors.settingstileDarkMode,
       userTile: AppColors.usertileLightMode,
       adPopBackground: Colors.white,
       textButtonColor: Colors.grey,
@@ -319,13 +321,15 @@ final themeColorsProvider = Provider<ThemeColors>((ref) {
     );
   } else {
     return ThemeColors(
-      settingsMenutile: AppColors.dark,
-      mobileBackground: Colors.black,
+      sideBarbackground: AppColors.light,
+      mobileTextcolor: Colors.black,
+      settingsMenutile: AppColors.usertileLightMode,
+      mobileBackground: AppColors.settingstileLightMode,
       clientbuttoncolor: Colors.grey,
-      clientbackground: const Color.fromARGB(255, 56, 55, 55),
-      clientTilecolor: Colors.black,
+      checkoutbackground: Colors.grey[500]!,
+      clientTilecolor: const Color.fromARGB(255, 208, 207, 207),
+      clientbackground: const Color.fromARGB(255, 49, 49, 49),
       clientplaceholdercolor: const Color.fromARGB(255, 130, 130, 130),
-      checkoutbackground: AppColors.dark,
       settingsButtoncolor: AppColors.darkSettingsButtoncolor,
       deviceinfocolor: AppColors.lighterLightBlueAccent,
       bordercolor: AppColors.darkerBorderColor,

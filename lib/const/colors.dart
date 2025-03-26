@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const lightBlue = Color(0xFF08B2E8);
 const clienttileTextcolor = Color.fromARGB(255, 143, 221, 167);
 Color brightGolden = const Color(0xFFFFD700);
-const shimmercolor= Color.fromARGB(
+const shimmerbasecolor= Color.fromARGB(
           255, 50, 50, 50);
 const silver = Color(0xFFC0C0C0);
 final List<LinearGradient> darkerGradients = [

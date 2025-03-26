@@ -150,7 +150,7 @@ class ClientsViewMid extends ConsumerWidget {
                               const Spacer(),
                               IntrinsicWidth(
                                 child: MidLikeSectionFeedPop(
-                                    adFeedPopId: clientViewPop.id,
+                                    adFeedPop: clientViewPop,
                                     ref: ref,
                                     context: context),
                               ),

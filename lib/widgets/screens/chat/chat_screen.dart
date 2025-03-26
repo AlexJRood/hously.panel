@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/utils/api_services.dart';
@@ -134,7 +136,7 @@ class ChatScreenState extends ConsumerState<ChatScreen> {
                             ? NetworkImage(widget.partnerAvatar)
                             : null,
                         child: widget.partnerAvatar.isEmpty
-                            ? const Icon(Icons.person)
+                            ? SvgPicture.asset(AppIcons.person)
                             : null,
                       ),
                       const SizedBox(width: 20),
@@ -215,7 +217,7 @@ class ChatScreenState extends ConsumerState<ChatScreen> {
                       child: Transform.rotate(
                         angle: -30 * 3.141592653589793238 / 180,
                         child: IconButton(
-                          icon: const Icon(Icons.send, color: AppColors.light),
+                          icon: SvgPicture.asset(AppIcons.send, color: AppColors.light),
                           onPressed: _sendMessage,
                         ),
                       ),

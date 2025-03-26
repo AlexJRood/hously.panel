@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/search_page/filters_provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/search_page/filters_provider.dart';
 import 'package:hously_flutter/widgets/network_monitoring/filter/fileds.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:ui' as ui;

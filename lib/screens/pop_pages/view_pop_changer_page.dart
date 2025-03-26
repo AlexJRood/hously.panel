@@ -83,7 +83,7 @@ class ViewPopPageChangerState extends ConsumerState<ViewPopChangerPage> {
           ),
           // Zawartość modalu
           Hero(
-            tag: 'ViewChangerBarButton',
+            tag: 'ViewChangerBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Padding(
               padding: widget.buttonPosition != null
                   ? EdgeInsets.only(

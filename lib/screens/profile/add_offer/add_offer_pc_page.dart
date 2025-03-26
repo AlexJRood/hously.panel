@@ -61,7 +61,7 @@ class AddOfferPcPage extends ConsumerWidget {
       focusNode: FocusNode()..requestFocus(),
       onKeyEvent: (KeyEvent event) {
         KeyBoardShortcuts().handleKeyEvent(event, scrollController, 50, 100);
-        KeyBoardShortcuts().handleBackspaceNavigation(event, ref);
+     
       },
       child: Scaffold(
         body: SideMenuManager.sideMenuSettings(

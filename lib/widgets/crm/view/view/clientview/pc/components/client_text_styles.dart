@@ -5,17 +5,17 @@ import 'package:hously_flutter/theme/apptheme.dart';
 TextStyle headerStyle(BuildContext context, WidgetRef ref) {
   final theme = ref.watch(themeColorsProvider);
   return TextStyle(
-    color: theme.whitewhiteblack,
+    color: theme.mobileTextcolor,
     fontWeight: FontWeight.bold,
   );
 }
 
 TextStyle customtextStyle(BuildContext context, WidgetRef ref) {
   final theme = ref.watch(themeColorsProvider);
-  return TextStyle(color: theme.whitewhiteblack);
+  return TextStyle(color: theme.mobileTextcolor);
 }
 
 TextStyle textStylesubheading(BuildContext context, WidgetRef ref) {
   final theme = ref.watch(themeColorsProvider);
-  return TextStyle(color: theme.whitewhiteblack.withOpacity(0.7), fontSize: 12);
+  return TextStyle(color: theme.mobileTextcolor.withOpacity(0.7), fontSize: 12);
 }

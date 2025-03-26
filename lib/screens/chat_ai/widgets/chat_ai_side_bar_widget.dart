@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import '../../chat_ai/model/chat_ai_model.dart';
 import '../chat_ai_provider/chat_ai_provider.dart';
 import 'package:get/get.dart';
@@ -97,10 +99,11 @@ class _ChatAiSideBarState extends ConsumerState<ChatAiSideBar> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Row(
                         children: [
-                          const Icon(
-                            Icons.search,
-                            size: 25,
-                            color: Color.fromRGBO(200, 200, 200, 1),
+                          SvgPicture.asset(
+                            AppIcons.search,
+                            height: 25,
+                            width: 25,
+                            color: const Color.fromRGBO(200, 200, 200, 1),
                           ),
                           Expanded(
                             child: TextField(
@@ -216,10 +219,11 @@ class _ChatAiSideBarState extends ConsumerState<ChatAiSideBar> {
                                         ),
                                       ),
                                       trailing: PopupMenuButton<String>(
-                                        icon: const Icon(
-                                          Icons.more_horiz,
+                                        icon: SvgPicture.asset(
+                                          AppIcons.moreVertical,
                                           color: Colors.white,
-                                          size: 20,
+                                          height: 20,
+                                          width: 20,
                                         ),
                                         onSelected: (value) {
                                           if (value == 'delete') {
@@ -279,7 +283,7 @@ class _ChatAiSideBarState extends ConsumerState<ChatAiSideBar> {
                     children: [
                       Text('Utwórz nowy chat', style: AppTextStyles.interSemiBold16), //add translation change to production                             
                       const Spacer(),
-                      const Icon(Icons.note_alt_outlined, size: 25, color: AppColors.light),
+                      SvgPicture.asset(AppIcons.newChat, height: 25,width: 25, color: AppColors.light),
                     ],
                   ),
                 ),

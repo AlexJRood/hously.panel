@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
@@ -24,7 +26,7 @@ class EventOption extends ConsumerWidget {
                 onPressed: () {
                   ref.read(navigationService).beamPop(context);
                 },
-                icon:  Icon(Icons.arrow_back_outlined,color: theme.textFieldColor,),
+                icon:  SvgPicture.asset(AppIcons.iosArrowLeft,color: theme.textFieldColor,),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),

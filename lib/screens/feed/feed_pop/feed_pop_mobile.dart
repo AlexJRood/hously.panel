@@ -99,6 +99,7 @@ class FeedPopMobileState extends ConsumerState<FeedPopMobile> {
   Widget build(BuildContext context) {
     final userAsyncValue = ref.watch(userProvider);
     final lastPage = ref.read(navigationHistoryProvider.notifier).lastPage;
+    bool _hasPopped = false; // Flaga kontrolująca pojedyncze wywołanie beamPop
 
     NumberFormat customFormat = NumberFormat.decimalPattern('fr');
 
@@ -160,13 +161,12 @@ class FeedPopMobileState extends ConsumerState<FeedPopMobile> {
                     onNotification: (OverscrollNotification notification) {
                       if (_atTop && notification.overscroll < 0) {
                         _dragDistance -= notification.overscroll;
-                        if (_dragDistance >= _requiredDragDistance) {
+                        if (_dragDistance >= _requiredDragDistance && !_hasPopped) {
+                          _hasPopped = true; // Ustawiamy flagę, żeby zapobiec ponownemu wywołaniu
                           ref.read(navigationService).beamPop();
-                          _dragDistance = 0.0; // Resetuj kumulowaną odległość
                         }
                       } else {
-                        _dragDistance =
-                            0.0; // Resetuj kumulowaną odległość, jeśli nie jesteśmy na szczycie
+                        _dragDistance = 0.0; // Resetujemy kumulowaną odległość, jeśli nie jesteśmy na szczycie
                       }
                       return true;
                     },
@@ -1126,9 +1126,7 @@ class FeedPopMobileState extends ConsumerState<FeedPopMobile> {
                               ),
                             ),
                             MobileLikeSectionFeedPop(
-                                adFeedPopId: widget.adFeedPop.id,
-                                ref: ref,
-                                context: context)
+                                adFeedPop: widget.adFeedPop,)
                           ],
                         ),
                       ],

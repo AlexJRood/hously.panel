@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 class OverMissionWidget extends StatelessWidget {
   const OverMissionWidget({super.key});
@@ -23,9 +24,10 @@ class OverMissionWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const Text(
+            Text(
               'Our Mission',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              style: AppTextStyles.libreCaslonHeading
+                  .copyWith(fontSize: 26, fontWeight: FontWeight.bold),
             ),
             const Text(
               'We are a passionate team dedicated to creating meaningful experiences through innovative design and technology. Our mission is to connect people, inspire creativity, and empower communities. With a focus on user-centered solutions, we aim to bridge gaps, solve problems, and bring ideas to life. ',

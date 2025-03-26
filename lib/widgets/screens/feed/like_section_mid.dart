@@ -116,7 +116,7 @@ class MidLikeSectionFeedPop extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleShareAction(adFeedPopId, context);
+              handleShareAction(adFeedPopId, context, ref);
             },
             child: const Padding(
               padding: EdgeInsets.all(5),

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/portal/browselist/utils/api.dart';
 import 'package:hously_flutter/state_managers/data/profile/displayed/displayed_provider.dart';
 import 'package:hously_flutter/state_managers/data/profile/fav/fav_provider.dart';
 import 'package:hously_flutter/state_managers/data/profile/hide/hide_provider.dart';
@@ -13,6 +14,13 @@ import 'package:share_plus/share_plus.dart';
 import 'package:universal_io/io.dart';
 import 'package:hously_flutter/platforms/html_utils_stub.dart'
 if (dart.library.html) 'package:hously_flutter/platforms/html_utils_web.dart';
+
+
+
+
+
+
+
 
 class ActionModel {
   final int id;
@@ -25,6 +33,10 @@ List<PieAction> buildPieMenuActions(
         data: (ads) => ads.any((ad) => ad.id == action.id),
         orElse: () => false,
       );
+  final isOnBrowseList = ref.watch(browseListProvider).maybeWhen(
+        data: (ads) => ads.any((ad) => ad.id == action.id),
+        orElse: () => false,
+      );
   final isHidden = ref.watch(hideAdsProvider).maybeWhen(
         data: (ads) => ads.any((ad) => ad.id == action.id),
         orElse: () => false,
@@ -34,16 +46,25 @@ List<PieAction> buildPieMenuActions(
     PieAction(
       tooltip: Text('Dodaj do ulubionych'.tr),
       onSelect: () {
-        handleFavoriteAction(ref, action.id, context);
+        handleFavoriteAction(ref, action, context);
       },
       child: FaIcon(
         isFavorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
       ),
     ),
     PieAction(
+      tooltip: Text('Dodaj do listy przeglądania'.tr),
+      onSelect: () {
+        handleBrowseListAction(ref, action, context);
+      },
+      child: FaIcon(
+        isOnBrowseList ? FontAwesomeIcons.list : FontAwesomeIcons.listCheck,
+      ),
+    ),
+    PieAction(
       tooltip: Text('Ukryj ogłoszenie'.tr),
       onSelect: () {
-        handleHideAction(ref, action.id, context);
+        handleHideAction(ref, action, context);
       },
       child: FaIcon(
         isHidden ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye,
@@ -52,7 +73,7 @@ List<PieAction> buildPieMenuActions(
     PieAction(
       tooltip: const Text('Udostępnij ogłoszenie'),
       onSelect: () {
-        handleShareAction(action.id, context);
+        handleShareAction(action, context, ref);
       },
       child: const FaIcon(FontAwesomeIcons.shareAlt),
     ),
@@ -60,61 +81,63 @@ List<PieAction> buildPieMenuActions(
 }
 
 Future<void> handleFavoriteAction(
-    WidgetRef ref, int adId, BuildContext context) async {
+    WidgetRef ref, dynamic ad, BuildContext context) async {
   final isUserLoggedIn = ApiServices.isUserLoggedIn();
-  if (isUserLoggedIn) {
-    final notifier = ref.read(favAdsProvider.notifier);
-    final isFav = await notifier.isFavorite(adId);
-    if (isFav) {
-      await notifier.removeFromFavorites(adId);
-      context.showSnackBarLikeSection('Usunięto z ulubionych'.tr);
-    } else {
-      await notifier.addToFavorites(adId);
-      context.showSnackBarLikeSection('Dodano do ulubionych'.tr);
-    }
-    ref.invalidate(favAdsProvider);
-  } else {
+  if (!isUserLoggedIn) {
     context.showSnackBarLikeSection(
         'Musisz być zalogowany, aby dodać ogłoszenie do ulubionych'.tr);
+    return;
   }
+
+  final notifier = ref.read(favAdsProvider.notifier);
+  await notifier.toggleFavorite(ad, context);
 }
+
+
+Future<void> handleBrowseListAction(
+    WidgetRef ref, dynamic ad, BuildContext context) async {
+  final isUserLoggedIn = ApiServices.isUserLoggedIn();
+  if (!isUserLoggedIn) {
+    context.showSnackBarLikeSection(
+        'Musisz być zalogowany, aby dodać ogłoszenie do listy przeglądania'.tr);
+    return;
+  }
+
+  final notifier = ref.read(browseListProvider.notifier);
+  await notifier.toggleBrowseList(ad,context);
+}
+
 
 Future<void> handleHideAction(
-    WidgetRef ref, int adId, BuildContext context) async {
+    WidgetRef ref, dynamic ad, BuildContext context) async {
   final isUserLoggedIn = ApiServices.isUserLoggedIn();
-  if (isUserLoggedIn) {
-    final notifier = ref.read(hideAdsProvider.notifier);
-    final isHide = await notifier.isHide(adId);
-    if (isHide) {
-      await notifier.removeFromHide(adId);
-      context.showSnackBarLikeSection('Usunięto z ukrytych');
-    } else {
-      await notifier.addToHide(adId);
-      context.showSnackBarLikeSection('Dodano do ukrytych');
-    }
-    ref.invalidate(hideAdsProvider);
-  } else {
-    context
-        .showSnackBarLikeSection('Musisz być zalogowany, aby ukryć ogłoszenie');
+  if (!isUserLoggedIn) {
+    context.showSnackBarLikeSection(
+        'Musisz być zalogowany, aby ukryć ogłoszenie'.tr);
+    return;
   }
+
+  final notifier = ref.read(hideAdsProvider.notifier);
+  await notifier.toggleHide(ad.id,context);
 }
 
+
 Future<void> handleDisplayedAction(
-    WidgetRef ref, int adId, BuildContext context) async {
+    WidgetRef ref, dynamic ad, BuildContext context) async {
   final isUserLoggedIn = ApiServices.isUserLoggedIn();
   if (isUserLoggedIn) {
     final isDisplayed =
-        await ref.read(displayedAdsProvider.notifier).isDisplayed(adId);
+        await ref.read(displayedAdsProvider.notifier).isDisplayed(ad.id);
     if (isDisplayed) {
-      await ref.read(displayedAdsProvider.notifier).removeFromDisplayed(adId);
+      await ref.read(displayedAdsProvider.notifier).removeFromDisplayed(ad.id);
     } else {
-      await ref.read(displayedAdsProvider.notifier).addToDisplayed(adId);
+      await ref.read(displayedAdsProvider.notifier).addToDisplayed(ad.id);
     }
   }
 }
 
-Future<void> handleShareAction(int adId, BuildContext context) async {
-  final url = 'hously.ai/ad/$adId';
+Future<void> handleShareAction(dynamic ad, BuildContext context, WidgetRef ref) async {
+  final url = 'hously.pro/offer/${ad.id}';
 
   try {
     if (kIsWeb) {
@@ -137,6 +160,7 @@ Future<void> handleShareAction(int adId, BuildContext context) async {
     context.showSnackBarLikeSection('Błąd podczas udostępniania: $e');
   }
 }
+
 
 extension ContextExtension on BuildContext {
   void showSnackBarLikeSection(String message) {

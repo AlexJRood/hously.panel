@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
@@ -59,7 +61,7 @@ class UserCard extends ConsumerWidget {
                           ref.read(navigationService)
                               .pushNamedReplacementScreen(Routes.editAccount);
                         },
-                        icon: const Icon(Icons.edit, color: AppColors.light),
+                        icon: SvgPicture.asset(AppIcons.pencil, color: AppColors.light),
                         label: Text('Edytuj swój profil'.tr,
                             style: AppTextStyles.interLight),
                       )

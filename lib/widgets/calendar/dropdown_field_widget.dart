@@ -70,7 +70,6 @@ class DropdownWidget<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final theme = ref.watch(themeColorsProvider);
     return DropdownButtonFormField<T>(
       borderRadius: BorderRadius.circular(8),
       value: currentValue,
@@ -82,23 +81,22 @@ class DropdownWidget<T> extends ConsumerWidget {
         onChanged?.call(value);
       },
       elevation: 0,
-      dropdownColor: Theme.of(context).iconTheme.color!,
-      //focusColor: Colors.white,
+      dropdownColor: const Color.fromRGBO(50, 50, 50, 1),
       isExpanded: isExpanded ?? true,
       decoration: decoration ??
-          InputDecoration(
+          const InputDecoration(
             enabledBorder: InputBorder.none,
             border: InputBorder.none,
             disabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             filled: true,
-            fillColor: theme.fillColor,
+            fillColor: Color.fromRGBO(0, 0, 0, 0.2),
           ),
       autofocus: false,
       iconSize: 25,
-      icon: Icon(
+      icon: const Icon(
         Icons.arrow_drop_down,
-        color: theme.textFieldColor,
+        color: Colors.white,
       ),
       items: List.generate(values.length, (index) {
         return DropdownMenuItem<T>(
@@ -106,7 +104,7 @@ class DropdownWidget<T> extends ConsumerWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             texts[index],
-            style: TextStyle(fontSize: 16, color: theme.textFieldColor),
+            style: const TextStyle(fontSize: 16, color: Colors.white),
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.left,
           ),

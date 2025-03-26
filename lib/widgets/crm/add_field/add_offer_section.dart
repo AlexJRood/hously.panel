@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/state_managers/data/crm/add_field/sell_offer_provider.dart';
@@ -125,7 +127,7 @@ class AddOfferCrm extends ConsumerWidget {
                         right: 0,
                         child: IconButton(
                           icon:
-                              const Icon(Icons.delete, color: AppColors.light),
+                              SvgPicture.asset(AppIcons.delete, color: AppColors.light),
                           onPressed: () {
                             if (addOfferState.imagesData.length > 4) {
                               ref

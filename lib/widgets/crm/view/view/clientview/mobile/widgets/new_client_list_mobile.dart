@@ -11,6 +11,8 @@ import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.d
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/clients_pro.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
+import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -97,13 +99,8 @@ class _NewClientListMobileState extends ConsumerState<NewClientListMobile> {
                     ],
                   );
                 }
-                return GestureDetector(
-                  onHorizontalDragUpdate: (details) {
-                    // Manually scroll by dragging
-                    _scrollController.jumpTo(
-                      _scrollController.offset - details.delta.dx,
-                    );
-                  },
+                return DragScrollView(
+                  controller: _scrollController,
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
@@ -123,11 +120,11 @@ class _NewClientListMobileState extends ConsumerState<NewClientListMobile> {
                               if (isBlackWhiteScheme) {
                                 return isClientMatch
                                     ? Colors.blue
-                                    : theme.whitewhiteblack;
+                                    : theme.mobileTextcolor;
                               } else {
                                 return isClientMatch
                                     ? Theme.of(context).primaryColor
-                                    : theme.whitewhiteblack;
+                                    : theme.mobileTextcolor;
                               }
                             }
                           }
@@ -202,14 +199,15 @@ class _NewClientListMobileState extends ConsumerState<NewClientListMobile> {
                             children: [
                               const SizedBox(width: 6),
                               Shimmer.fromColors(
-                                baseColor: Colors.grey[800]!,
-                                highlightColor: Colors.grey[100]!,
+                                baseColor: ShimmerColors.base(context),
+                                highlightColor:
+                                    ShimmerColors.highlight(context),
                                 child: Container(
                                   width: 110,
                                   height: 16,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
-                                    color: Colors.grey,
+                                    color: ShimmerColors.background(context),
                                   ),
                                 ),
                               ),
@@ -253,16 +251,17 @@ class _NewClientListMobileState extends ConsumerState<NewClientListMobile> {
                                 Stack(
                                   children: [
                                     Shimmer.fromColors(
-                                      baseColor: Colors.grey[800]!,
-                                      highlightColor: Colors.grey[100]!,
+                                      baseColor: ShimmerColors.base(context),
+                                      highlightColor:
+                                          ShimmerColors.highlight(context),
                                       child: Container(
                                         width: 24,
                                         height: 24,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: Colors.grey,
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: ShimmerColors.background(
+                                                context)),
                                       ),
                                     ),
                                     const Positioned(
@@ -278,15 +277,16 @@ class _NewClientListMobileState extends ConsumerState<NewClientListMobile> {
                                 ),
                                 const SizedBox(width: 6),
                                 Shimmer.fromColors(
-                                  baseColor: Colors.grey[800]!,
-                                  highlightColor: Colors.grey[100]!,
+                                  baseColor: ShimmerColors.base(context),
+                                  highlightColor:
+                                      ShimmerColors.highlight(context),
                                   child: Container(
                                     width: 160,
                                     height: 16,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: Colors.grey,
-                                    ),
+                                        borderRadius: BorderRadius.circular(4),
+                                        color:
+                                            ShimmerColors.background(context)),
                                   ),
                                 ),
                                 const SizedBox(width: 5),

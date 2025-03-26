@@ -102,7 +102,7 @@ class MobilePopAppBarState extends ConsumerState<MobilePopAppBarPage> {
             ),
             // Zawartość modalu
             Hero(
-              tag: 'MobilePopAppBar',
+              tag: 'MobilePopAppBar-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
               child: Align(
                 alignment: Alignment.center,
                 child: Padding(

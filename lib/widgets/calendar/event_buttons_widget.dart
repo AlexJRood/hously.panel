@@ -19,28 +19,41 @@ class EventButtonsWidget extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        SizedBox(
-          width: 150,
-          child: ElevatedButtonWidget(
-            bgColor: Theme.of(context).iconTheme.color,
-            elevation: 0,
-            child: Text(
-              'Close',
-              style: TextStyle(color: theme.textFieldColor),
+        InkWell(
+          onTap: () {
+            ref.read(navigationService).beamPop();
+          },
+          child: const SizedBox(
+            height: 32,
+            width: 92,
+            child: Center(
+              child: Text(
+                'Reschedule',
+                style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
-            onTapped: () => ref.read(navigationService).beamPop(),
           ),
         ),
         const SizedBox(width: widgetSpace),
-        SizedBox(
-          width: 150,
-          child: ElevatedButtonWidget(
-            bgColor: Theme.of(context).primaryColor,
-            elevation: 0,
-            onTapped: onSaved,
-            child: Text(
-              isEdit ? 'Edit' : 'Save',
-              style: TextStyle(color: Theme.of(context).iconTheme.color),
+        InkWell(
+          onTap: onSaved,
+          child: Container(
+            decoration: BoxDecoration(
+                color: const Color.fromRGBO(200, 200, 200, 1),
+                borderRadius: BorderRadius.circular(6)),
+            height: 32,
+            width: 53,
+            child: Center(
+              child: Text(
+                isEdit ? 'Edit' : 'Save',
+                style: const TextStyle(
+                    color: Color.fromRGBO(35, 35, 35, 1),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
           ),
         ),

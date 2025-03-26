@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/extensions/string_extension.dart';
 import 'package:hously_flutter/models/calendar/weekly_dates_model.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/schedule_appointment_provider.dart';
@@ -137,7 +139,7 @@ class RepeatWeeklyWidget extends ConsumerWidget {
               width: 38,
               padding: const EdgeInsets.only(top: 4),
               child: IconButton(
-                icon: const Icon(Icons.add_circle_outline),
+                icon: SvgPicture.asset(AppIcons.circlePlus),
                 onPressed: () =>
                     ref.read(scheduleAppointmentProvider).addWeeklyDate(
                           parentId: availability.id,
@@ -151,7 +153,7 @@ class RepeatWeeklyWidget extends ConsumerWidget {
                 width: 38,
                 padding: const EdgeInsets.only(top: 4),
                 child: IconButton(
-                  icon: const Icon(Icons.copy),
+                  icon: SvgPicture.asset(AppIcons.copy),
                   onPressed: () {
                     ref.read(scheduleAppointmentProvider).replaceWeeklyDate(
                           parentId: availability.id,

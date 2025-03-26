@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import '../chat_screen_pc.dart';
@@ -56,8 +58,8 @@ class _SendMessageBoxState extends ConsumerState<SendMessageBox> {
                 children: [
                   IconButton(
                     style: elevatedButtonStyleRounded10,
-                    icon: const Icon(Icons.add_circle_outline_outlined,
-                        size: 25, color: AppColors.light),
+                    icon:  SvgPicture.asset(AppIcons.circlePlus,
+                        height: 25,width: 25, color: AppColors.light),
                     onPressed: () {
                       ref
                           .read(chatMessageRoomProvider.notifier)

@@ -4,19 +4,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/fav/provider.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/hide/provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/fav/provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/hide/provider.dart';
 import 'package:hously_flutter/utils/pie_menu/network_monitoring.dart';
 
 class FullLikeSectionFeedPopNM extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final adFeedPopId;
+  final dynamic adFeedPop;
   final WidgetRef ref;
   final BuildContext context;
 
   const FullLikeSectionFeedPopNM({
     super.key,
-    required this.adFeedPopId,
+    required this.adFeedPop,
     required this.ref,
     required this.context,
   });
@@ -30,12 +30,12 @@ class FullLikeSectionFeedPopNM extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleFavoriteActionNM(ref, adFeedPopId, context);
+              handleFavoriteActionNM(ref, adFeedPop.id, context);
             },
             child: FutureBuilder<bool>(
               future: ref
                   .watch(nMFavAdsProvider.notifier)
-                  .isFavoriteNM(adFeedPopId),
+                  .isFavoriteNM(adFeedPop.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Padding(
@@ -79,11 +79,11 @@ class FullLikeSectionFeedPopNM extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleHideActionNM(ref, adFeedPopId, context);
+              handleHideActionNM(ref, adFeedPop.id, context);
             },
             child: FutureBuilder<bool>(
               future:
-                  ref.watch(nMHideAdsProvider.notifier).isHideNM(adFeedPopId),
+                  ref.watch(nMHideAdsProvider.notifier).isHideNM(adFeedPop.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Padding(
@@ -128,7 +128,7 @@ class FullLikeSectionFeedPopNM extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleShareActionNM(adFeedPopId, context);
+              handleShareActionNM(adFeedPop.id, context);
             },
             child: Padding(
               padding: const EdgeInsets.all(5),

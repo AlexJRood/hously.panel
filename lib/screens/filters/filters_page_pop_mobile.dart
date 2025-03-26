@@ -56,7 +56,6 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
   late TextEditingController offerTypeController;
   late ScrollController scrollController;
 
-
   @override
   void initState() {
     super.initState();
@@ -93,33 +92,60 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
     });
 
     searchController = TextEditingController(text: filterNotifier.searchQuery);
-    searchRadiusController = TextEditingController(text: filterNotifier.searchQuery);
-    excludeController = TextEditingController(text: filterNotifier.excludeQuery);
-    minPriceController = TextEditingController(text: filterNotifier.filters['min_price']?.toString());
-    maxPriceController = TextEditingController(text: filterNotifier.filters['max_price']?.toString());
-    minPricePerMeterController = TextEditingController(text: filterNotifier.filters['min_price_per_meter']?.toString());
-    maxPricePerMeterController = TextEditingController(text: filterNotifier.filters['max_price_per_meter']?.toString());
-    minRoomsController = TextEditingController(text: filterNotifier.filters['min_rooms']?.toString());
-    maxRoomsController = TextEditingController(text: filterNotifier.filters['max_rooms']?.toString());
-    minBathroomsController = TextEditingController(text: filterNotifier.filters['min_bathrooms']?.toString());
-    maxBathroomsController = TextEditingController(text: filterNotifier.filters['max_bathrooms']?.toString());
-    minSquareFootageController = TextEditingController(text: filterNotifier.filters['min_square_footage']?.toString());
-    maxSquareFootageController = TextEditingController(text: filterNotifier.filters['max_square_footage']?.toString());
-    minLotSizeController = TextEditingController(text: filterNotifier.filters['min_lot_size']?.toString());
-    maxLotSizeController = TextEditingController(text: filterNotifier.filters['max_lot_size']?.toString());
-    titleController = TextEditingController(text: filterNotifier.filters['title']);
-    descriptionController = TextEditingController(text: filterNotifier.filters['description']);
-    currencyController = TextEditingController(text: filterNotifier.filters['currency']);
-    estateTypeController = TextEditingController(text: filterNotifier.filters['estate_type']);
-    buildingTypeController = TextEditingController(text: filterNotifier.filters['building_type']);
-    streetController = TextEditingController(text: filterNotifier.filters['street']);
-    cityController = TextEditingController(text: filterNotifier.filters['city']);
-    stateController = TextEditingController(text: filterNotifier.filters['state']);
-    zipcodeController = TextEditingController(text: filterNotifier.filters['zipcode']);
-    propertyFormController = TextEditingController(text: filterNotifier.filters['property_form']);
-    marketTypeController = TextEditingController(text: filterNotifier.filters['market_type']);
-    offerTypeController = TextEditingController(text: filterNotifier.filters['offer_type']);
-    countryController = TextEditingController(text: filterNotifier.filters['country']);
+    searchRadiusController =
+        TextEditingController(text: filterNotifier.searchQuery);
+    excludeController =
+        TextEditingController(text: filterNotifier.excludeQuery);
+    minPriceController = TextEditingController(
+        text: filterNotifier.filters['min_price']?.toString());
+    maxPriceController = TextEditingController(
+        text: filterNotifier.filters['max_price']?.toString());
+    minPricePerMeterController = TextEditingController(
+        text: filterNotifier.filters['min_price_per_meter']?.toString());
+    maxPricePerMeterController = TextEditingController(
+        text: filterNotifier.filters['max_price_per_meter']?.toString());
+    minRoomsController = TextEditingController(
+        text: filterNotifier.filters['min_rooms']?.toString());
+    maxRoomsController = TextEditingController(
+        text: filterNotifier.filters['max_rooms']?.toString());
+    minBathroomsController = TextEditingController(
+        text: filterNotifier.filters['min_bathrooms']?.toString());
+    maxBathroomsController = TextEditingController(
+        text: filterNotifier.filters['max_bathrooms']?.toString());
+    minSquareFootageController = TextEditingController(
+        text: filterNotifier.filters['min_square_footage']?.toString());
+    maxSquareFootageController = TextEditingController(
+        text: filterNotifier.filters['max_square_footage']?.toString());
+    minLotSizeController = TextEditingController(
+        text: filterNotifier.filters['min_lot_size']?.toString());
+    maxLotSizeController = TextEditingController(
+        text: filterNotifier.filters['max_lot_size']?.toString());
+    titleController =
+        TextEditingController(text: filterNotifier.filters['title']);
+    descriptionController =
+        TextEditingController(text: filterNotifier.filters['description']);
+    currencyController =
+        TextEditingController(text: filterNotifier.filters['currency']);
+    estateTypeController =
+        TextEditingController(text: filterNotifier.filters['estate_type']);
+    buildingTypeController =
+        TextEditingController(text: filterNotifier.filters['building_type']);
+    streetController =
+        TextEditingController(text: filterNotifier.filters['street']);
+    cityController =
+        TextEditingController(text: filterNotifier.filters['city']);
+    stateController =
+        TextEditingController(text: filterNotifier.filters['state']);
+    zipcodeController =
+        TextEditingController(text: filterNotifier.filters['zipcode']);
+    propertyFormController =
+        TextEditingController(text: filterNotifier.filters['property_form']);
+    marketTypeController =
+        TextEditingController(text: filterNotifier.filters['market_type']);
+    offerTypeController =
+        TextEditingController(text: filterNotifier.filters['offer_type']);
+    countryController =
+        TextEditingController(text: filterNotifier.filters['country']);
     scrollController = ScrollController();
   }
 
@@ -166,7 +192,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
 
   @override
   Widget build(BuildContext context) {
-    final String? currentCountry = ref.watch(filterButtonProvider.select((state) => state['country']));
+    final String? currentCountry =
+        ref.watch(filterButtonProvider.select((state) => state['country']));
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -174,15 +201,16 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
     double dynamicBoxHeightGroup = 10;
     double dynamicBoxHeightGroupSmall = 8;
     double dynamiSpacerBoxWidth = 15;
-    final model = ref.watch(myTextFieldViewModelProvider.notifier); // Watch the provider
+    final model =
+        ref.watch(myTextFieldViewModelProvider.notifier); // Watch the provider
 
     final themecolors = ref.watch(themeColorsProvider);
-    final iconColor = Theme.of(context).iconTheme.color;
+    const iconColor = AppColors.textColorLight;
     final currentthememode = ref.watch(themeProvider);
     final buttoncolor = Theme.of(context).primaryColor;
     final buttonTextColor = currentthememode == ThemeMode.system
         ? AppColors.textColorLight
-        : themecolors.buttonTextColor;
+        : AppColors.textColorLight;
     return PopupListener(
       child: SafeArea(
         child: Scaffold(
@@ -204,7 +232,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                 padding: const EdgeInsets.all(5.0),
                 child: Center(
                   child: Hero(
-                    tag: 'FilterMobile_${UniqueKey()}',
+                    tag:
+                        'FilterMobile-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag
                     child: GestureDetector(
                       onTap: () {
                         model.setLoading(false);
@@ -228,20 +257,25 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                         Expanded(
                                           child: ScrollbarTheme(
                                             data: ScrollbarThemeData(
-                                              thumbColor: MaterialStateProperty.all(
-                                                  Colors.white.withOpacity(0.5)),
+                                              thumbColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white
+                                                          .withOpacity(0.5)),
                                               thickness:
-                                                  MaterialStateProperty.all(6.0),
-                                              radius: const Radius.circular(10.0),
+                                                  MaterialStateProperty.all(
+                                                      6.0),
+                                              radius:
+                                                  const Radius.circular(10.0),
                                             ),
                                             child: Scrollbar(
                                               controller: scrollController,
                                               thumbVisibility: true,
                                               child: ListView(
                                                 controller: scrollController,
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 12.0,
-                                                    vertical: 16.0),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12.0,
+                                                        vertical: 16.0),
                                                 children: [
                                                   Wrap(
                                                     spacing:
@@ -253,12 +287,15 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                     children: [
                                                       Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Material(
-                                                              color: Colors.transparent,
+                                                              color: Colors
+                                                                  .transparent,
                                                               child: Text(
-                                                                  'Typ oferty'.tr,
+                                                                  'Typ oferty'
+                                                                      .tr,
                                                                   style: AppTextStyles
                                                                       .interSemiBold16)),
                                                         ],
@@ -275,115 +312,12 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(height: dynamicBoxHeight),
-                                                  Column(
-                                                    children: [
-                                                  //     Row(
-                                                  //       mainAxisAlignment:
-                                                  //           MainAxisAlignment.start,
-                                                  //       children: [
-                                                  //         Material(
-                                                  //             color: Colors
-                                                  //                 .transparent,
-                                                  //             child: Text(
-                                                  //                 'Lokalizacja'.tr,
-                                                  //                 style: AppTextStyles
-                                                  //                     .interSemiBold16)),
-                                                  //       ],
-                                                  //     ),
-                                                  // SizedBox(height:dynamicBoxHeightGroupSmall),
-                                                      // Row(
-                                                      //   mainAxisAlignment:
-                                                      //       MainAxisAlignment.start,
-                                                      //   children: [
-                                                      //     SizedBox(
-                                                      //       width: 200,
-                                                      //       child:
-                                                      //           BuildDropdownButtonFormField(
-                                                      //         currentValue:
-                                                      //             currentCountry,
-                                                      //         items:  [
-                                                      //           'Polska'.tr,
-                                                      //           'Niemcy'.tr,
-                                                      //           'Czechy'.tr,
-                                                      //           'Austria',
-                                                      //           'Litwa'.tr,
-                                                      //           'Francja'.tr
-                                                      //         ],
-                                                      //         labelText: 'Kraj'.tr,
-                                                      //         filterKey: 'country',
-                                                      //       ),
-                                                      //     ),
-                                                      //     SizedBox(
-                                                      //         width:
-                                                      //             dynamiSpacerBoxWidth),
-                                                      //     Expanded(
-                                                      //       child: BuildTextField(
-                                                      //         controller: cityController,
-                                                      //         labelText: 'Miasto'.tr,
-                                                      //         filterKey: 'city',
-                                                      //       ),
-                                                      //     ),
-                                                      //     SizedBox(
-                                                      //         width:
-                                                      //             dynamiSpacerBoxWidth),
-                                                      //     Expanded(
-                                                      //       child: BuildTextField(
-                                                      //         controller: stateController,
-                                                      //         labelText: 'Województwo'.tr,
-                                                      //         filterKey: 'state',
-                                                      //       ),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
-                                                      // SizedBox(
-                                                      //     height:
-                                                      //         dynamicBoxHeightGroupSmall),
-                                                      // Row(
-                                                      //   mainAxisAlignment:
-                                                      //       MainAxisAlignment.start,
-                                                      //   children: [
-                                                      //     Expanded(
-                                                      //       child: BuildTextField(
-                                                      //         controller:
-                                                      //             streetController,
-                                                      //         labelText: 'Ulica'.tr,
-                                                      //         filterKey: 'street',
-                                                      //       ),
-                                                      //     ),
-                                                      //     SizedBox(
-                                                      //         width:
-                                                      //             dynamiSpacerBoxWidth),
-                                                      //     SizedBox(
-                                                      //       width: 150,
-                                                      //       child: BuildTextField(
-                                                      //         controller:
-                                                      //             zipcodeController,
-                                                      //         labelText: 'Kod pocztowy'.tr,
-                                                      //         filterKey: 'zip_code',
-                                                      //       ),
-                                                      //     ),
-                                                      //     SizedBox(
-                                                      //         width:
-                                                      //             dynamiSpacerBoxWidth),
-                                                      //     SizedBox(
-                                                      //       width: 100,
-                                                      //       child: BuildTextField(
-                                                      //         controller:
-                                                      //             searchRadiusController,
-                                                      //         labelText: '+ 0km',
-                                                      //         filterKey: 'city',
-                                                      //       ),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
-                                                    ],
-                                                  ),
                                                   SizedBox(
                                                       height: dynamicBoxHeight),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
@@ -402,8 +336,9 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                       .interSemiBold16)),
                                                         ],
                                                       ),
-                                                  SizedBox(
-                                                      height: dynamicBoxHeightGroupSmall),
+                                                      SizedBox(
+                                                          height:
+                                                              dynamicBoxHeightGroupSmall),
                                                       SingleChildScrollView(
                                                         scrollDirection:
                                                             Axis.horizontal,
@@ -420,16 +355,18 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                               spacing: 5,
                                                               children: [
                                                                 EstateTypeFilterButton(
-                                                                  text: 'Mieszkanie'
-                                                                      .tr,
+                                                                  text:
+                                                                      'Mieszkanie'
+                                                                          .tr,
                                                                   filterValue:
                                                                       'Flat',
                                                                   filterKey:
                                                                       'estate_type',
                                                                 ),
                                                                 EstateTypeFilterButton(
-                                                                  text: 'Kawalerka'
-                                                                      .tr,
+                                                                  text:
+                                                                      'Kawalerka'
+                                                                          .tr,
                                                                   filterValue:
                                                                       'Studio',
                                                                   filterKey:
@@ -454,7 +391,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 ),
                                                                 EstateTypeFilterButton(
                                                                   text:
-                                                                      'Bliźniak'.tr,
+                                                                      'Bliźniak'
+                                                                          .tr,
                                                                   filterValue:
                                                                       'Twin house',
                                                                   filterKey:
@@ -477,8 +415,9 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                               spacing: 5,
                                                               children: [
                                                                 EstateTypeFilterButton(
-                                                                  text: 'Inwestycje'
-                                                                      .tr,
+                                                                  text:
+                                                                      'Inwestycje'
+                                                                          .tr,
                                                                   filterValue:
                                                                       'Invest',
                                                                   filterKey:
@@ -486,7 +425,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 ),
                                                                 EstateTypeFilterButton(
                                                                   text:
-                                                                      'Działki'.tr,
+                                                                      'Działki'
+                                                                          .tr,
                                                                   filterValue:
                                                                       'Lot',
                                                                   filterKey:
@@ -511,14 +451,16 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                       'estate_type',
                                                                 ),
                                                                 EstateTypeFilterButton(
-                                                                  text: 'Pokoje'.tr,
+                                                                  text: 'Pokoje'
+                                                                      .tr,
                                                                   filterValue:
                                                                       'Room',
                                                                   filterKey:
                                                                       'estate_type',
                                                                 ),
                                                                 EstateTypeFilterButton(
-                                                                  text: 'Garaże'.tr,
+                                                                  text: 'Garaże'
+                                                                      .tr,
                                                                   filterValue:
                                                                       'Garage',
                                                                   filterKey:
@@ -538,8 +480,10 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       Material(
-                                                          color: Colors.transparent,
-                                                          child: Text('Filtry'.tr,
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: Text(
+                                                              'Filtry'.tr,
                                                               style: AppTextStyles
                                                                   .interSemiBold16)),
                                                     ],
@@ -561,7 +505,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 controller:
                                                                     minSquareFootageController,
                                                                 labelText:
-                                                                    'Metraż od'.tr,
+                                                                    'Metraż od'
+                                                                        .tr,
                                                                 filterKey:
                                                                     'min_square_footage',
                                                               ),
@@ -575,7 +520,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 controller:
                                                                     maxSquareFootageController,
                                                                 labelText:
-                                                                    'Metraż do'.tr,
+                                                                    'Metraż do'
+                                                                        .tr,
                                                                 filterKey:
                                                                     'max_square_footage',
                                                               ),
@@ -596,7 +542,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 controller:
                                                                     minPriceController,
                                                                 labelText:
-                                                                    'Cena od'.tr,
+                                                                    'Cena od'
+                                                                        .tr,
                                                                 filterKey:
                                                                     'min_price',
                                                               ),
@@ -610,7 +557,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 controller:
                                                                     maxPriceController,
                                                                 labelText:
-                                                                    'Cena do'.tr,
+                                                                    'Cena do'
+                                                                        .tr,
                                                                 filterKey:
                                                                     'max_price',
                                                               ),
@@ -713,15 +661,15 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                     child: Text(
                                                                         'Liczba pokoi'
                                                                             .tr,
-                                                                        style: AppTextStyles
-                                                                            .interMedium
-                                                                            .copyWith(
-                                                                                color:
-                                                                                    AppColors.light,
-                                                                                fontSize: 14))),
+                                                                        style: AppTextStyles.interMedium.copyWith(
+                                                                            color:
+                                                                                AppColors.light,
+                                                                            fontSize: 14))),
                                                               ],
                                                             ),
-                                                  SizedBox(height:dynamicBoxHeightGroupSmall),
+                                                            SizedBox(
+                                                                height:
+                                                                    dynamicBoxHeightGroupSmall),
                                                             const SingleChildScrollView(
                                                               scrollDirection:
                                                                   Axis.horizontal,
@@ -807,21 +755,26 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
-                                                      Text('Dodatkowe filtry'.tr,
+                                                      Text(
+                                                          'Dodatkowe filtry'.tr,
                                                           style: AppTextStyles
                                                               .interSemiBold
                                                               .copyWith(
-                                                                  fontSize: 18)),
+                                                                  fontSize:
+                                                                      18)),
                                                     ],
                                                   ),
-                                                  SizedBox(height:dynamicBoxHeightGroupSmall),
+                                                  SizedBox(
+                                                      height:
+                                                          dynamicBoxHeightGroupSmall),
                                                   Column(children: [
                                                     Row(
                                                       children: [
                                                         Expanded(
                                                           child: FilterButton(
-                                                            text: 'Rynek pierwotny'
-                                                                .tr,
+                                                            text:
+                                                                'Rynek pierwotny'
+                                                                    .tr,
                                                             filterValue: 'new',
                                                             filterKey:
                                                                 'market_type',
@@ -832,7 +785,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 dynamicBoxHeightGroup),
                                                         Expanded(
                                                           child: FilterButton(
-                                                            text: 'Rynek wtórny'.tr,
+                                                            text: 'Rynek wtórny'
+                                                                .tr,
                                                             filterValue: 'use',
                                                             filterKey:
                                                                 'market_type',
@@ -858,8 +812,10 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                           'Plomba'.tr
                                                         ],
                                                         labelText:
-                                                            'Rodzaj zabudowy'.tr,
-                                                        filterKey: 'building_type',
+                                                            'Rodzaj zabudowy'
+                                                                .tr,
+                                                        filterKey:
+                                                            'building_type',
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -881,8 +837,10 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                           'Wszystkie'.tr
                                                         ],
                                                         labelText:
-                                                            'Rodzaj ogrzewania'.tr,
-                                                        filterKey: 'heater_type',
+                                                            'Rodzaj ogrzewania'
+                                                                .tr,
+                                                        filterKey:
+                                                            'heater_type',
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -896,13 +854,18 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                         items: [
                                                           'Dowolna'.tr,
                                                           'Z ostatnich 24h'.tr,
-                                                          'Z ostatnich 3 dni'.tr,
-                                                          'Z ostatnich 7 dni'.tr,
-                                                          'Z ostatnich 14 dni'.tr,
-                                                          'Z ostatnich 30 dni'.tr
+                                                          'Z ostatnich 3 dni'
+                                                              .tr,
+                                                          'Z ostatnich 7 dni'
+                                                              .tr,
+                                                          'Z ostatnich 14 dni'
+                                                              .tr,
+                                                          'Z ostatnich 30 dni'
+                                                              .tr
                                                         ],
                                                         labelText:
-                                                            'Aktualność oferty'.tr,
+                                                            'Aktualność oferty'
+                                                                .tr,
                                                         filterKey:
                                                             'aktualnosc_oferty',
                                                       ),
@@ -928,7 +891,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                           'Żelbet'.tr
                                                         ],
                                                         labelText:
-                                                            'Materiał budnku'.tr,
+                                                            'Materiał budnku'
+                                                                .tr,
                                                         filterKey:
                                                             'building_material',
                                                       ),
@@ -942,13 +906,15 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                         currentValue:
                                                             currentCountry,
                                                         items: [
-                                                          'Agent nieruchomości'.tr,
+                                                          'Agent nieruchomości'
+                                                              .tr,
                                                           'Deweloper'.tr,
                                                           'osoba prywatna'.tr,
                                                           'Dowolna'.tr
                                                         ],
                                                         labelText:
-                                                            'Ogłoszeniodawca'.tr,
+                                                            'Ogłoszeniodawca'
+                                                                .tr,
                                                         filterKey:
                                                             'building_material',
                                                       ),
@@ -961,7 +927,8 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                       height: dynamicBoxHeight),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
@@ -999,42 +966,48 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                               children: [
                                                                 AdditionalInfoFilterButton(
                                                                     text:
-                                                                        'Balkon'.tr,
+                                                                        'Balkon'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'balcony'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 AdditionalInfoFilterButton(
                                                                     text:
-                                                                        'Taras'.tr,
+                                                                        'Taras'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'terrace'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 AdditionalInfoFilterButton(
-                                                                    text: 'Piwnica'
-                                                                        .tr,
+                                                                    text:
+                                                                        'Piwnica'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'basement'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 AdditionalInfoFilterButton(
                                                                     text:
-                                                                        'Winda'.tr,
+                                                                        'Winda'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'elevator'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 AdditionalInfoFilterButton(
                                                                     text:
-                                                                        'Ogród'.tr,
+                                                                        'Ogród'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'garden'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 AdditionalInfoFilterButton(
                                                                     text:
-                                                                        'Garaż'.tr,
+                                                                        'Garaż'
+                                                                            .tr,
                                                                     filterKey:
                                                                         'garage'),
                                                               ],
@@ -1058,13 +1031,15 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 const AdditionalInfoFilterButton(
-                                                                    text: 'Jacuzzi',
+                                                                    text:
+                                                                        'Jacuzzi',
                                                                     filterKey:
                                                                         'jacuzzi'),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 const AdditionalInfoFilterButton(
-                                                                    text: 'Sauna',
+                                                                    text:
+                                                                        'Sauna',
                                                                     filterKey:
                                                                         'sauna'),
                                                               ],
@@ -1089,9 +1064,13 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                             children: [
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  ref.read(filterCacheProvider.notifier)
+                                                  ref
+                                                      .read(filterCacheProvider
+                                                          .notifier)
                                                       .clearFilters();
-                                                  ref.read(filterButtonProvider.notifier)
+                                                  ref
+                                                      .read(filterButtonProvider
+                                                          .notifier)
                                                       .clearUiFilters();
                                                 },
                                                 style: ElevatedButton.styleFrom(
@@ -1100,8 +1079,9 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                                   foregroundColor: Colors.white,
                                                   shape:
                                                       const RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
                                                   ),
                                                 ),
                                                 child: Text('Wyczyść filtry'.tr,
@@ -1114,32 +1094,42 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                               const Spacer(),
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  ref.read(filterProvider.notifier)
+                                                  ref
+                                                      .read(filterProvider
+                                                          .notifier)
                                                       .applyFiltersFromCache(
-                                                          ref.read(filterCacheProvider.notifier),ref);
+                                                          ref.read(
+                                                              filterCacheProvider
+                                                                  .notifier),
+                                                          ref);
 
-                                                    Navigator.of(context).pop();
+                                                  Navigator.of(context).pop();
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: buttoncolor,
-                                                  foregroundColor: buttonTextColor,
+                                                  foregroundColor:
+                                                      buttonTextColor,
                                                   shape:
                                                       const RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(5)),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
                                                   ),
-                                                  padding: const EdgeInsets.only(
-                                                      left: 30,
-                                                      right: 30,
-                                                      top: 10,
-                                                      bottom: 10),
-                                                  textStyle:
-                                                      AppTextStyles.interSemiBold14,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30,
+                                                          right: 30,
+                                                          top: 10,
+                                                          bottom: 10),
+                                                  textStyle: AppTextStyles
+                                                      .interSemiBold14,
                                                 ),
                                                 child: Text(
                                                   'Zastosuj filtry'.tr,
                                                   style: TextStyle(
-                                                      color: buttonTextColor),
+                                                      color: Theme.of(context)
+                                                          .iconTheme
+                                                          .color),
                                                 ),
                                               ),
                                             ],
@@ -1148,9 +1138,9 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: const Row(
+                                  const Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: Row(
                                       children: [
                                         Expanded(
                                           child: Mytextfield(),
@@ -1163,13 +1153,13 @@ class FiltersPagePopMobileState extends ConsumerState<FiltersPagePopMobile> {
                                     right: 12,
                                     child: MaterialButton(
                                       onPressed: () {},
-                                      child: Row(
+                                      child: const Row(
                                         children: [
-                                          const SizedBox(width: 15),
-                                          const Text('',
-                                              style: const TextStyle(
+                                          SizedBox(width: 15),
+                                          Text('',
+                                              style: TextStyle(
                                                   color: Colors.white)),
-                                          const SizedBox(width: 10),
+                                          SizedBox(width: 10),
                                           Icon(Icons.save, color: iconColor),
                                         ],
                                       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 
 class CustomDropdown extends StatelessWidget {
   final String label;
@@ -32,7 +34,7 @@ class CustomDropdown extends StatelessWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
-          icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF919191)),
+          icon: SvgPicture.asset(AppIcons.iosArrowDown, color: const Color(0xFF919191)),
           dropdownColor: const Color(0xFF2C2C2E), // Matches dropdown background
           style: const TextStyle(color: Colors.white),
           onChanged: onChanged,

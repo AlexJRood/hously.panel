@@ -27,7 +27,7 @@ class CustomCheckbox extends StatelessWidget {
           ),
         ),
         child: isChecked
-            ? Center(
+            ? const Center(
                 child: Icon(
                   Icons.check, // Checkmark icon
                   color: Colors.white,

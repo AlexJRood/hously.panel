@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart';
@@ -182,7 +184,7 @@ class AddCrmFiltersState extends ConsumerState<AddCrmFilters> {
                                 labelText: 'Wyszukaj'.tr,
                                 labelStyle: AppTextStyles.interRegular14
                                     .copyWith(color: AppColors.dark),
-                                prefixIcon: const Icon(Icons.search,
+                                prefixIcon: SvgPicture.asset(AppIcons.search,
                                     color: Colors.black),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),

@@ -24,140 +24,233 @@ class DateEventWidget extends ConsumerWidget {
     final toHour = '${toDate.hour}:${toDate.minute}';
     final theme = ref.watch(themeColorsProvider);
     
-    return EventWebOption(
+    return Column(
+      spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,
-      iconData: Icons.watch_later_outlined,
-      secondWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              InkWell(
-                child: Text(
-                  fromText,
-                  style: TextStyle(color: theme.textFieldColor),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Starts",
+              style: TextStyle(
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700
+              ),),
+            Row(
+              children: [
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
+                    child: Row(
+                      spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          fromText,
+                          style: const TextStyle(color: Color.fromRGBO(145, 145, 145, 1)),
+                        ),
+                        const Icon(Icons.date_range,
+                            size: 15,
+                            color:  Color.fromRGBO(145, 145, 145, 1)
+                        )
+                      ],
+                    ),
+                  ),
+                  onTapDown: (event) => showCalendarPopup(
+                    context: context,
+                    event: event,
+                    minDate: DateTime.now(),
+                    onSelectionChanged: (details) {
+                      final detailsDate = details.date!;
+                      final newEvent = eventDetails.copyWith(
+                          from: DateTime(
+                            detailsDate.year,
+                            detailsDate.month,
+                            detailsDate.day,
+                          ));
+
+                      ref.read(popupCalendarProvider).event = newEvent;
+                      ref.read(navigationService).beamPop();
+                    },
+                  ),
                 ),
-                onTapDown: (event) => showCalendarPopup(
-                  context: context,
-                  event: event,
-                  minDate: DateTime.now(),
-                  onSelectionChanged: (details) {
-                    final detailsDate = details.date!;
+                const Text(' '),
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
+                    child: Row(
+                      spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          fromHour,
+                          style: const TextStyle(color: Color.fromRGBO(145, 145, 145, 1)),
+                        ),
+                        const Icon(Icons.watch_later_outlined,
+                            size: 15,
+                            color:  Color.fromRGBO(145, 145, 145, 1)
+                        )
+                      ],
+                    ),
+                  ),
+                  onTap: () async {
+                    final selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    ) ??
+                        TimeOfDay.now();
                     final newEvent = eventDetails.copyWith(
                         from: DateTime(
-                      detailsDate.year,
-                      detailsDate.month,
-                      detailsDate.day,
-                    ));
+                          eventDetails.from.year,
+                          eventDetails.from.month,
+                          eventDetails.from.day,
+                          selectedTime.hour,
+                          selectedTime.minute,
+                        ));
 
                     ref.read(popupCalendarProvider).event = newEvent;
-                    ref.read(navigationService).beamPop();
                   },
                 ),
-              ),
-              const Text(' '),
-              InkWell(
-                child: Text(
-                  fromHour,
-                  style: TextStyle(color: theme.textFieldColor),
-                ),
-                onTap: () async {
-                  final selectedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      ) ??
-                      TimeOfDay.now();
-                  final newEvent = eventDetails.copyWith(
-                      from: DateTime(
-                    eventDetails.from.year,
-                    eventDetails.from.month,
-                    eventDetails.from.day,
-                    selectedTime.hour,
-                    selectedTime.minute,
-                  ));
+              ],
+            )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Ends",
+              style: TextStyle(
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700
+              ),),
+            Row(
+              children: [
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
+                    child: Row(
+                      spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          toText,
+                          style: const TextStyle(color: Color.fromRGBO(145, 145, 145, 1)),
+                        ),
+                        const Icon(Icons.date_range,
+                            size: 15,
+                            color:  Color.fromRGBO(145, 145, 145, 1)
+                        )
+                      ],
+                    ),
+                  ),
+                  onTapDown: (event) => showCalendarPopup(
+                    context: context,
+                    event: event,
+                    minDate: eventDetails.from,
+                    onSelectionChanged: (details) {
+                      final detailsDate = details.date!;
+                      final newEvent = eventDetails.copyWith(
+                          to: DateTime(
+                            detailsDate.year,
+                            detailsDate.month,
+                            detailsDate.day,
+                          ));
 
-                  ref.read(popupCalendarProvider).event = newEvent;
-                },
-              ),
-              const Text(' - '),
-              InkWell(
-                child: Text(
-                  toText,
-                  style: TextStyle(color: theme.textFieldColor),
+                      ref.read(popupCalendarProvider).event = newEvent;
+                      ref.read(navigationService).beamPop();
+                    },
+                  ),
                 ),
-                onTapDown: (event) => showCalendarPopup(
-                  context: context,
-                  event: event,
-                  minDate: eventDetails.from,
-                  onSelectionChanged: (details) {
-                    final detailsDate = details.date!;
+                const Text(' '),
+                InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
+                    child: Row(
+                      spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          toHour,
+                          style: const TextStyle(color: Color.fromRGBO(145, 145, 145, 1)),
+                        ),
+                        const Icon(Icons.watch_later_outlined,
+                            size: 15,
+                            color:  Color.fromRGBO(145, 145, 145, 1)
+                        )
+                      ],
+                    ),
+                  ),
+                  onTap: () async {
+                    final selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    ) ??
+                        TimeOfDay.now();
                     final newEvent = eventDetails.copyWith(
                         to: DateTime(
-                      detailsDate.year,
-                      detailsDate.month,
-                      detailsDate.day,
-                    ));
+                          eventDetails.to.year,
+                          eventDetails.to.month,
+                          eventDetails.to.day,
+                          selectedTime.hour,
+                          selectedTime.minute,
+                        ));
 
                     ref.read(popupCalendarProvider).event = newEvent;
-                    ref.read(navigationService).beamPop();
                   },
                 ),
-              ),
-              const Text(' '),
-              InkWell(
-                child: Text(toHour,style: TextStyle(color: theme.textFieldColor),),
-                onTap: () async {
-                  final selectedTime = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      ) ??
-                      TimeOfDay.now();
-                  final newEvent = eventDetails.copyWith(
-                      to: DateTime(
-                    eventDetails.to.year,
-                    eventDetails.to.month,
-                    eventDetails.to.day,
-                    selectedTime.hour,
-                    selectedTime.minute,
-                  ));
+              ],
+            )
+          ],
+        ),
+        DropDownWidget<RepeatEnum>(
+          texts: RepeatEnum.values.map((value) => value.name).toList(),
+          values: RepeatEnum.values,
+          isExpanded: false,
+          hasUnderLine: true,
+          decoration: dropdownStyle,
+          currentValue: eventDetails.repeat,
+          onChanged: (repeatType) {
+            final newEvent = eventDetails.copyWith(repeat: repeatType);
 
-                  ref.read(popupCalendarProvider).event = newEvent;
+            ref.read(popupCalendarProvider).event = newEvent;
+            if (repeatType == RepeatEnum.custom) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return Dialog(backgroundColor: theme.fillColor,
+                    child: CustomRecurrenceEventWidget(
+                      onCanceled: () {
+                        ref.read(navigationService).beamPop();
+                      },
+                      onApproved: () {
+                        ref.read(navigationService).beamPop();
+                      },
+                    ),
+                  );
                 },
-              ),
-            ],
-          ),
-          DropDownWidget<RepeatEnum>(
-            texts: RepeatEnum.values.map((value) => value.name).toList(),
-            values: RepeatEnum.values,
-            isExpanded: false,
-            hasUnderLine: true,
-            decoration: dropdownStyle,
-            currentValue: eventDetails.repeat,
-            onChanged: (repeatType) {
-              final newEvent = eventDetails.copyWith(repeat: repeatType);
-
-              ref.read(popupCalendarProvider).event = newEvent;
-              if (repeatType == RepeatEnum.custom) {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(backgroundColor: theme.fillColor,
-                      child: CustomRecurrenceEventWidget(
-                        onCanceled: () {
-                          ref.read(navigationService).beamPop();
-                        },
-                        onApproved: () {
-                          ref.read(navigationService).beamPop();
-                        },
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        ],
-      ),
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }

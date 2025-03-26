@@ -20,7 +20,6 @@ class OutOfficeTabWidget extends ConsumerWidget {
     final outOfficeState = ref.watch(outOfficeProvider);
     final outOffice = outOfficeState.outOffice;
     const widgetSpace = 10.0;
-    final theme = ref.watch(themeColorsProvider);
     return Column(
       children: [
         const SizedBox(height: widgetSpace),
@@ -39,7 +38,10 @@ class OutOfficeTabWidget extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 23.0),
           child: RadioListTile<DeclineMeetingEnum>(
-            title: Text(DeclineMeetingEnum.newMeetings.type),
+            title: Text(
+              DeclineMeetingEnum.newMeetings.type,
+              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+            ),
             value: DeclineMeetingEnum.newMeetings,
             groupValue: outOffice.declineMeeting,
             dense: true,
@@ -55,7 +57,10 @@ class OutOfficeTabWidget extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(left: 23.0),
           child: RadioListTile<DeclineMeetingEnum>(
-            title: Text(DeclineMeetingEnum.allMeetings.type),
+            title: Text(
+              DeclineMeetingEnum.allMeetings.type,
+              style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+            ),
             value: DeclineMeetingEnum.allMeetings,
             groupValue: outOffice.declineMeeting,
             activeColor: Theme.of(context).primaryColor,
@@ -74,12 +79,20 @@ class OutOfficeTabWidget extends ConsumerWidget {
         EventWebOption(
           iconData: Icons.message,
           secondWidget: TextFormFieldWidget(
-            style: TextStyle(color: theme.textFieldColor),
+            style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
             text: outOffice.message,
-            inputDecoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Message',
-            ),
+            inputDecoration: InputDecoration(
+                filled: true,
+                fillColor: const Color.fromRGBO(0, 0, 0, 0.2),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none),
+                hintText: 'Message',
+                hintStyle: const TextStyle(
+                    fontSize: 18, color: Color.fromRGBO(255, 255, 255, 1)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none)),
           ),
         ),
         const SizedBox(height: widgetSpace),

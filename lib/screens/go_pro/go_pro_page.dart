@@ -12,7 +12,7 @@ class GoProPage extends ConsumerWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth > 1080) {
           // Jeśli jest to aplikacja webowa lub aplikacja desktopowa z szerokością większą niż 1420
-          return  GoProPc();
+          return const GoProPc();
         } else {
           // W przeciwnym razie (aplikacja mobilna lub aplikacja desktopowa z mniejszą szerokością)
           return const GoProMobile();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
@@ -24,7 +26,7 @@ class SearchBarGridpcState extends ConsumerState<SearchBarGridpc> {
       style: elevatedButtonStyleRounded,
       onPressed: () {},
       child: Hero(
-        tag: 'searchBarGridpc',
+        tag: 'searchBarGridpc-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
         child: Container(
           height: 40,
           decoration: BoxDecoration(
@@ -39,7 +41,7 @@ class SearchBarGridpcState extends ConsumerState<SearchBarGridpc> {
           child: Row(
             children: [
               const SizedBox(width: 10),
-              Icon(Icons.search, color: iconColor),
+              SvgPicture.asset(AppIcons.search, color: iconColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Container(

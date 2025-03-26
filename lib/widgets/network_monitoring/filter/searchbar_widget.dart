@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/search_page/filters_provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/search_page/filters_provider.dart';
 import 'package:hously_flutter/widgets/network_monitoring/filter/dialog.dart'; // Import the new file
 
 class SearchBarWidget extends ConsumerWidget {
@@ -34,7 +36,7 @@ class SearchBarWidget extends ConsumerWidget {
               decoration: InputDecoration(
                 hintText: 'Wyszukaj'.tr,
                 hintStyle: const TextStyle(color: Colors.white),
-                prefixIcon: const Icon(Icons.search, color: Colors.white),
+                prefixIcon: SvgPicture.asset(AppIcons.search, color: Colors.white),
                 contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

@@ -44,7 +44,7 @@ class EventModel extends Equatable {
     return {
       'id': id,
       'title': title,
-      'from': from.toIso8601String(),
+      'date_created': from.toIso8601String(),
       'to': to.toIso8601String(),
       'repeat': repeat.name,
       'timeZone': timeZone,
@@ -61,26 +61,22 @@ class EventModel extends Equatable {
   }
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
-        id: json['id'],
-        title: json['title'],
-        from: DateTime.parse(json['from']),
-        to: DateTime.parse(json['to']),
-        repeat: RepeatEnum.fromString(json['repeat']),
-        timeZone: json['timeZone'],
-        location: json['location'],
-        onlineCallLink: json['onlineCallLink'],
-        reminders: (json['reminders'] as List)
-            .map((reminder) => Reminder.fromJson(reminder))
-            .toList(),
-        guests: (json['guests'] as List)
-            .map((guest) => Guest.fromJson(guest))
-            .toList(),
-        busy: json['busy'],
-        visibility: VisibilityTypeEnum.fromString(json['visibility']),
-        description: json['description'],
-        offerLink: json['offerLink'],
-        offerPreview: OfferPreview.fromJson(json['offerPreview']),
-      );
+    id: json['id']?.toString() ?? '',
+    title: json['title'] ?? '',
+    from: json['date_created'] != null ? DateTime.parse(json['date_created']) : DateTime.now(),
+    to: json['to'] != null ? DateTime.parse(json['to']) : DateTime.now(),
+    repeat: RepeatEnum.fromString(json['repeat'] ?? ''),
+    timeZone: json['timeZone'] ?? '',
+    location: json['location'] ?? '',
+    onlineCallLink: json['onlineCallLink'] ?? '',
+    reminders: (json['reminders'] as List?)?.map((reminder) => Reminder.fromJson(reminder)).toList() ?? [],
+    guests: (json['guests'] as List?)?.map((guest) => Guest.fromJson(guest)).toList() ?? [],
+    busy: json['busy'] ?? false,
+    visibility: VisibilityTypeEnum.fromString(json['visibility'] ?? ''),
+    description: json['description'] ?? '',
+    offerLink: json['offerLink'] ?? '',
+    offerPreview: json['offerPreview'] != null ? OfferPreview.fromJson(json['offerPreview']) : OfferPreview(id: 'id', keyMetrics: 'keyMetrics', mainPhotoUrl: 'mainPhotoUrl'),
+  );
 
   EventModel copyWith({
     String? id,

@@ -1,33 +1,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:hously_flutter/const/route_constant.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/filters/filters_page.dart';
-import 'package:hously_flutter/screens/filters/filters_page_pop_mobile.dart';
 import 'package:hously_flutter/screens/pop_pages/sort_pop_mobile_page.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'dart:ui' as ui;
-import 'package:hously_flutter/theme/apptheme.dart';
-
-
-
-
 import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.dart';
-
-
-import 'dart:ui' as ui;
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/filter_provider.dart';
-import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/widgets/installpopup/install_popup.dart';
 
 
@@ -48,6 +32,7 @@ class FeedBarVerticalMobile extends ConsumerWidget {
 
     final iconColor = Theme.of(context).iconTheme.color;
     final currentthememode = ref.watch(themeProvider);
+    final tag = 'searchBar-83-${UniqueKey().toString()}';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -67,13 +52,14 @@ class FeedBarVerticalMobile extends ConsumerWidget {
             ),
           ],),
           child: BuildNavigationOption(
+              tag:tag,
             icon: Icons.search,
             label: 'Filtruj'.tr,
             onTap: () => 
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const FiltersPage(),
+                        pageBuilder: (_, __, ___) => FiltersPage(tag:tag),
                         transitionsBuilder: (_, anim, __, child) {
                           return FadeTransition(opacity: anim, child: child);
                         },
@@ -97,6 +83,7 @@ class FeedBarVerticalMobile extends ConsumerWidget {
               ),
             ],),
             child: BuildNavigationOption(
+              tag:tag,
               icon: Icons.sort,
               label: 'Sortuj'.tr,
               onTap: () =>
@@ -123,12 +110,14 @@ class BuildNavigationOption extends ConsumerWidget {
     required this.icon,
     required this.label,
     required this.onTap,
-    required this.heroValue
+    required this.heroValue,
+    required this. tag,
   });
   final IconData icon;
   final String label;
   final VoidCallback onTap;
   final String heroValue;
+  final tag;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -144,7 +133,7 @@ class BuildNavigationOption extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Hero(
-            tag: 'searchBar-$heroValue',
+            tag: tag, // need to be change both sides of hero need the same tag 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -252,7 +241,7 @@ class SortPopMobileCrmContactsState extends ConsumerState<SortPopMobileCrmContac
             ),
             // Zawartość modalu
             Hero(
-              tag: 'SortMobile_${UniqueKey()}',
+              tag: 'SortMobile-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
               child: Align(
                 alignment: Alignment.center,
                 child: Padding(
@@ -282,7 +271,7 @@ class SortPopMobileCrmContactsState extends ConsumerState<SortPopMobileCrmContac
                       style: AppTextStyles.interRegular10
                           .copyWith(color: theme.textFieldColor),
                       underline: const SizedBox(),
-                      icon: Icon(Icons.sort, color: theme.textFieldColor),
+                      icon: SvgPicture.asset(AppIcons.sort, color: theme.textFieldColor),
                       onChanged: (String? newValue) {
                         setState(() {
                           selectedSort = newValue;

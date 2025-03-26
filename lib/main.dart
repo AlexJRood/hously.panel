@@ -1,12 +1,7 @@
 // html_utils.dart
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:hously_flutter/state_managers/services/notification_service.dart';
-
-import 'package:hously_flutter/tester.dart';
-
-import 'package:hously_flutter/screens/add_client_form/add_client_form_pc.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'platforms/html_utils_stub.dart'
     if (dart.library.html) 'platforms/html_utils_web.dart';
 import 'package:hously_flutter/const/values.dart';
@@ -30,7 +25,6 @@ import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:meta_seo/meta_seo.dart';
-
 import 'language/language_provider.dart';
 import 'routes/router.dart' as router;
 
@@ -118,66 +112,76 @@ class _HouslyState extends ConsumerState<Hously> {
     final colorScheme = ref.watch(colorSchemeProvider);
     final currentLocale = ref.read(languageProvider);
 
-    return BeamerProvider(
-      routerDelegate: widget.routerDelegate,
-      child: BetterFeedback(
-        feedbackBuilder: null,
-        theme: FeedbackThemeData(
-          background: AppColors.backgroundOppacity1,
-          feedbackSheetColor: AppColors.dark,
-          drawColors: [
-            Colors.red,
-            Colors.green,
-            Colors.blue,
-            Colors.yellow,
-          ],
-        ),
-        darkTheme: FeedbackThemeData.dark(),
-        localizationsDelegates: [
-          GlobalFeedbackLocalizationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          CountryLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        localeOverride: currentLocale,
-        mode: FeedbackMode.draw,
-        pixelRatio: 1,
-        child: GetMaterialApp.router(
-          localizationsDelegates: const [
+    return ScreenUtilInit(
+      designSize:MediaQuery.of(context).size.width <= 600
+          ? const Size(375, 812)
+          : MediaQuery.of(context).size.width <= 1080
+          ? const Size(768, 1024)
+          : const Size(1920, 1080),
+
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) =>  BeamerProvider(
+        routerDelegate: widget.routerDelegate,
+        child: BetterFeedback(
+          feedbackBuilder: null,
+          theme: FeedbackThemeData(
+            background: AppColors.backgroundOppacity1,
+            feedbackSheetColor: AppColors.dark,
+            drawColors: [
+              Colors.red,
+              Colors.green,
+              Colors.blue,
+              Colors.yellow,
+            ],
+          ),
+          darkTheme: FeedbackThemeData.dark(),
+          localizationsDelegates: [
+            GlobalFeedbackLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            CountryLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            CountryLocalizations.delegate,
           ],
-          supportedLocales: mobilecodes,
-          translations: AppTranslations(),
-          locale: currentLocale,
-          fallbackLocale: const Locale('en', 'US'),
-          theme: resolveAppTheme(
-              colorScheme: colorScheme,
-              context: context,
-              currentThemeMode: currentthememode!,
-              ref: ref),
-          darkTheme: getDarkTheme(
-              colorScheme: colorScheme,
-              context: context,
-              currentThemeMode: currentthememode,
-              ref: ref),
-          themeMode: currentthememode,
-          routeInformationParser: BeamerParser(),
-          backButtonDispatcher: BeamerBackButtonDispatcher(
-            delegate: widget.routerDelegate,
+          localeOverride: currentLocale,
+          mode: FeedbackMode.draw,
+          pixelRatio: 1,
+          child: GetMaterialApp.router(
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              CountryLocalizations.delegate,
+            ],
+            supportedLocales: mobilecodes,
+            translations: AppTranslations(),
+            locale: currentLocale,
+            fallbackLocale: const Locale('en', 'US'),
+            theme: resolveAppTheme(
+                colorScheme: colorScheme,
+                context: context,
+                currentThemeMode: currentthememode!,
+                ref: ref),
+            darkTheme: getDarkTheme(
+                colorScheme: colorScheme,
+                context: context,
+                currentThemeMode: currentthememode,
+                ref: ref),
+            themeMode: currentthememode,
+            routeInformationParser: BeamerParser(),
+            backButtonDispatcher: BeamerBackButtonDispatcher(
+              delegate: widget.routerDelegate,
+            ),
+            debugShowCheckedModeBanner: false,
+            title: Routes.getWebsiteTitle(context),
+            routerDelegate: widget.routerDelegate,
+            builder: (context, child) {
+              return InternetCheckWidget(child: child!);
+            },
+            navigatorObservers: <NavigatorObserver>[observer],
           ),
-          debugShowCheckedModeBanner: false,
-          title: Routes.getWebsiteTitle(context),
-          routerDelegate: widget.routerDelegate,
-          builder: (context, child) {
-            return InternetCheckWidget(child: child!);
-          },
-          navigatorObservers: <NavigatorObserver>[observer],
         ),
       ),
     );

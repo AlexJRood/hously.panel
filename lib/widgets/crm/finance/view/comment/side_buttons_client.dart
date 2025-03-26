@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 
@@ -22,7 +24,7 @@ class SideButtonsClient extends StatelessWidget {
                   '/pro/add/client',
                 );
               },
-              child: const Icon(Icons.add),
+              child: SvgPicture.asset(AppIcons.add),
             ),
             const SizedBox(height: 15),
             ElevatedButton(

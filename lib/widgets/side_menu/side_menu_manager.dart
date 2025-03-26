@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
 
@@ -92,8 +94,8 @@ class SideMenuOpen extends ConsumerWidget {
                       height: 60,
                       child: IconButton(
                         style: elevatedButtonStyleRounded10,
-                        icon: Icon(Icons.arrow_forward_ios_rounded,
-                            size: 25, color: Theme.of(context).iconTheme.color),
+                        icon: SvgPicture.asset(AppIcons.iosArrowRight,
+                            height: 25,width: 25, color: Theme.of(context).iconTheme.color),
                         onPressed: () {
                           sideMenuKey.currentState?.closeSideMenu();
                         },
@@ -172,18 +174,19 @@ class SideMenuOpen extends ConsumerWidget {
                             onPressed: () {
                               ref
                                   .read(navigationHistoryProvider.notifier)
-                                  .addPage(Routes.homeNetworkMonitoring);
+                                  .addPage(Routes.networkMonitoring);
                               ref
                                   .read(navigationService)
-                                  .pushNamedReplacementScreen(Routes.homeNetworkMonitoring);
+                                  .pushNamedReplacementScreen(Routes.networkMonitoring);
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 spacing: 5,
                                 children: [
-                                  Icon(Icons.settings,
-                                      size: 25,
+                                  SvgPicture.asset(AppIcons.setting,
+                                      height: 25,
+                                      width: 25,
                                       color: Theme.of(context).iconTheme.color),
                                   Expanded(
                                     child: Text(
@@ -240,8 +243,10 @@ class SideMenuOpen extends ConsumerWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.verified,
-                                      size: 25, color: AppColors.superbee),
+                                  SvgPicture.asset(AppIcons.verifiedUser,
+                                      height: 25,
+                                      width: 25,
+                                      color: AppColors.superbee),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text('Przejdź na pro'.tr,
@@ -301,14 +306,17 @@ class SideMenuOpen extends ConsumerWidget {
                                 .updateIndex(0);
                             ref
                                 .read(navigationService)
-                                .pushNamedReplacementScreen(Routes.settings);
+                                .pushNamedScreen(
+                                    Routes.settings);
+                            sideMenuKey.currentState?.closeSideMenu();
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Icon(Icons.settings,
-                                    size: 25,
+                                SvgPicture.asset(AppIcons.setting,
+                                    width: 25,
+                                    height: 25,
                                     color: Theme.of(context).iconTheme.color),
                                 const SizedBox(width: 10),
                                 Text('Ustawienia'.tr,
@@ -414,7 +422,12 @@ class SideMenuOpen extends ConsumerWidget {
                                   children: [
                                     SizedBox(width: dynamicFontSize),
                                     ElevatedButton(
-                                      style: loginButton,
+                                      style: loginButton.copyWith(
+                                          backgroundColor:
+                                              WidgetStatePropertyAll(
+                                                  Theme.of(context)
+                                                      .iconTheme
+                                                      .color)),
                                       onPressed: () {
                                         ref
                                             .read(navigationService)

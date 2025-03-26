@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
@@ -45,9 +47,11 @@ class SidebarChat extends ConsumerWidget {
                         },
                         child: Column(
                           children: [
-                            Icon(Icons.arrow_back_ios_new_rounded,
+                            SvgPicture.asset(AppIcons.iosArrowLeft,
                                 color: Theme.of(context).iconTheme.color,
-                                size: 25.0), // Poprawne użycie ikony jako widgetu
+                                height: 25.0,
+                                  width: 25.0,
+                            ), // Poprawne użycie ikony jako widgetu
                             const SizedBox(height: 5.0),
                             const Text('',
                                 style:

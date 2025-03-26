@@ -6,8 +6,10 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
@@ -139,9 +141,11 @@ class ProRegisterPcPage extends ConsumerWidget {
                                               ? MemoryImage(avatarBytes)
                                               : null,
                                           child: avatarBytes == null
-                                              ? Icon(Icons.add_a_photo,
+                                              ? SvgPicture.asset(AppIcons.camera,
                                                   color: theme.textFieldColor,
-                                                  size: 50)
+                                                  height: 50,
+                                                  width: 50,
+                                          )
                                               : null,
                                         ),
                                       ),
@@ -164,9 +168,11 @@ class ProRegisterPcPage extends ConsumerWidget {
                                               ? MemoryImage(logoBytes)
                                               : null,
                                           child: logoBytes == null
-                                              ? Icon(Icons.add_a_photo,
+                                              ? SvgPicture.asset(AppIcons.camera,
                                                   color: theme.textFieldColor,
-                                                  size: 50)
+                                                  height: 50,
+                                                  width: 50,
+                                          )
                                               : null,
                                         ),
                                       ),

@@ -32,9 +32,14 @@ class _SettingsNotificationMobileState
     final proTheme = ref.watch(isDefaultDarkSystemProvider);
     final colorscheme = ref.watch(colorSchemeProvider);
     final isToggled = ref.watch(toggleProvider);
+    final colorScheme = ref.watch(colorSchemeProvider);
+   
     return Scaffold(
-      backgroundColor: theme.mobileBackground,
-      body: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient:
+              CustomBackgroundGradients.getMainMenuBackground(context, ref),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
@@ -57,7 +62,7 @@ class _SettingsNotificationMobileState
                       Text(
                         'Ustawienia globalne'.tr,
                         style: TextStyle(
-                            color: theme.popupcontainertextcolor, fontSize: 20),
+                            color: theme.mobileTextcolor, fontSize: 20),
                       ),
                       const SizedBox(
                         height: 10,
@@ -145,7 +150,7 @@ class _SettingsNotificationMobileState
                       Text(
                         'Dźwięki'.tr,
                         style: TextStyle(
-                            color: theme.popupcontainertextcolor, fontSize: 20),
+                            color: theme.mobileTextcolor, fontSize: 20),
                       ),
                       const SizedBox(
                         height: 15,
@@ -392,6 +397,8 @@ class _SettingsNotificationMobileState
                                       icon: Icons.auto_awesome,
                                       hasIcon: true,
                                       isPc: false,
+                                      isborder:
+                                          colorScheme == FlexScheme.blackWhite,
                                       buttonheight: 48,
                                       onTap: () {},
                                       text: "Upgrade to pro"),

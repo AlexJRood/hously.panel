@@ -34,6 +34,7 @@ class FeedBarVerticalMobile extends ConsumerWidget {
 
     final iconColor = Theme.of(context).iconTheme.color;
     final currentthememode = ref.watch(themeProvider);
+    final tag = 'searchBar-${UniqueKey().toString()}';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -53,13 +54,14 @@ class FeedBarVerticalMobile extends ConsumerWidget {
             ),
           ],),
           child: BuildNavigationOption(
+              tag:  tag,
             icon: Icons.search,
             label: 'Filtruj'.tr,
             onTap: () => 
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const FiltersPage(),
+                        pageBuilder: (_, __, ___) => FiltersPage(tag: tag),
                         transitionsBuilder: (_, anim, __, child) {
                           return FadeTransition(opacity: anim, child: child);
                         },
@@ -83,8 +85,9 @@ class FeedBarVerticalMobile extends ConsumerWidget {
               ),
             ],),
             child: BuildNavigationOption(
+              tag:  tag,
               icon: Icons.sort,
-              label: 'Sortuj'.tr,
+              label: 'view'.tr,
               onTap: () => 
                     Navigator.of(context).push(
                       PageRouteBuilder(
@@ -114,8 +117,9 @@ class FeedBarVerticalMobile extends ConsumerWidget {
               ),
             ],),
             child: BuildNavigationOption(
+              tag:  tag,
               heroValue: "sortPopFeedBarVertical",
-              icon: Icons.sort,
+              icon: Icons.view_comfortable_rounded,
               label: 'Sortuj'.tr,
               onTap: () => 
                     Navigator.of(context).push(
@@ -142,12 +146,14 @@ class BuildNavigationOption extends ConsumerWidget {
     required this.icon,
     required this.label,
     required this.onTap,
-    required this.heroValue
+    required this.heroValue,
+    required this.tag,
   });
   final IconData icon;
   final String label;
   final VoidCallback onTap;
   final String heroValue;
+  final tag;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -163,7 +169,7 @@ class BuildNavigationOption extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Hero(
-            tag: 'searchBar-$heroValue',
+            tag: tag, // need to be change both sides of hero need the same tag 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
 class TodoNoclient extends ConsumerWidget {
@@ -167,13 +169,13 @@ class TodoNoclient extends ConsumerWidget {
                             const SizedBox(
                               width: 2,
                             ),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 2,
                                   ),
-                                  Row(
+                                  const Row(
                                     children: [
                                       Expanded(
                                         child: Smallcontainers(
@@ -181,7 +183,7 @@ class TodoNoclient extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                  Row(
+                                  const Row(
                                     children: [
                                       Expanded(
                                         child: Smallcontainers(
@@ -189,18 +191,18 @@ class TodoNoclient extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   Row(
                                     children: [
                                       Expanded(
                                         child: Smallcontainers(
-                                            height: 25, child: Icon(Icons.add)),
+                                            height: 25, child: SvgPicture.asset(AppIcons.add)),
                                       ),
                                     ],
                                   ),
-                                  Row(
+                                  const Row(
                                     children: [
                                       Expanded(
                                         child: SizedBox(
@@ -295,7 +297,7 @@ class TodoNoclient extends ConsumerWidget {
           ),
           Text(
             "New Task",
-            style: TextStyle(color: theme.whitewhiteblack, fontSize: 15),
+            style: TextStyle(color: theme.mobileTextcolor, fontSize: 15),
           ),
           const SizedBox(
             height: 5,
@@ -303,7 +305,7 @@ class TodoNoclient extends ConsumerWidget {
           isPc
               ? Text(
                   "Involves creating and assigning a new task within the project management system.",
-                  style: TextStyle(color: theme.whitewhiteblack, fontSize: 11))
+                  style: TextStyle(color: theme.mobileTextcolor, fontSize: 11))
               : SizedBox(),
           isPc
               ? const SizedBox(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 
 import '../../../state_managers/services/navigation_service.dart';
 
@@ -35,8 +37,8 @@ class AiAppBar extends StatelessWidget {
                       onPressed: () {
                         scaffoldKey?.currentState?.openDrawer();
                       },
-                      icon: const Icon(
-                        Icons.menu,
+                      icon: SvgPicture.asset(
+                        AppIcons.menu,
                         color: Colors.white,
                       )),
                 Container(
@@ -57,10 +59,11 @@ class AiAppBar extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  icon: const Icon(
-                    Icons.close,
-                    size: 25,
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                  icon: SvgPicture.asset(
+                    AppIcons.close,
+                    height: 25,
+                    width: 25,
+                    color: const Color.fromRGBO(255, 255, 255, 1),
                   ),
                 )
               ],

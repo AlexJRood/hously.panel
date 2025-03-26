@@ -1,6 +1,8 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/screens/chat/new_chat/chat_page.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -51,10 +53,10 @@ class ClientviewAppbar extends ConsumerWidget {
             },
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Icon(Icons.menu_rounded, color: color, size: 30.0),
+                SvgPicture.asset(AppIcons.menu, color: color, height: 30.0,width: 30,),
               ],
             ),
           ),

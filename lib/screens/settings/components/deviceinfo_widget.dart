@@ -43,7 +43,7 @@ class DeviceInfoWidget extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                   color: isPc
                       ? Theme.of(context).iconTheme.color
-                      : theme.popupcontainertextcolor,
+                      : theme.mobileTextcolor,
                   fontSize: 15,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -52,7 +52,7 @@ class DeviceInfoWidget extends ConsumerWidget {
                   style: TextStyle(
                     color: isPc
                         ? Theme.of(context).iconTheme.color
-                        : theme.popupcontainertextcolor,
+                        : theme.mobileTextcolor,
                     fontSize: 12,
                     overflow: TextOverflow.ellipsis,
                   )),
@@ -67,7 +67,7 @@ class DeviceInfoWidget extends ConsumerWidget {
               size: 14,
               color: isPc
                   ? Theme.of(context).iconTheme.color
-                  : theme.popupcontainertextcolor,
+                  : theme.mobileTextcolor,
             )),
       ],
     );

@@ -2,24 +2,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart'; // Zmiana kolejności importów
 import 'package:hously_flutter/screens/pop_pages/sort_pop_page.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/screens/pop_pages/view_settings_page.dart';
 import 'package:hously_flutter/widgets/appbar/widgets/logo_hously.dart';
-import 'searchbar.dart' as custom_search_bar; // Używamy prefiksu CustomSearchBar
+import 'searchbar.dart'
+    as custom_search_bar; // Używamy prefiksu CustomSearchBar
 import 'dart:ui' as ui;
-
-
 
 class TopAppBar extends ConsumerWidget {
   const TopAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
     final GlobalKey coToMaRobicTopAppBar = GlobalKey();
     final GlobalKey viewChangerButtonTopAppBar = GlobalKey();
     final GlobalKey sortButtonTopAppBar = GlobalKey();
@@ -38,14 +37,14 @@ class TopAppBar extends ConsumerWidget {
     double dynamicSizedBoxWidth = 150.0 * widthRatio - 30;
 
     return Container(
-      height:60,
-      width: screenWidth -60,
+      height: 60,
+      width: screenWidth - 60,
       color: Colors.transparent,
       child: ClipRRect(
         child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              // color: theme.adPopBackground.withOpacity(0.15),
+          filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            // color: theme.adPopBackground.withOpacity(0.15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -64,17 +63,18 @@ class TopAppBar extends ConsumerWidget {
                     );
                   },
                   child: Hero(
-                    tag: 'CoToMaRobic',
+                    tag:
+                        'CoToMaRobic-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag
                     child: Container(
                       key: coToMaRobicTopAppBar,
                       height: 60,
                       width: 60,
                       color: Colors.transparent,
                       child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.pie_chart, size: 30.0, color: iconcolor),
+                          SvgPicture.asset(AppIcons.pie, height: 30.0,width: 30, color: iconcolor),
                         ],
                       ),
                     ),
@@ -96,13 +96,15 @@ class TopAppBar extends ConsumerWidget {
                             opaque: false,
                             pageBuilder: (_, __, ___) => const SortPopPage(),
                             transitionsBuilder: (_, anim, __, child) {
-                              return FadeTransition(opacity: anim, child: child);
+                              return FadeTransition(
+                                  opacity: anim, child: child);
                             },
                           ),
                         );
                       },
                       child: Hero(
-                        tag: 'SortBarButton',
+                        tag:
+                            'SortBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag
                         child: Container(
                           key: sortButtonTopAppBar,
                           height: 60,
@@ -112,7 +114,7 @@ class TopAppBar extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.sort, size: 30.0, color: iconcolor),
+                              SvgPicture.asset(AppIcons.sort, height: 30.0,width: 30, color: iconcolor),
                             ],
                           ),
                         ),
@@ -124,26 +126,29 @@ class TopAppBar extends ConsumerWidget {
                         Navigator.of(context).push(
                           PageRouteBuilder(
                             opaque: false,
-                            pageBuilder: (_, __, ___) => const ViewPopChangerPage(),
+                            pageBuilder: (_, __, ___) =>
+                                const ViewPopChangerPage(),
                             transitionsBuilder: (_, anim, __, child) {
-                              return FadeTransition(opacity: anim, child: child);
+                              return FadeTransition(
+                                  opacity: anim, child: child);
                             },
                           ),
                         );
                       },
                       child: Hero(
-                        tag: 'ViewChangerBarButton',
+                        tag:
+                            'ViewChangerBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag
                         child: Container(
                           key: viewChangerButtonTopAppBar,
                           height: 60,
                           width: 60,
                           color: Colors.transparent,
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Icon(Icons.view_comfortable_rounded,
-                                  size: 30.0, color: AppColors.light),
+                                  size: 30.0, color: iconcolor),
                             ],
                           ),
                         ),
@@ -153,12 +158,10 @@ class TopAppBar extends ConsumerWidget {
                 ),
                 SizedBox(width: dynamicSizedBoxWidth),
                 const LogoHouslyWidget(),
-            
               ],
             ),
           ),
         ),
-
       ),
     );
   }

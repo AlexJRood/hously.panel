@@ -2,16 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:intl/intl.dart'; // Dodaj import do intl
+import 'dart:convert'; // Dodaj import dla utf8.decode
 
-// const configHttp = 'http';
-// const configUrl = URLs.configUrl;
+
 
 class CommentSectionPc extends ConsumerStatefulWidget {
   final int id;
@@ -41,10 +43,15 @@ class _CommentSectionPcState extends ConsumerState<CommentSectionPc> {
         URLs.commentsByUserContacts('${widget.id}'),
         hasToken: true,
       );
-      if (response != null && response.statusCode == 200) {
-        setState(() {
-          _comments = response.data; // Zaktualizowano na listę
-        });
+
+
+    if (response != null && response.statusCode == 200) {
+      final decodedBody = utf8.decode(response.data); // Dekodowanie UTF-8
+      final jsonData = jsonDecode(decodedBody); // Parsowanie JSON-a
+
+      setState(() {
+        _comments = jsonData is List ? jsonData : []; // Ustawienie danych
+      });
       } else {
         final snackBar = Customsnackbar().showSnackBar(
             "Error", 'Błąd podczas pobierania komentarzy.'.tr, "error", () {
@@ -177,8 +184,8 @@ class _CommentSectionPcState extends ConsumerState<CommentSectionPc> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: const Icon(
-                      Icons.edit,
+                    icon: SvgPicture.asset(
+                      AppIcons.pencil,
                       color: AppColors.light,
                     ),
                     onPressed: () async {
@@ -220,7 +227,7 @@ class _CommentSectionPcState extends ConsumerState<CommentSectionPc> {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete, color: AppColors.light),
+                    icon: SvgPicture.asset(AppIcons.delete, color: AppColors.light),
                     onPressed: () {
                       _deleteComment(comment['id']);
                     },

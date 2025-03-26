@@ -1,6 +1,8 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/widgets/crm/client_tile.dart';
@@ -36,7 +38,7 @@ class TopAppBarCRMWithBack extends ConsumerWidget {
                 width: 60,
                 child: Center(
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_rounded,
+                    icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                         color: AppColors.light),
                     onPressed: () => ref.read(navigationService).beamPop(),
                   ),

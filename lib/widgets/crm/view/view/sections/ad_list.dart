@@ -36,7 +36,7 @@ class AdListClient extends ConsumerWidget {
                   children:
                       List.generate(filteredAdvertisements.length, (index) {
                     final fullSizeAd = filteredAdvertisements[index];
-                    final tag = 'fullSize${fullSizeAd.id}';
+                    final tag = 'fullSize${fullSizeAd.id}-${UniqueKey().toString()}';
                     final mainImageUrl = fullSizeAd.images.isNotEmpty
                         ? fullSizeAd.images[0]
                         : 'default_image_url';
@@ -49,7 +49,7 @@ class AdListClient extends ConsumerWidget {
                               kind == PointerDeviceKind.touch) {
                             handleDisplayedAction(ref, fullSizeAd.id, context);
                             ref.read(navigationService).pushNamedScreen(
-                              '${Routes.networkMonitoring}/${fullSizeAd.id}',
+                              '${Routes.networkMonitoring}/offer/${fullSizeAd.id}',
                               data: {'tag': tag, 'ad': fullSizeAd},
                             );
                           }

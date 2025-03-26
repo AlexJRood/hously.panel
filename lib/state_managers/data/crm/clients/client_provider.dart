@@ -55,17 +55,22 @@ Future<List<UserContactStatusModel>> fetchStatuses(dynamic ref) async {
   String? _lastSearchQuery;
 
   // Zaktualizowana funkcja fetchClients z obsługą wyszukiwania
-  Future<void> fetchClients({int? status, String? sort, String? searchQuery,dynamic ref}) async {
+  Future<void> fetchClients({
+    int? status,
+    String? sort,
+    String? searchQuery,
+    dynamic ref,
+  }) async {
     try {
-      // Jeśli nie podano statusu, sortowania lub zapytania, używamy ostatnich wartości
-      _lastStatus = status ?? _lastStatus;
+      // Update stored values
+      _lastStatus = status;
       _lastSort = sort ?? _lastSort;
       _lastSearchQuery = searchQuery ?? _lastSearchQuery;
 
       final queryParams = {
-        if (_lastStatus != null) 'status': _lastStatus,
         if (_lastSort != null) 'sort': _lastSort,
         if (_lastSearchQuery != null) 'search': _lastSearchQuery,
+        if (_lastStatus != null) 'status': _lastStatus, // Only include if not null
       };
 
       final response = await ApiServices.get(
@@ -75,14 +80,16 @@ Future<List<UserContactStatusModel>> fetchStatuses(dynamic ref) async {
         hasToken: true,
       );
 
-        if (response != null && response.statusCode == 200) {
-          final decodedBody = utf8.decode(response.data);
-          final listingsJson = json.decode(decodedBody) as Map<dynamic, dynamic>;
-          final newList = listingsJson['results'] as List<dynamic>;
-          
+      if (response != null && response.statusCode == 200) {
+        final decodedBody = utf8.decode(response.data);
+        final listingsJson = json.decode(decodedBody) as Map<dynamic, dynamic>;
+        final newList = listingsJson['results'] as List<dynamic>;
 
-          final clients = newList.map((item) => UserContactModel.fromJson(item as Map<String, dynamic>)).toList();
-          state = AsyncValue.data(clients);
+        final clients = newList.map(
+              (item) => UserContactModel.fromJson(item as Map<String, dynamic>),
+        ).toList();
+
+        state = AsyncValue.data(clients);
       } else {
         state = AsyncValue.error('Failed to load contacts', StackTrace.current);
       }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/todo/provider/todo_provider.dart';
 
 class CommentField extends ConsumerStatefulWidget {
@@ -76,7 +78,7 @@ class _CommentFieldState extends ConsumerState<CommentField> {
               Get.snackbar('Error', 'Unable to add comment. Please try again.');
             }
           },
-          icon: const Icon(Icons.send),
+          icon: SvgPicture.asset(AppIcons.send),
         ),
       ],
     );

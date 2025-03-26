@@ -7,6 +7,8 @@ import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/ad/ad_list_view_model.dart';
+import 'package:hously_flutter/portal/browselist/widget/pc.dart';
+import 'package:hously_flutter/screens/feed/components/cards/selected_card.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -79,6 +81,8 @@ class FullSizePcState extends ConsumerState<FullSizePc> {
     dynamicPadding = dynamicPadding.clamp(minDynamicPadding, maxDynamicPadding);
     double dynamicSizedBoxWidth = screenWidth / 8 <= 20 ? 20 : screenWidth / 8;
 
+    final adFiledSize  =(((screenWidth) - (dynamicPadding * 2)) - 80);
+
     return PieCanvas(
       theme: const PieTheme(
         rightClickShowsMenu: true,
@@ -126,11 +130,16 @@ class FullSizePcState extends ConsumerState<FullSizePc> {
                                     PagedChildBuilderDelegate<AdsListViewModel>(
                                   itemBuilder: (context, advertisement, index) {
                                     return BuildAdvertisementsList(
+                                            adFiledSize: adFiledSize,
                                       scrollController: ScrollController(),
                                       // Scroll handled by PagedListView
                                       filteredAdvertisements: [
                                         advertisement
                                       ], // Single ad as the list
+                                      buildShimmerPlaceholder:
+                                                ShimmerPlaceholder(
+                                                    width: adFiledSize,
+                                                    height: adFiledSize),
                                     );
                                   },
                                   firstPageProgressIndicatorBuilder: (_) =>
@@ -162,6 +171,7 @@ class FullSizePcState extends ConsumerState<FullSizePc> {
                         ),
                       ),
                     ),
+                  BrowseListPcWidget(isWhiteSpaceNeeded: true)
                   ],
                 ),
               ),
@@ -183,12 +193,15 @@ class FullSizePcState extends ConsumerState<FullSizePc> {
 class BuildAdvertisementsList extends ConsumerWidget {
   final List<AdsListViewModel> filteredAdvertisements;
   final ScrollController scrollController;
+  final Widget buildShimmerPlaceholder;
+  final double adFiledSize;
 
   const BuildAdvertisementsList({
     super.key,
     required this.filteredAdvertisements,
+      required this.buildShimmerPlaceholder,
     required this.scrollController,
-  });
+      required this.adFiledSize});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -200,164 +213,34 @@ class BuildAdvertisementsList extends ConsumerWidget {
     final textColor = themecolors.themeTextColor;
     final color = Theme.of(context).primaryColor;
     final isDefaultDarkSystem = ref.watch(isDefaultDarkSystemProvider);
+
+    
+    final cardType = ref.read(selectedCardProvider);
+
+
     return Column(
       children: List.generate(filteredAdvertisements.length, (index) {
         final fullSizeAd = filteredAdvertisements[index];
-        final tag = 'fullSize${fullSizeAd.id}';
+        final tag = 'fullSize${fullSizeAd.id}-${UniqueKey().toString()}';
         final mainImageUrl = fullSizeAd.images.isNotEmpty
             ? fullSizeAd.images[0]
             : 'default_image_url';
         final isPro = fullSizeAd.isPro;
-        return AspectRatio(
-          aspectRatio: 16 / 9,
-          child: PieMenu(
-            onPressedWithDevice: (kind) {
-              if (kind == PointerDeviceKind.mouse ||
-                  kind == PointerDeviceKind.touch) {
-                handleDisplayedAction(ref, fullSizeAd.id, context);
-                ref.read(navigationService).pushNamedScreen(
-                  '${Routes.fullSize}/${fullSizeAd.id}',
-                  data: {'tag': tag, 'ad': fullSizeAd},
-                );
-              }
-            },
-            actions: buildPieMenuActions(ref, fullSizeAd, context),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Hero(
-                tag: tag,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: [
-                      // Main Image Container with conditional border for Pro ads
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: isPro
-                              ? Border.all(color: Colors.white, width: 5.0)
-                              : null,
-                        ),
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: CachedNetworkImage(
-                            imageUrl: mainImageUrl,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const ShimmerPlaceholder(width: 0, height: 0),
-                            errorWidget: (context, url, error) => Container(
-                              color: Colors.grey,
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Brak obrazu'.tr,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Sponsored Badge (Only for Pro ads)
-                      if (isPro)
-                        Positioned(
-                          right: 8,
-                          top: 8,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: AppColors.light,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              'Sponsored',
-                              style: AppTextStyles.interMedium12dark,
-                            ),
-                          ),
-                        ),
-                      // Bottom Container with Price, Title, and Location
-                      Positioned(
-                        left: 7,
-                        bottom: 7,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 8),
-                          decoration: BoxDecoration(
-                            color: isDefaultDarkSystem
-                                ? textFieldColor.withOpacity(0.5)
-                                : color.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  '${NumberFormat.decimalPattern().format(fullSizeAd.price)} ${fullSizeAd.currency}',
-                                  style: AppTextStyles.interBold.copyWith(
-                                    fontSize: 18,
-                                    color: textColor,
-                                    shadows: [
-                                      Shadow(
-                                        offset: const Offset(5.0, 5.0),
-                                        blurRadius: 10.0,
-                                        color: isDefaultDarkSystem
-                                            ? textFieldColor.withOpacity(0.5)
-                                            : color.withOpacity(0.5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  fullSizeAd.title,
-                                  style: AppTextStyles.interSemiBold.copyWith(
-                                    color: textColor,
-                                    fontSize: 14,
-                                    shadows: [
-                                      Shadow(
-                                        offset: const Offset(5.0, 5.0),
-                                        blurRadius: 10.0,
-                                        color: isDefaultDarkSystem
-                                            ? textFieldColor.withOpacity(0.5)
-                                            : color.withOpacity(0.5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  '${fullSizeAd.city}, ${fullSizeAd.street}',
-                                  style: AppTextStyles.interRegular.copyWith(
-                                    color: textColor,
-                                    fontSize: 12,
-                                    shadows: [
-                                      Shadow(
-                                        offset: const Offset(5.0, 5.0),
-                                        blurRadius: 10.0,
-                                        color: isDefaultDarkSystem
-                                            ? textFieldColor.withOpacity(0.5)
-                                            : color.withOpacity(0.5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+        
+        return SelectedCardWidget(
+          isMobile: false,
+          aspectRatio: cardType.mapAspectRatio,
+          ad: fullSizeAd, 
+          tag: tag, 
+          mainImageUrl: mainImageUrl, 
+          isPro: isPro, 
+          isDefaultDarkSystem: isDefaultDarkSystem, 
+          color: color, 
+          textColor: textColor, 
+          textFieldColor: textFieldColor, 
+          buildShimmerPlaceholder: buildShimmerPlaceholder, 
+          buildPieMenuActions: buildPieMenuActions(ref, fullSizeAd, context),
+          );
       }),
     );
   }

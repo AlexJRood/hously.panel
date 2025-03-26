@@ -4,9 +4,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
+import 'package:hously_flutter/state_managers/data/crm/add_field/edit_sell_offer_provider.dart';
 import 'package:hously_flutter/state_managers/data/profile/edit_offer/edit_provider.dart';
 import 'package:hously_flutter/widgets/screens/profile/edit_fileds.dart';
 
@@ -20,7 +23,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editOfferState = ref.watch(editOfferProvider(offerId));
+    final editOfferState = ref.watch(crmEditSellOfferProvider(offerId));
     double screenWidth = MediaQuery.of(context).size.width;
     double textSideWidth = screenWidth / 2 - 100;
     double imageSideWidth = screenWidth / 2 - 85;
@@ -60,7 +63,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                       children: [
                         SelectButtonsOptions(
                           controller: ref
-                              .watch(editOfferProvider(offerId))
+                              .watch(crmEditSellOfferProvider(offerId))
                               .offerTypeController,
                           options:  [
                             ButtonOption('Chcę sprzedać'.tr, 'sell'),
@@ -86,7 +89,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                   flex: 2,
                                   child: BuildDropdownButtonFormField(
                                     controller: ref
-                                        .watch(editOfferProvider(offerId))
+                                        .watch(crmEditSellOfferProvider(offerId))
                                         .countryController,
                                     items:  ['Polska'.tr, 'Kraj 2'.tr, 'Kraj 3'.tr],
                                     labelText: 'Kraj'.tr,
@@ -97,7 +100,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                   flex: 3,
                                   child: BuildDropdownButtonFormField(
                                     controller: ref
-                                        .watch(editOfferProvider(offerId))
+                                        .watch(crmEditSellOfferProvider(offerId))
                                         .stateController,
                                     items:  const [
                                       'Dolnośląskie',
@@ -125,7 +128,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                   flex: 3,
                                   child: BuildDropdownButtonFormField(
                                     controller: ref
-                                        .read(editOfferProvider(offerId))
+                                        .read(crmEditSellOfferProvider(offerId))
                                         .cityController,
                                     items: const [
                                       'Warsaw',
@@ -161,7 +164,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                   flex: 3,
                                   child: BuildDropdownButtonFormField(
                                     controller: ref
-                                        .read(editOfferProvider(offerId))
+                                        .read(crmEditSellOfferProvider(offerId))
                                         .streetController,
                                     items:  [
                                       'Marszałkowska',
@@ -213,7 +216,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                   flex: 2,
                                   child: BuildDropdownButtonFormField(
                                     controller: ref
-                                        .watch(editOfferProvider(offerId))
+                                        .watch(crmEditSellOfferProvider(offerId))
                                         .zipcodeController,
                                     items: const ['71204', '75488', '12345'],
                                     labelText: 'Kod pocztowy'.tr,
@@ -227,7 +230,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                         SizedBox(height: dynamiBoxHeigth),
                         SelectButtonsOptions(
                           controller: ref
-                              .read(editOfferProvider(offerId))
+                              .read(crmEditSellOfferProvider(offerId))
                               .estateTypeController,
                           options:  [
                             ButtonOption('Mieszkanie'.tr, 'Flat'),
@@ -255,7 +258,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                         SizedBox(height: dynamiBoxHeigth),
                         BuildTextField(
                           controller: ref
-                              .read(editOfferProvider(offerId))
+                              .read(crmEditSellOfferProvider(offerId))
                               .titleController,
                           labelText: 'Tytuł ogłoszenia'.tr,
                           maxLines: 1,
@@ -263,7 +266,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                         SizedBox(height: dynamiBoxHeigth),
                         BuildTextFieldDes(
                           controller: ref
-                              .read(editOfferProvider(offerId))
+                              .read(crmEditSellOfferProvider(offerId))
                               .descriptionController,
                           labelText: 'Opis ogłoszenia'.tr,
                         ),
@@ -281,7 +284,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               flex: 2,
                               child: BuildDropdownButtonFormField(
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .currencyController,
                                 items: const [
                                   'PLN',
@@ -298,7 +301,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               flex: 7,
                               child: BuildNumberTextField(
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .priceController,
                                 labelText:
                                     'Za ile chcesz sprzedać swoją nieruchomość?'.tr,
@@ -329,7 +332,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                     children: [
                                       BuildSelectableButtonsFormField(
                                         controller: ref
-                                            .watch(editOfferProvider(offerId))
+                                            .watch(crmEditSellOfferProvider(offerId))
                                             .roomsController,
                                         options: const [
                                           '1',
@@ -348,7 +351,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                     children: [
                                       BuildSelectableButtonsFormField(
                                         controller: ref
-                                            .watch(editOfferProvider(offerId))
+                                            .watch(crmEditSellOfferProvider(offerId))
                                             .bathroomsController,
                                         options: const [
                                           '1',
@@ -373,7 +376,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                         flex: 2,
                                         child: BuildNumberTextField(
                                           controller: ref
-                                              .watch(editOfferProvider(offerId))
+                                              .watch(crmEditSellOfferProvider(offerId))
                                               .floorController,
                                           labelText: 'Piętro'.tr,
                                           unit: 'Piętro',
@@ -384,7 +387,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                         flex: 2,
                                         child: BuildNumberTextField(
                                           controller: ref
-                                              .watch(editOfferProvider(offerId))
+                                              .watch(crmEditSellOfferProvider(offerId))
                                               .totalFloorsController,
                                           labelText: 'Liczba pięter'.tr,
                                           unit: 'Pięter',
@@ -405,7 +408,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                     SizedBox(height: dynamiBoxHeigth),
                                     BuildDropdownButtonFormField(
                                       controller: ref
-                                          .watch(editOfferProvider(offerId))
+                                          .watch(crmEditSellOfferProvider(offerId))
                                           .buildingTypeController,
                                       items:  [
                                         'Blok'.tr,
@@ -420,7 +423,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                     SizedBox(height: dynamiBoxHeigth),
                                     BuildDropdownButtonFormField(
                                       controller: ref
-                                          .watch(editOfferProvider(offerId))
+                                          .watch(crmEditSellOfferProvider(offerId))
                                           .heatingTypeController,
                                       items:  [
                                         'Gazowe'.tr,
@@ -436,7 +439,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                     SizedBox(height: dynamiBoxHeigth),
                                     BuildDropdownButtonFormField(
                                       controller: ref
-                                          .watch(editOfferProvider(offerId))
+                                          .watch(crmEditSellOfferProvider(offerId))
                                           .buildingMaterialController,
                                       items:  [
                                         'Cegła'.tr,
@@ -472,7 +475,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               flex: 2,
                               child: BuildNumberTextField(
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .buildYearController,
                                 labelText: 'Rok budowy'.tr,
                                 unit: '',
@@ -483,7 +486,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               flex: 5,
                               child: BuildNumberTextField(
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .squareFootageController,
                                 labelText:
                                     'Jaki jest metraż twojej nieruchomości?'.tr,
@@ -508,52 +511,52 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                             AdditionalInfoFilterButton(
                                 text: 'Balkon'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .balconyController),
                             AdditionalInfoFilterButton(
                                 text: 'Taras'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .terraceController),
                             AdditionalInfoFilterButton(
                                 text: 'Sauna',
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .saunaController),
                             AdditionalInfoFilterButton(
                                 text: 'Jacuzzi',
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .jacuzziController),
                             AdditionalInfoFilterButton(
                                 text: 'Piwnica'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .basementController),
                             AdditionalInfoFilterButton(
                                 text: 'Winda'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .elevatorController),
                             AdditionalInfoFilterButton(
                                 text: 'Ogród'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .gardenController),
                             AdditionalInfoFilterButton(
                                 text: 'Klimatyzacja'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .airConditioningController),
                             AdditionalInfoFilterButton(
                                 text: 'Garaż'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .garageController),
                             AdditionalInfoFilterButton(
                                 text: 'Miejsce postojowe'.tr,
                                 controller: ref
-                                    .watch(editOfferProvider(offerId))
+                                    .watch(crmEditSellOfferProvider(offerId))
                                     .parkingSpaceController),
                           ],
                         ),
@@ -604,7 +607,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                         editOfferState.mainImageIndex ?? 0;
                                     ref
                                         .read(
-                                            editOfferProvider(offerId).notifier)
+                                            crmEditSellOfferProvider(offerId).notifier)
                                         .setMainImageIndex(indexToSet);
                                   },
                                   child: Stack(
@@ -625,7 +628,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                 )
                               : InkWell(
                                   onTap: () => ref
-                                      .read(editOfferProvider(offerId).notifier)
+                                      .read(crmEditSellOfferProvider(offerId).notifier)
                                       .pickImage(),
                                   child: Container(
                                     width: double.infinity,
@@ -693,7 +696,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               // Renderowanie przycisku dodawania zdjęć
                               return InkWell(
                                 onTap: () => ref
-                                    .read(editOfferProvider(offerId).notifier)
+                                    .read(crmEditSellOfferProvider(offerId).notifier)
                                     .pickImage(),
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -712,7 +715,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                               return GestureDetector(
                                 onTap: () {
                                   ref
-                                      .read(editOfferProvider(offerId).notifier)
+                                      .read(crmEditSellOfferProvider(offerId).notifier)
                                       .setMainImageIndex(index);
                                 },
                                 child: AspectRatio(
@@ -732,13 +735,13 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                                         ),
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete,
+                                        icon: SvgPicture.asset(AppIcons.delete,
                                             color: Colors.red),
                                         onPressed: () {
                                           if (editOfferState
                                               .imagesData.isNotEmpty) {
                                             ref
-                                                .read(editOfferProvider(offerId)
+                                                .read(crmEditSellOfferProvider(offerId)
                                                     .notifier)
                                                 .removeImage(index);
                                           } else {
@@ -778,7 +781,7 @@ class CrmEditSellOfferPc extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(10.0),
                           onTap: () {
                             ref
-                                .read(editOfferProvider(offerId).notifier)
+                                .read(crmEditSellOfferProvider(offerId).notifier)
                                 .sendData(context, offerId);
                           },
                           child: Padding(

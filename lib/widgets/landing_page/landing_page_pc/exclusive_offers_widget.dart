@@ -3,10 +3,13 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/route_constant.dart';
+import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:pie_menu/pie_menu.dart';
 
 import '../../../state_managers/data/home_page/listing_provider.dart';
@@ -24,17 +27,22 @@ class ExclusiveOffersWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the selected tab
     final selectedTab = ref.watch(selectedTabProvider);
-
+    final _scrollcontroller = ScrollController();
     // Fetch listings based on the selected tab
     final listingProvider = ref.watch(listingsProvider);
     final dynamicVerticalPadding = paddingDynamic / 6;
     final scrollController = ScrollController();
 
     // Define the tabs and their associated data
-    final tabs = ['EXCLUSIVE OFFERS', 'NEW LISTING', 'OPEN HOUSES', 'MOST VIEWED'];
+    final tabs = [
+      'EXCLUSIVE OFFERS',
+      'NEW LISTING',
+      'OPEN HOUSES',
+      'MOST VIEWED'
+    ];
 
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
+      padding: EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
       child: SizedBox(
         height: 450,
         child: Column(
@@ -54,11 +62,13 @@ class ExclusiveOffersWidget extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: 20.0),
                       child: Text(
                         tab,
-                        style: TextStyle(
-                          color: selectedTab == tab ? Colors.black : Colors.grey,
-                          fontSize: 16,
-                          fontWeight:
-                          selectedTab == tab ? FontWeight.bold : FontWeight.normal,
+                        style: AppTextStyles.libreCaslonHeading.copyWith(
+                          color:
+                              selectedTab == tab ? Colors.black : Colors.grey,
+                          fontSize: selectedTab == tab ? 18 : 16,
+                          fontWeight: selectedTab == tab
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           decoration: selectedTab == tab
                               ? TextDecoration.underline
                               : TextDecoration.none,
@@ -70,7 +80,7 @@ class ExclusiveOffersWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 30),
-        
+
             // Cards Section
             Expanded(
               child: listingProvider.when(
@@ -83,55 +93,61 @@ class ExclusiveOffersWidget extends ConsumerWidget {
                     if (selectedTab == 'MOST VIEWED') return ad.elevator;
                     return false;
                   }).toList();
-        
-                  return ListView.separated(
-                    controller: scrollController,
-                    separatorBuilder: (context, index) => const SizedBox(width: 20),
-                    itemCount: filteredAds.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final indexedAd = filteredAds[index];
-                      final tag = 'recentlyView1-${indexedAd.id}';
 
-                    if (index == 0) {
-                      // Pierwszy element listy - dynamiczny padding
-                      return SizedBox(width: paddingDynamic);
-                    }
-                    final ad = adsList[index]; // Przesuwamy indeksy, żeby zgadzały się z danymi
-                      return GestureDetector(
-                        onHorizontalDragUpdate: (details) {
-                          scrollController.jumpTo(
-                            scrollController.offset - details.delta.dx,
+                  return DragScrollView(
+                      controller: _scrollcontroller,
+                      child: ListView.separated(
+                        controller: scrollController,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 20),
+                        itemCount: filteredAds.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final indexedAd = filteredAds[index];
+                          final tag =
+                              'recentlyView1-${indexedAd.id}-${UniqueKey().toString()}';
+
+                          if (index == 0) {
+                            // Pierwszy element listy - dynamiczny padding
+                            return SizedBox(width: paddingDynamic);
+                          }
+                          final ad = adsList[
+                              index]; // Przesuwamy indeksy, żeby zgadzały się z danymi
+                          return GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              scrollController.jumpTo(
+                                scrollController.offset - details.delta.dx,
+                              );
+                            },
+                            child: PieMenu(
+                              onPressedWithDevice: (kind) {
+                                if (kind == PointerDeviceKind.mouse ||
+                                    kind == PointerDeviceKind.touch) {
+                                  ref.read(navigationService).pushNamedScreen(
+                                    '${Routes.homepage}/${indexedAd.id}',
+                                    data: {'tag': tag, 'ad': indexedAd},
+                                  );
+                                }
+                              },
+                              actions:
+                                  buildPieMenuActions(ref, indexedAd, context),
+                              child: Hero(
+                                tag: tag,
+                                child: PropertyCard(
+                                  imageUrl: ad.images.last,
+                                  location: ad.city,
+                                  address: ad.state,
+                                  size: ad.squareFootage.toString(),
+                                  rooms: ad.rooms.toString(),
+                                  bath: ad.bathrooms.toString(),
+                                  price: ad.price.toString(),
+                                  ref: ref,
+                                ),
+                              ),
+                            ),
                           );
                         },
-                        child: PieMenu(
-                          onPressedWithDevice: (kind) {
-                            if (kind == PointerDeviceKind.mouse ||
-                                kind == PointerDeviceKind.touch) {
-                              ref.read(navigationService).pushNamedScreen(
-                                '${Routes.homepage}/${indexedAd.id}',
-                                data: {'tag': tag, 'ad': indexedAd},
-                              );
-                            }
-                          },
-                          actions: buildPieMenuActions(ref, indexedAd, context),
-                          child: Hero(
-                            tag: tag,
-                            child: PropertyCard(
-                              imageUrl: ad.images.last,
-                              location: ad.city,
-                              address: ad.state,
-                              size: ad.squareFootage.toString(),
-                              rooms: ad.rooms.toString(),
-                              bath: ad.bathrooms.toString(),
-                              price: ad.price.toString(),
-                              ref: ref,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                      ));
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stackTrace) => Center(
@@ -143,19 +159,22 @@ class ExclusiveOffersWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 30),
-        
+
             // Footer Link
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: EdgeInsets.only(right: paddingDynamic),
                 child: TextButton(
-                   onPressed: () {  }, child: const Text('View more exclusive offers →',
-                  style: TextStyle(
-                    color: Color.fromRGBO(35, 35, 35, 1),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),),
+                  onPressed: () {},
+                  child: const Text(
+                    'View more exclusive offers →',
+                    style: TextStyle(
+                      color: Color.fromRGBO(35, 35, 35, 1),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -212,7 +231,7 @@ class PropertyCard extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
-              const ShimmerPlaceholder(width: 0, height: 0),
+                  const ShimmerPlaceholder(width: 0, height: 0),
               errorWidget: (context, url, error) => Container(
                 color: Colors.grey,
                 alignment: Alignment.center,
@@ -304,15 +323,15 @@ class IconText extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 16,
+            size: 16.sp,
             color: Colors.grey,
           ),
           const SizedBox(width: 4),
           Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.grey,
-              fontSize: 14,
+              fontSize: 14.sp,
             ),
           ),
         ],

@@ -66,7 +66,7 @@ class CrmAddExpensesPopPcState extends ConsumerState<CrmAddExpensesPopPc> {
                     Navigator.of(context).pop();
         }),
         Hero(
-          tag: 'addExpensesPagePop',
+          tag: 'addExpensesPagePop-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
           child: Align(
             alignment: Alignment.center,
             child: Container(

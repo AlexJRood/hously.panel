@@ -125,3 +125,13 @@ Future<void> saveCustomColor(Color color) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setInt('customColor', color.value); // Save color as int
 }
+
+Future<void> savecurrentthemeDark(
+  WidgetRef ref,
+) async {
+  final prefs = await SharedPreferences.getInstance();
+
+  ref.read(colorSchemeProvider.notifier).state = FlexScheme.blackWhite;
+  await prefs.setString('currentheme', ThemeMode.light.name);
+  await prefs.setString('colorScheme', 'blackWhite');
+}

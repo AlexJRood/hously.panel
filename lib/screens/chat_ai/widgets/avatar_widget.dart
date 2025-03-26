@@ -6,11 +6,11 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 52,
-      height: 52,
+      width: 30,
+      height: 30,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
-          Radius.circular(90),
+          Radius.circular(25),
         ),
         color: const Color.fromRGBO(255, 255, 255, 0.1),
         border: Border.all(
@@ -23,11 +23,11 @@ class Avatar extends StatelessWidget {
           'AI',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 12,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
   }
 }
-

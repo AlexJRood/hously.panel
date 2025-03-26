@@ -49,7 +49,7 @@ class AdsPvMobile extends ConsumerWidget {
                 itemCount: filteredAds.length,
                 itemBuilder: (context, index) {
                   final ad = filteredAds[index];
-                  final tag = 'fullmapView${ad.id}';
+                  final tag = 'fullmapView${ad.id}-${UniqueKey().toString()}';
                   return SizedBox(
                     child: PieMenu(
                       onPressedWithDevice: (kind) {

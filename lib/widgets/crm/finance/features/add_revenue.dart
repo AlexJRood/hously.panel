@@ -71,7 +71,7 @@ class CrmAddRevenuePopPcState extends ConsumerState<CrmAddRevenuePopPc> {
           ref.read(navigationService).beamPop();
         }),
         Hero(
-          tag: 'addExpensesPagePop',
+          tag: 'addRevenuePop-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
           child: Align(
             alignment: Alignment.center,
             child: Container(

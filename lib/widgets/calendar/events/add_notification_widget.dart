@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/style.dart';
 import 'package:hously_flutter/enums/event/notification_period_enum.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/popup_calendar_provider.dart';
@@ -32,6 +34,9 @@ class AddNotificationWidget extends ConsumerWidget {
                   SizedBox(
                     width: 100,
                     child: TextFormFieldWidget(
+                      style: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
                       text: '${reminder.counter}',
                       textInputType: TextInputType.number,
                       inputFormatters: <TextInputFormatter>[
@@ -95,9 +100,9 @@ class AddNotificationWidget extends ConsumerWidget {
                   ),
                   const SizedBox(width: 5),
                   InkWell(
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Icon(Icons.close, size: 18),
+                    child:  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: SvgPicture.asset(AppIcons.close, height: 18,width: 18,),
                     ),
                     onTap: () =>
                         ref.read(popupCalendarProvider).removeAtReminder(index),
@@ -110,7 +115,10 @@ class AddNotificationWidget extends ConsumerWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: InkWell(
-              child: const Text('Add notification'),
+              child: const Text('Add notification',
+              style: TextStyle(
+                color: Color.fromRGBO(255, 255, 255, 1),
+              ),),
               onTap: () => ref.read(popupCalendarProvider).addReminder(),
             ),
           ),

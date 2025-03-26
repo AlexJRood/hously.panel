@@ -51,7 +51,7 @@ class Customclienttile extends ConsumerWidget {
                     Text(
                       title,
                       style:
-                          TextStyle(color: theme.whitewhiteblack, fontSize: 14),
+                          TextStyle(color: theme.mobileTextcolor, fontSize: 14),
                     ),
                     const SizedBox(
                       height: 4,
@@ -59,7 +59,7 @@ class Customclienttile extends ConsumerWidget {
                     Text(
                       data,
                       style: TextStyle(
-                          color: theme.whitewhiteblack,
+                          color: theme.mobileTextcolor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14),
                     ),

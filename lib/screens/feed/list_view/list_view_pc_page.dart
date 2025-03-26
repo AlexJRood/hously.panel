@@ -7,6 +7,7 @@ import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/ad/ad_list_view_model.dart';
+import 'package:hously_flutter/portal/browselist/widget/pc.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart'; // Upewnij się, że ścieżka jest poprawna
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -68,19 +69,22 @@ class _ListViewWebPcState extends ConsumerState<ListViewWebPc> {
     final ScrollController scrollController = ScrollController();
     double screenWidth = MediaQuery.of(context).size.width;
 
-    const double maxWidth = 1920;
+    const double maxWidth = 2600;
     const double minWidth = 800;
     // Ustawienie maksymalnego i minimalnego rozmiaru czcionki
-    const double maxDynamicPadding = 480;
+    const double maxDynamicPadding = 750;
     const double minDynamicPadding = 10;
     // Obliczenie odpowiedniego rozmiaru czcionki
-    double dynamicPadding = (screenWidth - minWidth) /
+    double padding = (screenWidth - minWidth) /
             (maxWidth - minWidth) *
             (maxDynamicPadding - minDynamicPadding) +
         minDynamicPadding;
     // Ograniczenie rozmiaru czcionki do zdefiniowanych minimum i maksimum
-    dynamicPadding = dynamicPadding.clamp(minDynamicPadding, maxDynamicPadding);
+    padding = padding.clamp(minDynamicPadding, maxDynamicPadding);
     // Oblicz proporcję szerokości
+print ('padding size $padding');
+
+  double listSize = screenWidth - (padding *2);
 
     return PieCanvas(
       theme: const PieTheme(
@@ -111,6 +115,7 @@ class _ListViewWebPcState extends ConsumerState<ListViewWebPc> {
                     ),
                     Expanded(
                       child: Container(
+                        
                         decoration: BoxDecoration(
                             gradient:
                                 CustomBackgroundGradients.getMainMenuBackground(
@@ -127,19 +132,14 @@ class _ListViewWebPcState extends ConsumerState<ListViewWebPc> {
                                   itemBuilder: (context, advertisement, index) {
                                     return SingleChildScrollView(
                                       controller: scrollController,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: dynamicPadding,
-                                        ),
+                                      child: Center(
                                         child: BuildAdvertisementsList(
                                           scrollController: scrollController,
-                                          dynamicPadding: dynamicPadding,
+                                          listSize: listSize,
                                           filteredAdvertisements: [
                                             advertisement
                                           ],
-                                          adFiledSize: (((screenWidth) -
-                                                  (dynamicPadding * 2)) -
-                                              80),
+                                          adFiledSize: listSize,
                                         ),
                                       ),
                                     );
@@ -147,18 +147,14 @@ class _ListViewWebPcState extends ConsumerState<ListViewWebPc> {
                                   firstPageProgressIndicatorBuilder: (_) =>
                                       Center(
                                     child: ShimmerPlaceholderWidget(
-                                        adFiledSize: (((screenWidth) -
-                                                (dynamicPadding * 2)) -
-                                            80),
-                                        dynamicPadding: dynamicPadding),
+                                        adFiledSize: listSize,
+                                        dynamicPadding: padding),
                                   ),
                                   newPageProgressIndicatorBuilder: (_) =>
                                       Center(
                                     child: ShimmerPlaceholderWidget(
-                                        adFiledSize: (((screenWidth) -
-                                                (dynamicPadding * 2)) -
-                                            80),
-                                        dynamicPadding: dynamicPadding),
+                                        adFiledSize: listSize,
+                                        dynamicPadding: padding),
                                   ),
                                   noItemsFoundIndicatorBuilder: (_) => Center(
                                     child: Text(
@@ -173,6 +169,7 @@ class _ListViewWebPcState extends ConsumerState<ListViewWebPc> {
                         ),
                       ),
                     ),
+                  BrowseListPcWidget(isWhiteSpaceNeeded: true)
                   ],
                 ),
               ),
@@ -191,155 +188,160 @@ class BuildAdvertisementsList extends ConsumerWidget {
     required this.adFiledSize,
     required this.filteredAdvertisements,
     required this.scrollController,
-    required this.dynamicPadding,
+    required this.listSize,
   });
 
   final double adFiledSize;
   final List<AdsListViewModel> filteredAdvertisements;
   final ScrollController scrollController;
-  final dynamic dynamicPadding;
+  final dynamic listSize;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themecolors = ref.watch(themeColorsProvider);
     final textColor = themecolors.themeTextColor;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: List.generate(filteredAdvertisements.length, (index) {
         final fullSizeAd = filteredAdvertisements[index];
-        final tag = 'fullSize${fullSizeAd.id}';
+        final tag = 'fullSize${fullSizeAd.id}-${UniqueKey().toString()}';
         final mainImageUrl = fullSizeAd.images.isNotEmpty
             ? fullSizeAd.images[0]
             : 'default_image_url';
         final isPro = fullSizeAd.isPro;
 
-        return AspectRatio(
-          aspectRatio: 14 / 4,
-          child: PieMenu(
-            onPressedWithDevice: (kind) {
-              if (kind == PointerDeviceKind.mouse ||
-                  kind == PointerDeviceKind.touch) {
-                handleDisplayedAction(ref, fullSizeAd.id, context);
-                ref.read(navigationService).pushNamedScreen(
-                  '${Routes.listview}/${fullSizeAd.id}',
-                  data: {'tag': tag, 'ad': fullSizeAd},
-                );
-              }
-            },
-            actions: buildPieMenuActions(ref, fullSizeAd, context),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: CustomBackgroundGradients.getaddpagebackground(
-                    context,
-                    ref,
+        return SizedBox(
+                width: listSize,
+          child: AspectRatio(
+            aspectRatio: 14 / 4,
+            child: PieMenu(
+              onPressedWithDevice: (kind) {
+                if (kind == PointerDeviceKind.mouse ||
+                    kind == PointerDeviceKind.touch) {
+                  handleDisplayedAction(ref, fullSizeAd.id, context);
+                  ref.read(navigationService).pushNamedScreen(
+                    '${Routes.listview}/${fullSizeAd.id}',
+                    data: {'tag': tag, 'ad': fullSizeAd},
+                  );
+                }
+              },
+              actions: buildPieMenuActions(ref, fullSizeAd, context),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: CustomBackgroundGradients.getaddpagebackground(
+                      context,
+                      ref,
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    // Image with conditional border and sponsored badge
-                    Hero(
-                      tag: tag,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: isPro
-                              ? Border.all(color: Colors.white, width: 5.0)
-                              : null,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Stack(
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: CachedNetworkImage(
-                                    imageUrl: mainImageUrl,
+                  child: Row(
+                    children: [
+                      // Image with conditional border and sponsored badge
+                      Hero(
+                        tag: tag,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: isPro
+                                ? Border.all(color: Colors.white, width: 5.0)
+                                : null,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Stack(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: FittedBox(
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        const ShimmerPlaceholder(
-                                            width: 0, height: 0),
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      color: Colors.grey,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Brak obrazu'.tr,
-                                        style: TextStyle(color: textColor),
+                                    child: CachedNetworkImage(
+                                      imageUrl: mainImageUrl,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const ShimmerPlaceholder(
+                                              width: 0, height: 0),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                        color: Colors.grey,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Brak obrazu'.tr,
+                                          style: TextStyle(color: textColor),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              if (isPro)
-                                Positioned(
-                                  right: 8,
-                                  top: 8,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.light,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      'Sponsored',
-                                      style: AppTextStyles.interMedium12dark,
+                                if (isPro)
+                                  Positioned(
+                                    right: 8,
+                                    top: 8,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 10),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.light,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Text(
+                                        'Sponsored',
+                                        style: AppTextStyles.interMedium12dark,
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 20),
-                    // Advertisement details
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        Text(
-                          '${fullSizeAd.city}, ${fullSizeAd.street}',
-                          style: AppTextStyles.interLight
-                              .copyWith(fontSize: 12, color: textColor),
-                        ),
-                        const SizedBox(height: 0),
-                        Text(
-                          '${NumberFormat.decimalPattern().format(fullSizeAd.price)} ${fullSizeAd.currency}',
-                          style: AppTextStyles.interBold
-                              .copyWith(fontSize: 20, color: textColor),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: adFiledSize / 2.12,
-                          child: Text(
-                            fullSizeAd.title,
-                            style: AppTextStyles.interSemiBold.copyWith(
-                              fontSize: 18,
-                              color: textColor,
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: adFiledSize / 2.12,
-                          child: Text(
-                            fullSizeAd.description,
+                      const SizedBox(width: 20),
+                      // Advertisement details
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            '${fullSizeAd.city}, ${fullSizeAd.street}',
                             style: AppTextStyles.interLight
                                 .copyWith(fontSize: 12, color: textColor),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 0),
+                          Text(
+                            '${NumberFormat.decimalPattern().format(fullSizeAd.price)} ${fullSizeAd.currency}',
+                            style: AppTextStyles.interBold
+                                .copyWith(fontSize: 20, color: textColor),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: adFiledSize / 2.12,
+                            child: Text(
+                              fullSizeAd.title,
+                              style: AppTextStyles.interSemiBold.copyWith(
+                                fontSize: 18,
+                                color: textColor,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: adFiledSize / 2.12,
+                            child: Text(
+                              fullSizeAd.description,
+                              style: AppTextStyles.interLight
+                                  .copyWith(fontSize: 12, color: textColor),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

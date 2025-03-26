@@ -75,7 +75,7 @@ class SortPopMobileState extends ConsumerState<SortPopMobilePage> {
               ),
               // Zawartość modalu
               Hero(
-                tag: 'SortMobile_${UniqueKey()}',
+                tag: 'SortMobile-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
                 child: Align(
                   alignment: Alignment.center,
                   child: Padding(

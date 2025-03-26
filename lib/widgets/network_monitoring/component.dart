@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/displayed/provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/displayed/provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/network_monitoring.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
@@ -26,7 +26,7 @@ class NMRecentlyViewedAds extends ConsumerWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double itemWidth = screenWidth / 1500 * 240;
     itemWidth = max(150.0, min(itemWidth, 250.0));
-    double itemHeight = itemWidth * (300 / 240);
+    double itemHeight = itemWidth * (300 / 260);
 
     double minBaseTextSize = 12;
     double maxBaseTextSize = 16;
@@ -48,7 +48,7 @@ class NMRecentlyViewedAds extends ConsumerWidget {
             child: Row(
               children: displayedAds.map((displayedAd) {
                 String formattedPrice = customFormat.format(displayedAd.price);
-                final tag = 'recentlyViewed5-${displayedAd.id}';
+                final tag = 'recentlyViewed5-${displayedAd.id}-${UniqueKey().toString()}';
                 final mainImageUrl =
                     displayedAd.images.isNotEmpty ? displayedAd.images[0] : '';
                 return PieMenu(
@@ -56,7 +56,7 @@ class NMRecentlyViewedAds extends ConsumerWidget {
                     if (kind == PointerDeviceKind.mouse ||
                         kind == PointerDeviceKind.touch) {
                       ref.read(navigationService).pushNamedScreen(
-                        '${Routes.networkMonitoring}/${displayedAd.id}',
+                        '${Routes.networkMonitoring}/offer/${displayedAd.id}',
                         data: {'tag': tag, 'ad': displayedAd},
                       );
                     }

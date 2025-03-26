@@ -1,5 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/const/route_constant.dart';
+import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
+import 'package:pie_menu/pie_menu.dart';
+import 'package:hously_flutter/data/design/design.dart';
 import '../../../state_managers/data/home_page/listing_provider.dart';
 
 // Define a StateProvider to manage the selected tab
@@ -10,22 +18,18 @@ class ExclusiveOffersWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the selected tab state
     final selectedTab = ref.watch(selectedTabProvider);
-
-    // Fetch listings based on the selected tab
     final listingProvider = ref.watch(listingsProvider);
-
-    // Define tabs and their associated data
     final tabs = [
       'EXCLUSIVE OFFERS',
       'NEW LISTING',
       'OPEN HOUSES',
       'MOST VIEWED'
     ];
+    final scrollController = ScrollController();
 
     return SizedBox(
-      height: 450,
+      height: 490,
       child: Column(
         children: [
           // Tabs Section
@@ -48,10 +52,10 @@ class ExclusiveOffersWidget extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         tab,
-                        style: TextStyle(
+                        style: AppTextStyles.libreCaslonHeading.copyWith(
                           color:
                               selectedTab == tab ? Colors.black : Colors.grey,
-                          fontSize: 16,
+                          fontSize: selectedTab == tab ? 18 : 16,
                           fontWeight: selectedTab == tab
                               ? FontWeight.bold
                               : FontWeight.normal,
@@ -84,20 +88,40 @@ class ExclusiveOffersWidget extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: ListView.separated(
+                    controller: scrollController,
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: 10),
                     itemCount: filteredAds.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final ad = filteredAds[index];
-                      return BuildPropertyCard(
-                        imageUrl: ad.images.last,
-                        location: ad.city,
-                        address: ad.state,
-                        size: ad.squareFootage.toString(),
-                        rooms: ad.rooms.toString(),
-                        bath: ad.bathrooms.toString(),
-                        price: ad.price.toString(),
+                      final tag = 'recentlyView7-${ad.id}';
+                      return DragScrollView(
+                        controller: scrollController,
+                        child: PieMenu(
+                          onPressedWithDevice: (kind) {
+                            if (kind == PointerDeviceKind.mouse ||
+                                kind == PointerDeviceKind.touch) {
+                              ref.read(navigationService).pushNamedScreen(
+                                '${Routes.homepage}/${ad.id}',
+                                data: {'tag': tag, 'ad': ad},
+                              );
+                            }
+                          },
+                          actions: buildPieMenuActions(ref, ad, context),
+                          child: Hero(
+                            tag: tag,
+                            child: BuildPropertyCard(
+                              imageUrl: ad.images.last,
+                              location: ad.city,
+                              address: ad.state,
+                              size: ad.squareFootage.toString(),
+                              rooms: ad.rooms.toString(),
+                              bath: ad.bathrooms.toString(),
+                              price: ad.price.toString(),
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -120,6 +144,11 @@ class ExclusiveOffersWidget extends ConsumerWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 onPressed: () {},
                 child: const Text(
                   'View more exclusive offers →',
@@ -174,13 +203,13 @@ class BuildPropertyCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
             child: Image.network(
               imageUrl,
-              height: 160,
+              height: 200,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -188,7 +217,7 @@ class BuildPropertyCard extends StatelessWidget {
                   location,
                   style: const TextStyle(
                     color: Colors.grey,
-                    fontSize: 14,
+                    fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -196,7 +225,7 @@ class BuildPropertyCard extends StatelessWidget {
                   address,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

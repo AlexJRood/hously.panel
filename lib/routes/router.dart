@@ -8,8 +8,8 @@ import 'package:hously_flutter/models/article_model.dart';
 import 'package:hously_flutter/models/bill_model.dart';
 import 'package:hously_flutter/models/crm/clients_model.dart';
 import 'package:hously_flutter/routes/router_observer.dart';
-import 'package:hously_flutter/screens/add_client_form/add_client_form_screen.dart'
-deferred as add_client_form;
+import 'package:hously_flutter/screens/add_client_form/add_client_form_page.dart'
+    deferred as add_client_form;
 import 'package:hously_flutter/screens/articles_pop_page/article_pop_page.dart'
     deferred as article_pop_page;
 import 'package:hously_flutter/screens/calendar/calendar_page.dart'
@@ -22,6 +22,8 @@ import 'package:hously_flutter/screens/crm/dashboard_crm_page.dart'
     deferred as dashboard_crm_page;
 import 'package:hously_flutter/screens/crm/finance_crm_page.dart'
     deferred as finance_crm_page;
+import 'package:hously_flutter/screens/crm/new_dashboard/screen/new_dashboard_screen.dart'
+    deferred as new_dashboard_screen;
 import 'package:hously_flutter/screens/feed/basic_view/basic_page.dart'
     deferred as basic_page;
 import 'package:hously_flutter/screens/feed/about_us/about_us_main.dart'
@@ -38,7 +40,7 @@ import 'package:hously_flutter/screens/feed/map/map_view_page.dart'
     deferred as map_view_page;
 import 'package:hously_flutter/screens/feed/map/pv_mobile_page.dart'
     deferred as full_map_mobile;
-import 'package:hously_flutter/screens/network_monitoring/feed_pop/nm_feed_pop.dart'
+import 'package:hously_flutter/network_monitoring/feed_pop/nm_feed_pop.dart'
     deferred as nm_feed_pop;
 import 'package:hously_flutter/screens/filters/filters_page.dart'
     deferred as filters_page;
@@ -52,16 +54,13 @@ import 'package:hously_flutter/screens/home_page/home_pc_page.dart'
     deferred as home_page;
 import 'package:hously_flutter/screens/learn_center/learn_center_page.dart'
     deferred as learn_center_page;
-import 'package:hously_flutter/screens/network_monitoring/list_with_save_searches/list_with_save_search_screen.dart'
-    deferred as list_with_save_search_screen;
-import 'package:hously_flutter/screens/network_monitoring/network_home_page/network_home_new/screens/monitoring_home_screen.dart'
-    deferred as monitoring_home_screen;
 import 'package:hously_flutter/screens/pop_pages/mobile_pop_appbar_page.dart'
     deferred as mobile_pop_appbar_page;
 import 'package:hously_flutter/screens/pop_pages/sort_pop_mobile_page.dart'
     deferred as sort_pop_mobile_page;
 import 'package:hously_flutter/screens/pop_pages/sort_pop_page.dart'
     deferred as sort_pop_page;
+
 import 'package:hously_flutter/screens/preview.dart' deferred as preview_page;
 import 'package:hously_flutter/screens/profile/add_offer/add_offer_page.dart'
     deferred as add_offer_page;
@@ -83,10 +82,21 @@ import 'package:hously_flutter/screens/profile_register/register_pro_pc_page.dar
     deferred as register_pro_pc_page;
 import 'package:hously_flutter/screens/reports/raporty_page.dart'
     deferred as raporty_page;
-import 'package:hously_flutter/screens/network_monitoring/.old/save_monitoring_page.dart'
-    deferred as save_monitoring_page;
-import 'package:hously_flutter/screens/network_monitoring/search_page/network_monitoring_page.dart'
+import 'package:hously_flutter/screens/profile/login/login/reset/reset_password_page.dart'
+    deferred as forgot_password;
+
+//////////////////// NETWORK MONITORING ////////////////////////////////
+import 'package:hously_flutter/network_monitoring/feed_page/nm_feed_screen.dart'
     deferred as network_monitoring_page;
+import 'package:hously_flutter/network_monitoring/list_with_save_searches/list_with_save_search_screen.dart'
+    deferred as list_with_save_search_screen;
+import 'package:hously_flutter/network_monitoring/network_home_page/network_home_new/screens/monitoring_home_screen.dart'
+    deferred as monitoring_home_screen;
+import 'package:hously_flutter/screens/settings/mobile/payments/pages/add_payment_screen.dart'
+    deferred as add_payment_screen;
+import 'package:hously_flutter/screens/settings/mobile/security%20&%20privacy/pages/two_step_mobile.dart'
+    deferred as two_step_mobile;
+
 import 'package:hously_flutter/screens/settings/settings_page.dart'
     deferred as settings_page;
 import 'package:hously_flutter/screens/todo/board/board_page.dart'
@@ -99,8 +109,10 @@ import 'package:hously_flutter/screens/top_pages/sell/sell_page.dart'
     deferred as sell_page;
 import 'package:hously_flutter/state_managers/data/crm/clients/clients_provider.dart'
     deferred as client_fetcher;
-import 'package:hously_flutter/state_managers/data/network_monitoring/feed_pop/nm_ad_provider.dart'
+import 'package:hously_flutter/network_monitoring/state_managers/feed_pop/nm_ad_provider.dart'
     deferred as nm_ad_provider;
+import 'package:hously_flutter/widgets/calendar/calendar_search_screen_widget.dart'
+    deferred as calendar_search_screen_widget;
 import 'package:hously_flutter/widgets/calendar/custom_repeat_widget.dart'
     deferred as custom_repeat_widget;
 import 'package:hously_flutter/widgets/calendar/events/event_widget.dart'
@@ -138,9 +150,9 @@ import 'package:hously_flutter/screens/settings/settings_router.dart'
 import 'package:meta_seo/meta_seo.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../models/ad/ad_list_view_model.dart';
-import '../screens/feed/about_us/about_us_main.dart';
-import '../state_managers/data/feed/feed_pop/providers/ad_provider.dart'
+import 'package:hously_flutter/models/ad/ad_list_view_model.dart';
+import 'package:hously_flutter/screens/feed/about_us/about_us_main.dart';
+import 'package:hously_flutter/state_managers/data/feed/feed_pop/providers/ad_provider.dart'
     deferred as ad_provider;
 
 final meta = kIsWeb ? MetaSEO() : null;
@@ -219,6 +231,36 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
                 child: _buildDeferredScreen(settings_page.loadLibrary,
                     () => settings_page.SettingsPage()));
           },
+          Routes.addCard: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.addCard),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(
+                    settings_page_router.loadLibrary,
+                    () => add_payment_screen.AddcardScreen(
+                          isCard: true,
+                        )));
+          },
+
+          Routes.addpayment: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.addpayment),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(settings_page_router.loadLibrary,
+                    () => add_payment_screen.AddPaymentScreen()));
+          },
+
+          Routes.twostep: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.twostep),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(two_step_mobile.loadLibrary,
+                    () => two_step_mobile.TwostepPassword()));
+          },
+
           Routes.settingsprofile: (context, state, data) {
             setupMetaTag(context);
             return BeamPage(
@@ -342,6 +384,16 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
                   () => login_page.LoginPage().seoController(context),
                 ));
           },
+          Routes.forgotpassword: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.forgotpassword),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(
+                    forgot_password.loadLibrary,
+                    () => forgot_password.ResetPasswordPage()
+                        .seoController(context)));
+          },
           Routes.editAccount: (context, state, data) {
             setupMetaTag(context);
             return BeamPage(
@@ -452,47 +504,7 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
                   sell_page.loadLibrary, () => sell_page.SellPage()),
             );
           },
-          Routes.networkMonitoring: (context, state, data) {
-            setupMetaTag(context);
-            return BeamPage(
-                key: const ValueKey(Routes.networkMonitoring),
-                title: Routes.getWebsiteTitle(context),
-                child: _buildDeferredScreen(
-                  network_monitoring_page.loadLibrary,
-                  () => network_monitoring_page.NetworkMonitoringPage(),
-                ));
-          },
-          Routes.networkMonitoringSingle: (context, state, data) {
-            final monitoringId = state.pathParameters['monitoringId']!;
-            final networkTag = (data as Map)['tagNetworkPop'] as String? ?? '';
-            final networkAd = (data)['adNetworkPop'] as MonitoringAdsModel?;
 
-            setupMetaTag(context);
-
-            if (networkTag.isEmpty) {
-              return BeamPage(
-                  key: const ValueKey(Routes.networkMonitoringSingle),
-                  title: Routes.getWebsiteTitle(context),
-                  child: _buildDeferredScreen(
-                    nm_ad_provider.loadLibrary,
-                    () => nm_ad_provider.NMAdFetcher(
-                      adNetworkPop: int.parse(monitoringId),
-                      tagNetworkPop: networkTag,
-                    ),
-                  ));
-            } else {
-              return BeamPage(
-                  key: const ValueKey(Routes.networkMonitoringSingle),
-                  title: Routes.getWebsiteTitle(context),
-                  child: _buildDeferredScreen(
-                    nm_feed_pop.loadLibrary,
-                    () => nm_feed_pop.NMFeedPop(
-                      adNetworkPop: networkAd!,
-                      tagNetworkPop: networkTag,
-                    ),
-                  ));
-            }
-          },
           Routes.imageView: (context, state, data) {
             final tag = ((data as Map)['tag'] ?? '') as String;
             final initialPage = (data)['initialPage'] as int? ?? 0;
@@ -522,8 +534,8 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
             return BeamPage(
               key: const ValueKey(Routes.proDashboard),
               title: Routes.getWebsiteTitle(context),
-              child: _buildDeferredScreen(dashboard_crm_page.loadLibrary,
-                  () => dashboard_crm_page.DashboardCrmPage()),
+              child: _buildDeferredScreen(new_dashboard_screen.loadLibrary,
+                  () => new_dashboard_screen.NewDashboardScreen()),
             );
           },
 
@@ -614,20 +626,6 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               ),
             );
           },
-          // Route: Save Network Monitoring
-          Routes.saveNetworkMonitoring: (context, state, data) {
-            setupMetaTag(context);
-
-            return BeamPage(
-              key: const ValueKey(Routes.saveNetworkMonitoring),
-              title: Routes.getWebsiteTitle(context),
-              child: _buildDeferredScreen(
-                list_with_save_search_screen.loadLibrary,
-                () => list_with_save_search_screen.ListWithSaveSearchScreen(),
-              ),
-            );
-          },
-
           // Example for a general lazy-loaded route
           Routes.proCalendar: (context, state, data) {
             setupMetaTag(context);
@@ -641,13 +639,17 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               ),
             );
           },
-          Routes.homeNetworkMonitoring: (context, state, data) {
+          Routes.calendarSearchScreen: (context, state, data) {
             setupMetaTag(context);
+
             return BeamPage(
-              key: const ValueKey(Routes.homeNetworkMonitoring),
+              key: const ValueKey(Routes.calendarSearchScreen),
               title: Routes.getWebsiteTitle(context),
-              child: _buildDeferredScreen(monitoring_home_screen.loadLibrary,
-                  () => monitoring_home_screen.MonitoringHomeScreen()),
+              child: _buildDeferredScreen(
+                calendar_search_screen_widget.loadLibrary,
+                () =>
+                    calendar_search_screen_widget.CalendarSearchScreenWidget(),
+              ),
             );
           },
           Routes.proAddClient: (context, state, data) {
@@ -655,8 +657,8 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
             return BeamPage(
               key: const ValueKey(Routes.proAddClient),
               title: Routes.getWebsiteTitle(context),
-              child: _buildDeferredScreen(add_client.loadLibrary,
-                  () => add_client.AddClientPopPc()),
+              child: _buildDeferredScreen(
+                  add_client.loadLibrary, () => add_client.AddClientPopPc()),
             );
           },
           Routes.proRegister: (context, state, data) {
@@ -739,7 +741,7 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               type: BeamPageType.fadeTransition, // Use built-in fade transition
               title: Routes.getWebsiteTitle(context),
               child: _buildDeferredScreen(
-                  filters_page.loadLibrary, () => filters_page.FiltersPage()),
+                  filters_page.loadLibrary, () => filters_page.FiltersPage(tag: '')), // change to production
             );
           },
           Routes.articlePop: (context, state, data) {
@@ -850,63 +852,6 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               ),
             );
           },
-          Routes.addClientForm: (context, state, data) {
-            setupMetaTag(context);
-            return BeamPage(
-              key: const ValueKey(Routes.addClientForm),
-              title: Routes.getWebsiteTitle(context),
-              child: _buildDeferredScreen(
-                add_client_form.loadLibrary,
-                    () => add_client_form.AddClientFormScreen(),
-              ),
-            );
-          },
-          // Routes.chatMobile: (context, state, data) {
-          //   setupMetaTag(context);
-          //   return BeamPage(
-          //     key: const ValueKey(Routes.chatMobile),
-          //     title: Routes.getWebsiteTitle(context),
-          //     child: ChatScreenPc(),
-          //   );
-          // },
-          // Routes.chatScreenMobile: (context, state, data) {
-          //   final selectedRoomId =
-          //       ((data as Map)['selectedRoomId'] ?? '') as String;
-          //
-          //   setupMetaTag(context);
-          //   return BeamPage(
-          //     key: const ValueKey(Routes.chatScreenMobile),
-          //     type: BeamPageType.fadeTransition,
-          //     title: Routes.getWebsiteTitle(context),
-          //     child: ChatScreenMobilePage(
-          //       key: ValueKey(data['selectedRoomId']),
-          //       channel: data['channel'],
-          //       username: data['username'],
-          //       roomId: data['selectedRoomId'],
-          //     ),
-          //   );
-          // },
-          // Routes.feedPop: (context, state, data) {
-          //   final feedAdId = state.pathParameters['adId']!;
-          //   final tag = ((data as Map)['tag'] ?? '') as String;
-          //   final feedAd = (data)['ad'] as AdsListViewModel;
-          //
-          //   if (tag.isEmpty) {
-          //     setupMetaTag(context);
-          //     return TransparentBeamPage(
-          //       key: const ValueKey(Routes.adSingle),
-          //       name: Routes.adSingle,
-          //       child: AdFetcher(feedAdId: feedAdId as int, tag: tag),
-          //     );
-          //   } else {
-          //     setupMetaTag(context);
-          //     return TransparentBeamPage(
-          //       key: const ValueKey(Routes.adSingle),
-          //       name: Routes.adSingle,
-          //       child: _buildDeferredScreen(feed_pop.loadLibrary, () => feed_pop.FeedPopPage(adFeedPop: feedAd, tagFeedPop: tag),),
-          //     );
-          //   }
-          // },
           Routes.registerPop: (context, state, data) {
             setupMetaTag(context);
             return BeamPage(
@@ -965,16 +910,6 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               ),
             );
           },
-          // Routes.profile: (context, state, data) {
-          //   setupMetaTag(context);
-          //
-          //   return BeamPage(
-          //     key: const ValueKey(Routes.profile),
-          //     type: BeamPageType.fadeTransition,
-          //     title: Routes.getWebsiteTitle(context),
-          //     child: const ProfilePage(),
-          //   );
-          // },
           Routes.mobilePop: (context, state, data) {
             setupMetaTag(context);
 
@@ -989,6 +924,62 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
             );
           },
 
+
+          
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////NETWORK MONITORING///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// 
+
+            Routes.networkMonitoring: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.networkMonitoring),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(
+                  network_monitoring_page.loadLibrary,
+                  () => network_monitoring_page.NMFeedPage(),
+                ));
+          },
+          // Route: Save Network Monitoring
+          Routes.saveNetworkMonitoring: (context, state, data) {
+            setupMetaTag(context);
+
+            return BeamPage(
+              key: const ValueKey(Routes.saveNetworkMonitoring),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                list_with_save_search_screen.loadLibrary,
+                () => list_with_save_search_screen.ListWithSaveSearchScreen(),
+              ),
+            );
+          },
+          Routes.homeNetworkMonitoring: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.homeNetworkMonitoring),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(monitoring_home_screen.loadLibrary,
+                  () => monitoring_home_screen.MonitoringHomeScreen()),
+            );
+          },
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////POP APP BAR CLIENTS//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
           Routes.proSingleClient: (context, state, data) =>
               clientViewPage(state, context, data),
           Routes.proCalenderClient: (context, state, data) =>
@@ -1007,6 +998,29 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               clientViewPage(state, context, data),
           Routes.proTodoClient: (context, state, data) =>
               clientViewPage(state, context, data),
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+              
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////FEED POP PORTAL//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+          // Routes.adEntry: (context, state, data) =>
+          //     adViewPage(state, context, data),
           Routes.adFeedView: (context, state, data) =>
               adViewPage(state, context, data),
           Routes.adHomePage: (context, state, data) =>
@@ -1021,15 +1035,93 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               adViewPage(state, context, data),
           Routes.adFullSize: (context, state, data) =>
               adViewPage(state, context, data),
+          Routes.basicviewAd: (context, state, data) =>
+              adViewPage(state, context, data),
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////NETWORK MONITORING///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////        
+          Routes.networkMonitoringSingle: (context, state, data) =>
+              nmAdViewPage(state, context, data),
+          Routes.nmAdHomePage: (context, state, data) =>
+              nmAdViewPage(state, context, data),
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////AGENT CRM ADD CLIENT/////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+  Routes.addClientFormDashboard: (context, state, data) =>
+      crmAddClientForm(state, context, data),
+  Routes.addClientFormFinance: (context, state, data) =>
+      crmAddClientForm(state, context, data),
+  Routes.addClientFormCalendar: (context, state, data) =>
+      crmAddClientForm(state, context, data),
+  Routes.addClientFormToDo: (context, state, data) =>
+      crmAddClientForm(state, context, data),
+  Routes.addClientFormClientList: (context, state, data) =>
+      crmAddClientForm(state, context, data),
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+              
+
+
+
+
+
         },
       ).call,
     );
 
+
+    
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////POP APP BAR CLIENTS//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 BeamPage clientViewPage(BeamState state, BuildContext context, dynamic data) {
   final clientId = int.parse(state.pathParameters['clientId']!);
-  final activeSectionFetch = state.pathParameters['activeSection'] ??
-      'dashboard'; //change to production set directory to dashboard
-  final activeAdFetch = state.pathParameters['activeAd'] ?? 'dashboard';
+  final activeSectionFetch =
+      state.pathParameters['activeSection'] ?? 'Dashboard';
+  final activeAdFetch = state.pathParameters['activeAd'] ?? 'Dashboard';
 
   if (data == null) {
     return BeamPage(
@@ -1090,14 +1182,70 @@ BeamPage clientViewPage(BeamState state, BuildContext context, dynamic data) {
   }
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////CLIENT POP VIEW//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+BeamPage crmAddClientForm(BeamState state, BuildContext context, dynamic data) {
+  // final clientId = int.parse(state.pathParameters['clientId']!);
+  // final activeSectionFetch = state.pathParameters['activeSection'] ?? 'Viewer';
+  // final route = state.pathParameters['route'];
+  // setupMetaTag(context);
+
+    return BeamPage(
+              key: const ValueKey(Routes.proSingleClient),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                add_client_form.loadLibrary,
+                    () => add_client_form.AddClientFormScreen(),
+              ),
+      routeBuilder: (context, settings, child) =>
+          transparentRouteBuilder(context, settings, child),
+    );
+  
+
+
+}
+
+          
+      //     Routes.addClientFormDashboard: (context, state, data) {
+      //       setupMetaTag(context);
+
+      //       return BeamPage(
+      //         key: const ValueKey(Routes.loginPop),
+      //         type: BeamPageType.fadeTransition,
+      //         title: Routes.getWebsiteTitle(context),
+      //         child: _buildDeferredScreen(
+      //           add_client_form.loadLibrary,
+      //               () => add_client_form.AddClientFormScreen(),
+      //         ),
+      // routeBuilder: (context, settings, child) =>
+      //     transparentRouteBuilder(context, settings, child),
+      //       );
+      //     },
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////FEED POP PORTAL//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 BeamPage adViewPage(BeamState state, BuildContext context, dynamic data) {
   final feedAdId = int.parse(state.pathParameters['id']!);
   final route = state.pathParameters['route'];
 
   if (data == null) {
+    print("open fp with ad fetcher, non tag");
     setupMetaTag(context);
     return BeamPage(
-      key: ValueKey('commonPagfeed_pop.e-$route-$feedAdId'),
+      key: ValueKey('commonPage-$route-$feedAdId'),
       title: 'AD',
       child: _buildDeferredScreen(ad_provider.loadLibrary,
           () => ad_provider.AdFetcher(feedAdId: feedAdId, tag: '')),
@@ -1110,6 +1258,7 @@ BeamPage adViewPage(BeamState state, BuildContext context, dynamic data) {
   final feedAd = (data)['ad'] as AdsListViewModel;
 
   if (tag.isEmpty) {
+    print("open fp with ad fetcher");
     setupMetaTag(context);
     return BeamPage(
       key: ValueKey('commonPage-$route-$feedAdId'),
@@ -1122,6 +1271,7 @@ BeamPage adViewPage(BeamState state, BuildContext context, dynamic data) {
           transparentRouteBuilder(context, settings, child),
     );
   } else {
+    print("open feed pop page ");
     setupMetaTag(context);
     return BeamPage(
       key: ValueKey('commonPage-$route-$feedAdId'),
@@ -1129,6 +1279,70 @@ BeamPage adViewPage(BeamState state, BuildContext context, dynamic data) {
       child: _buildDeferredScreen(
         feed_pop.loadLibrary,
         () => feed_pop.FeedPopPage(adFeedPop: feedAd, tagFeedPop: tag),
+      ),
+      routeBuilder: (context, settings, child) =>
+          transparentRouteBuilder(context, settings, child),
+    );
+  }
+}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////NETWORK MONITORING///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// 
+
+BeamPage nmAdViewPage(BeamState state, BuildContext context, dynamic data) {
+  final netoworkId = int.parse(state.pathParameters['id']!);
+  final route = state.pathParameters['route'];
+  print('fucking $route');
+  print('jebac to id $netoworkId');
+  print(data);
+
+  if (data == null) {
+    setupMetaTag(context);
+    return BeamPage(
+      key: ValueKey('commonPage-$route-$netoworkId'),
+      title: 'Network Monitorign offer',
+      child: _buildDeferredScreen(
+          nm_ad_provider.loadLibrary,
+          () => nm_ad_provider.NMAdFetcher(
+              adNetworkPop: netoworkId, tagNetworkPop: '')),
+      routeBuilder: (context, settings, child) =>
+          transparentRouteBuilder(context, settings, child),
+    );
+  }
+
+  final tag = ((data as Map)['tag'] ?? '') as String;
+  final feedAd = (data)['ad'] as MonitoringAdsModel;
+
+  if (tag.isEmpty) {
+    setupMetaTag(context);
+    return BeamPage(
+      key: ValueKey('commonPage-$route-$netoworkId'),
+      title: 'Network Monitorign offer',
+      child: _buildDeferredScreen(
+        nm_ad_provider.loadLibrary,
+        () => nm_ad_provider.NMAdFetcher(
+            adNetworkPop: netoworkId, tagNetworkPop: tag),
+      ),
+      routeBuilder: (context, settings, child) =>
+          transparentRouteBuilder(context, settings, child),
+    );
+  } else {
+    setupMetaTag(context);
+    return BeamPage(
+      key: ValueKey('commonPage-$route-$netoworkId'),
+      title: 'Network Monitorign offer',
+      child: _buildDeferredScreen(
+        nm_feed_pop.loadLibrary,
+        () => nm_feed_pop.NMFeedPop(adNetworkPop: feedAd, tagNetworkPop: tag),
       ),
       routeBuilder: (context, settings, child) =>
           transparentRouteBuilder(context, settings, child),

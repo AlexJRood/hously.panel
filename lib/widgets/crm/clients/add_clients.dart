@@ -85,7 +85,7 @@ class SortPopPageState extends ConsumerState<AddClientPopPc> {
           },
         ),
         Hero(
-          tag: 'addClientPagePop',
+          tag: 'addClientPagePop-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
           child: Align(
             alignment: Alignment.center,
             child: Container(

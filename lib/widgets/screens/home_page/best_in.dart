@@ -11,6 +11,7 @@ import 'package:hously_flutter/state_managers/data/home_page/listing_provider.da
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart';
@@ -74,20 +75,15 @@ class _BestInState extends ConsumerState<BestIn> {
         ),
         const SizedBox(height: 20.0),
         recentlyViewedAdsAsyncValue.when(
-          data: (displayedAds) => GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              // Manually scroll by dragging
-              _scrollController.jumpTo(
-                _scrollController.offset - details.delta.dx,
-              );
-            },
+          data: (displayedAds) => DragScrollView(
+            controller: _scrollController,
             child: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: displayedAds.map((bestin) {
                   String formattedPrice = customFormat.format(bestin.price);
-                  final tag = 'bestin31231${bestin.id}';
+                  final tag = 'bestin31231${bestin.id}-${UniqueKey().toString()}';
                   final mainImageUrl =
                       bestin.images.isNotEmpty ? bestin.images[0] : '';
                   return PieMenu(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/screens/filters/filters_page.dart';
 import 'package:hously_flutter/screens/pop_pages/sort_pop_mobile_page.dart';
@@ -29,6 +31,7 @@ class FeedBarMobile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentthememode = ref.watch(themeProvider);
+    final tag = 'searchBar-6-${UniqueKey().toString()}';
    
     return Container(
       height: 45,
@@ -52,14 +55,15 @@ class FeedBarMobile extends ConsumerWidget {
                         currentthememode == ThemeMode.light
                     ? Colors.black.withOpacity(0.1)
                     : Colors.white.withOpacity(0.1)),
-            child: const NavigationBarContent(),
+            child: NavigationBarContent(tag: tag),
             ),),),
     );
   }
 }
 
 class NavigationBarContent extends ConsumerWidget {
-  const NavigationBarContent({super.key});
+  final tag;
+  const NavigationBarContent({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,6 +77,7 @@ class NavigationBarContent extends ConsumerWidget {
         const SizedBox(width: 35),
         const Spacer(flex: 3),
         BuildNavigationOption(
+          tag:tag,
           icon: Icons.search,
           label: 'Filtruj'.tr,
             onTap: () {
@@ -80,7 +85,7 @@ class NavigationBarContent extends ConsumerWidget {
                 PageRouteBuilder(
                   opaque: false,
                   pageBuilder: (_, __, ___) =>
-                  const FiltersPage(),
+                  FiltersPage(tag: tag),
                   transitionsBuilder: (_, anim, __, child) {
                     return FadeTransition(opacity: anim, child: child);
                   },
@@ -90,6 +95,7 @@ class NavigationBarContent extends ConsumerWidget {
         ),
         const SizedBox(width: 5),
         BuildNavigationOption(
+          tag:tag,
           icon: Icons.sort,
           label: 'Sortuj'.tr,
           onTap: () {
@@ -107,6 +113,7 @@ class NavigationBarContent extends ConsumerWidget {
         ),
         const SizedBox(width: 5),
         BuildNavigationOption(
+          tag:tag,
           icon: Icons.map,
           label: 'Mapa'.tr,
             onTap: () {
@@ -150,8 +157,8 @@ class NavigationBarContent extends ConsumerWidget {
                   ref.read(bottomBarVisibilityProvider.notifier).state =
                       !ref.read(bottomBarVisibilityProvider);
                 },
-                icon: Icon(Icons.arrow_back_ios_new_rounded,
-                    size: 25, color: iconColor),
+                icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                    height: 25,width: 25, color: iconColor),
               ),
             ),
           ],
@@ -168,9 +175,11 @@ class BuildNavigationOption extends ConsumerWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    required this. tag,
   });
   final IconData icon;
   final String label;
+  final tag;
   final VoidCallback onTap;
 
   @override
@@ -187,7 +196,7 @@ class BuildNavigationOption extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Hero(
-            tag: 'searchBar-6',
+            tag: tag,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

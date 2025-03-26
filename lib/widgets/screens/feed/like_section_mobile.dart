@@ -11,239 +11,137 @@ import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
 
 class MobileLikeSectionFeedPop extends ConsumerWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final adFeedPopId;
-  final WidgetRef ref;
-  final BuildContext context;
+  final dynamic adFeedPop;
 
   const MobileLikeSectionFeedPop({
     super.key,
-    required this.adFeedPopId,
-    required this.ref,
-    required this.context,
+    required this.adFeedPop,
   });
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeColorsProvider);
 
+    // **✅ Real-time state watch instead of FutureBuilder**
+    final isFavorite = ref.watch(favAdsProvider).maybeWhen(
+      data: (ads) => ads.any((ad) => ad.id == adFeedPop.id),
+      orElse: () => false,
+    );
+
+    final isHidden = ref.watch(hideAdsProvider).maybeWhen(
+      data: (ads) => ads.any((ad) => ad.id == adFeedPop.id),
+      orElse: () => false,
+    );
+
     return Container(
-      height: 61.0,
+      height: 70,
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 20,
+          const SizedBox(width: 20),
+
+          // **📞 Call Button**
+          ActionButton(
+            icon: Icons.phone,
+            label: 'Zadzoń'.tr,
+            theme: theme,
+            onPressed: () {
+              ref.read(navigationService).beamPop();
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: elevatedButtonStyleRounded10,
-              onPressed: () {
-                ref.read(navigationService).beamPop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: FutureBuilder<bool>(
-                  future:
-                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPopId),
-                  builder: (context, snapshot) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 40,
-                          child: Icon(Icons.phone, color: theme.popUpIconColor),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text('Zadzoń'.tr,
-                            style: AppTextStyles.interMedium.copyWith(
-                                fontSize: 8,
-                                color: theme.popUpIconColor.withOpacity(0.35)))
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+
+          // **💬 Message Button**
+          ActionButton(
+            icon: Icons.send,
+            label: 'Wiadomość'.tr,
+            theme: theme,
+            onPressed: () {
+              ref.read(navigationService).beamPop();
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: elevatedButtonStyleRounded10,
-              onPressed: () {
-                ref.read(navigationService).beamPop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: FutureBuilder<bool>(
-                  future:
-                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPopId),
-                  builder: (context, snapshot) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                         SizedBox(
-                          width: 40,
-                          child: Icon(
-                            Icons.send,
-                            color:theme.popUpIconColor,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text('Wiadomość'.tr,
-                            style: AppTextStyles.interMedium.copyWith(
-                                fontSize: 8,
-                                color: theme.popUpIconColor.withOpacity(0.35)))
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ),
+
+          // **🔗 Share Button**
+          ActionButton(
+            icon: FontAwesomeIcons.share,
+            label: 'Udostępnij'.tr,
+            theme: theme,
+            onPressed: () {
+              handleShareAction(adFeedPop, context, ref);
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: elevatedButtonStyleRounded10,
-              onPressed: () {
-                handleShareAction(adFeedPopId, context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Column(
-                  children: [
-                     SizedBox(
-                      width: 40,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.share,
-                            color: theme.popUpIconColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text('Udostępnij'.tr,
-                        style: AppTextStyles.interMedium.copyWith(
-                            fontSize: 8,
-                            color:theme.popUpIconColor.withOpacity(0.35)))
-                  ],
-                ),
-              ),
-            ),
+
+          // **👁️ Hide/Show Button**
+          ActionButton(
+            icon: isHidden ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
+            label: 'Ukryj'.tr,
+            theme: theme,
+            onPressed: () {
+              handleHideAction(ref, adFeedPop, context);
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: elevatedButtonStyleRounded10,
-              onPressed: () {
-                handleFavoriteAction(ref, adFeedPopId, context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: FutureBuilder<bool>(
-                  future:
-                      ref.watch(hideAdsProvider.notifier).isHide(adFeedPopId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            width: 40,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  snapshot.data!
-                                      ? FontAwesomeIcons.eye
-                                      : FontAwesomeIcons.eyeSlash,
-                                  color: theme.popUpIconColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text('Ukryj'.tr,
-                              style: AppTextStyles.interMedium.copyWith(
-                                  fontSize: 8,
-                                  color:theme.popUpIconColor.withOpacity(0.35)))
-                        ],
-                      );
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ),
-            ),
+
+          // **❤️ Favorite Button**
+          ActionButton(
+            icon: isFavorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+            label: 'Ulubione'.tr,
+            theme: theme,
+            onPressed: () {
+              handleFavoriteAction(ref, adFeedPop, context);
+            },
           ),
-          Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              style: elevatedButtonStyleRounded10,
-              onPressed: () {
-                handleFavoriteAction(ref, adFeedPopId, context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: FutureBuilder<bool>(
-                  future: ref
-                      .watch(favAdsProvider.notifier)
-                      .isFavorite(adFeedPopId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            width: 40,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  snapshot.data!
-                                      ? FontAwesomeIcons.solidHeart
-                                      : FontAwesomeIcons.heart,
-                                  color: theme.popUpIconColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text('Ulubione'.tr,
-                              style: AppTextStyles.interMedium.copyWith(
-                                  fontSize: 8,
-                                  color: theme.popUpIconColor.withOpacity(0.35)))
-                        ],
-                      );
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
-                  },
-                ),
-              ),
-            ),
-          ),
+
           const SizedBox(width: 20),
         ],
+      ),
+    );
+  }
+}
+
+/// **✅ StatelessWidget for Action Buttons**
+class ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final dynamic theme;
+  final VoidCallback onPressed;
+
+  const ActionButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.theme,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: ElevatedButton(
+        style: elevatedButtonStyleRounded10,
+        onPressed: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              SizedBox(
+                width: 40,
+                child: Icon(icon, color: theme.popUpIconColor),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                label,
+                style: AppTextStyles.interMedium.copyWith(
+                  fontSize: 8,
+                  color: theme.popUpIconColor.withOpacity(0.35),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -10,13 +10,13 @@ import 'package:hously_flutter/utils/pie_menu/feed.dart';
 
 class FullLikeSectionFeedPop extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final adFeedPopId;
+  final dynamic adFeedPop;
   final WidgetRef ref;
   final BuildContext context;
 
   const FullLikeSectionFeedPop({
     super.key,
-    required this.adFeedPopId,
+    required this.adFeedPop,
     required this.ref,
     required this.context,
   });
@@ -30,11 +30,11 @@ class FullLikeSectionFeedPop extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleFavoriteAction(ref, adFeedPopId, context);
+              handleFavoriteAction(ref, adFeedPop, context);
             },
             child: FutureBuilder<bool>(
               future:
-                  ref.watch(favAdsProvider.notifier).isFavorite(adFeedPopId),
+                  ref.watch(favAdsProvider.notifier).isFavorite(adFeedPop),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Padding(
@@ -78,10 +78,10 @@ class FullLikeSectionFeedPop extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleHideAction(ref, adFeedPopId, context);
+              handleHideAction(ref, adFeedPop, context);
             },
             child: FutureBuilder<bool>(
-              future: ref.watch(hideAdsProvider.notifier).isHide(adFeedPopId),
+              future: ref.watch(hideAdsProvider.notifier).isHide(adFeedPop),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Padding(
@@ -126,7 +126,7 @@ class FullLikeSectionFeedPop extends StatelessWidget {
           child: ElevatedButton(
             style: elevatedButtonStyleRounded10,
             onPressed: () {
-              handleShareAction(adFeedPopId, context);
+              handleShareAction(adFeedPop, context, ref);
             },
             child: Padding(
               padding: const EdgeInsets.all(5),

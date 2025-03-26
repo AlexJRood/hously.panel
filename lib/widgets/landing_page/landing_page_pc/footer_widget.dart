@@ -69,6 +69,7 @@ class FooterWidget extends ConsumerWidget {
                             height: 48,
                             width: 345,
                             child: TextField(
+                              style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 suffixIcon: const Icon(
                                   Icons.arrow_forward,
@@ -123,7 +124,7 @@ class FooterWidget extends ConsumerWidget {
                     ),
 
                     // Navigation Links
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +153,7 @@ class FooterWidget extends ConsumerWidget {
                     ),
 
                     // Categories
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         spacing: footerSpacer,

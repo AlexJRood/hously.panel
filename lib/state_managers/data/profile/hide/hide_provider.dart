@@ -1,8 +1,10 @@
 // ignore_for_file: empty_catches
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/models/ad/hide_ads_view_model.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/saved_search/add_client.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,25 +36,25 @@ class HideFiltersLogicNotifier
     // Zapisz inne filtry, jeśli są potrzebne
   }
 
-  void setSortOrder(String order,dynamic ref) {
+  void setSortOrder(String order, dynamic ref) {
     sortOrder = order;
     _saveFilters();
     applyFilters(ref);
   }
 
-  void setSearchQuery(String query,dynamic ref) {
+  void setSearchQuery(String query, dynamic ref) {
     searchQuery = query;
     _saveFilters();
     applyFilters(ref);
   }
 
-  void setExcludeQuery(String query,dynamic ref) {
+  void setExcludeQuery(String query, dynamic ref) {
     excludeQuery = query;
     _saveFilters();
     applyFilters(ref);
   }
 
-  void addFilter(String key, dynamic value,dynamic ref) {
+  void addFilter(String key, dynamic value, dynamic ref) {
     if (value != null && value.toString().isNotEmpty) {
       filters[key] = value;
     } else {
@@ -62,7 +64,7 @@ class HideFiltersLogicNotifier
     applyFilters(ref);
   }
 
-  void removeFilter(String key,dynamic ref) {
+  void removeFilter(String key, dynamic ref) {
     filters.remove(key);
     _saveFilters();
     applyFilters(ref);
@@ -77,21 +79,44 @@ class HideFiltersLogicNotifier
   }
 
   Future<bool> isHide(int adId) async {
+    final hiddenAds = state.valueOrNull?.map((ad) => ad.id).toSet() ?? {};
+    return hiddenAds.contains(adId);
+  }
+
+  Future<void> toggleHide(int adId,BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     final hideList = prefs.getStringList('hide') ?? [];
-    return hideList.contains(adId.toString());
+    bool isHidden = hideList.contains(adId.toString());
+
+    if (isHidden) {
+      hideList.remove(adId.toString());
+      await removeFromHide(adId);
+      context.showSnackBarLikeSection('Usunięto z ukrytych');
+    } else {
+      hideList.add(adId.toString());
+      await addToHide(adId);
+      context.showSnackBarLikeSection('Dodano do ukrytych');
+    }
+
+    await prefs.setStringList('hide', hideList);
+    state = AsyncData(
+      hideList
+          .map((id) => const HideAdsViewModel().copyWith(
+                id: int.parse(id),
+              ))
+          .toList(),
+    );
   }
 
   Future<void> addToHide(int adId) async {
     try {
-      // Wykonanie żądania POST z użyciem Dio
       final response = await ApiServices.post(
         URLs.apiHideAdd('$adId'),
         hasToken: true,
       );
 
-      // Sprawdzenie statusu odpowiedzi
       if (response != null && response.statusCode == 200) {
+        print('added to hide');
         final prefs = await SharedPreferences.getInstance();
         final hideList = prefs.getStringList('hide') ?? [];
         hideList.add(adId.toString());
@@ -102,14 +127,13 @@ class HideFiltersLogicNotifier
 
   Future<void> removeFromHide(int adId) async {
     try {
-      // Wykonanie żądania POST z użyciem Dio
       final response = await ApiServices.post(
         URLs.apiHideRemove('$adId'),
         hasToken: true,
       );
 
-      // Sprawdzenie statusu odpowiedzi
       if (response != null && response.statusCode == 200) {
+        print('removed from hide');
         final prefs = await SharedPreferences.getInstance();
         final hideList = prefs.getStringList('hide') ?? [];
         hideList.remove(adId.toString());

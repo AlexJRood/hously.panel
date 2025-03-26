@@ -38,7 +38,10 @@ class TransactionNotifier extends StateNotifier<AsyncValue<TransactionState>> {
       );
       if (transactionsResponse == null) return;
       final decodedDatabody = utf8.decode(transactionsResponse.data);
-      final decodeData = json.decode(decodedDatabody) as List;
+      final decodedJson = json.decode(decodedDatabody);
+
+// Ensure the API response is a list
+      final decodeData = (decodedJson is List) ? decodedJson : (decodedJson['results'] as List);
 
       final transactions = decodeData
           .map((revenue) => AgentTransactionModel.fromJson(revenue)).toList();
@@ -57,7 +60,9 @@ class TransactionNotifier extends StateNotifier<AsyncValue<TransactionState>> {
             final listingsJson = json.decode(decodedStatusesBody) as Map<String, dynamic>;
 
             // Pobranie listy "results"
-            final decodeStatuses = listingsJson['results'] as List<dynamic>?;
+      final decodeStatuses = (listingsJson['results'] is List)
+          ? listingsJson['results'] as List<dynamic>
+          : [];
 
             if (decodeStatuses == null || decodeStatuses.isEmpty) {
               print("No results found in the response");

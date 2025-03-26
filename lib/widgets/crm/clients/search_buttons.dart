@@ -5,11 +5,10 @@ import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/crm/user_contact_status_model.dart';
 import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/widgets/invoice_pdf_generator/model/invoise_model.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 
 class StatusFilterWidget extends ConsumerStatefulWidget {
-  const StatusFilterWidget({Key? key}) : super(key: key);
+  const StatusFilterWidget({super.key});
 
   @override
   ConsumerState<StatusFilterWidget> createState() => _StatusFilterWidgetState();
@@ -53,7 +52,8 @@ class _StatusFilterWidgetState extends ConsumerState<StatusFilterWidget> {
     // Wyszukiwanie po zmianie zawartości pola
     ref.read(clientProvider.notifier).fetchClients(
           status: selectedStatus,
-          searchQuery:searchController.text, // Przekazujemy zapytanie wyszukiwania
+          searchQuery:
+              searchController.text, // Przekazujemy zapytanie wyszukiwania
         );
   }
 
@@ -63,218 +63,214 @@ class _StatusFilterWidgetState extends ConsumerState<StatusFilterWidget> {
     final currentThemeMode = ref.watch(themeProvider);
     final colorScheme = Theme.of(context).colorScheme;
 
-    final selectedBackgroundColor = currentThemeMode == ThemeMode.system
-        ? AppColors.buttonGradient1
-        : colorScheme.secondary;
-
-    final unselectedBackgroundColor = currentThemeMode == ThemeMode.system
-        ? Colors.white // White background for system theme when not selected
-        : currentThemeMode == ThemeMode.light
-            ? Colors.white // White background for light mode
-            : AppColors.dark; // Dark background for dark mode
-
     final selectedTextColor = currentThemeMode == ThemeMode.system
-        ? Colors.white
+        ? Colors.black
         : colorScheme.onPrimary;
 
     final unselectedTextColor = currentThemeMode == ThemeMode.system
-        ? AppColors.textColorDark
+        ? AppColors.light
         : currentThemeMode == ThemeMode.light
             ? AppColors.textColorDark
             : AppColors.textColorLight;
-    double screenWidth = MediaQuery.of(context).size.width;
-    double searchWidth = screenWidth / 2;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 50,
-          width: searchWidth,
-          child: TextField(
-            style: AppTextStyles.interMedium16.copyWith(color: theme.textFieldColor),
-            controller: searchController,
-            decoration: InputDecoration(
-              fillColor: theme.fillColor,
-              labelText: 'Szukaj klientów'.tr,
-              labelStyle: AppTextStyles.interMedium14.copyWith(color: theme.textFieldColor),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-              ),
-              suffixIcon: Icon(Icons.search, color: theme.textFieldColor),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        SizedBox(
-          width: searchWidth,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-
-
-
-
-
-FutureBuilder<List<UserContactStatusModel>>(
-  future: ref.watch(clientProvider.notifier).fetchStatuses(ref),
-  builder: (BuildContext context, AsyncSnapshot<List<UserContactStatusModel>> snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ShimmerPlaceholder(width: 60, height: 30, radius: 5),
-            SizedBox(width: 5),
-            ShimmerPlaceholder(width: 60, height: 30, radius: 5),
-            SizedBox(width: 5),
-            ShimmerPlaceholder(width: 80, height: 30, radius: 5),
-            SizedBox(width: 5),
-            ShimmerPlaceholder(width: 80, height: 30, radius: 5),
-            SizedBox(width: 5),
-          ],
-        ),
-      );
-    } else if (snapshot.hasError) {
-      return Text(
-        'Failed to load statuses',
-        style: TextStyle(color: Theme.of(context).iconTheme.color),
-      );
-    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      return Text(
-        'No statuses available',
-        style: TextStyle(color: Theme.of(context).iconTheme.color),
-      );
-    }
-
-    List<UserContactStatusModel> statuses = snapshot.data!;
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+    double screenWidth = MediaQuery.of(context).size.width-160;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: selectedStatus == '' ? selectedBackgroundColor : unselectedBackgroundColor,
-              foregroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                selectedStatus;
-              });
-              ref.read(clientProvider.notifier).fetchClients(status: selectedStatus);
-            },
-            child: Text(
-              'All',
-              style: AppTextStyles.interMedium14dark.copyWith(
-                color: selectedStatus == '' ? selectedTextColor : unselectedTextColor,
+          SizedBox(
+            height: 50,
+            width: screenWidth,
+            child: TextField(
+              style: AppTextStyles.interMedium16
+                  .copyWith(color: Colors.white),
+              controller: searchController,
+              cursorColor: const Color.fromRGBO(79, 79, 79, 1),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Color.fromRGBO(79, 79, 79, 1),
+                ),
+                filled: true,
+                fillColor: const Color.fromRGBO(35, 35, 35, 1),
+                hintText: 'Szukaj klientów'.tr,
+                hintStyle: AppTextStyles.interMedium14
+                    .copyWith(color: const Color.fromRGBO(79, 79, 79, 1)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none
+                ),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide.none
+                )
               ),
             ),
           ),
-          const SizedBox(width: 10),
-          ...statuses.map((UserContactStatusModel status) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: selectedStatus == status.statusName
-                      ? selectedBackgroundColor
-                      : unselectedBackgroundColor,
-                  foregroundColor: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                  ),
+          const SizedBox(height: 15),
+          SizedBox(
+            width: screenWidth,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FutureBuilder<List<UserContactStatusModel>>(
+                  future: ref.watch(clientProvider.notifier).fetchStatuses(ref),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<UserContactStatusModel>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ShimmerPlaceholder(width: 60, height: 30, radius: 5),
+                            SizedBox(width: 5),
+                            ShimmerPlaceholder(width: 60, height: 30, radius: 5),
+                            SizedBox(width: 5),
+                            ShimmerPlaceholder(width: 80, height: 30, radius: 5),
+                            SizedBox(width: 5),
+                            ShimmerPlaceholder(width: 80, height: 30, radius: 5),
+                            SizedBox(width: 5),
+                          ],
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Failed to load statuses',
+                        style:
+                            TextStyle(color: Theme.of(context).iconTheme.color),
+                      );
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Text(
+                        'No statuses available',
+                        style:
+                            TextStyle(color: Theme.of(context).iconTheme.color),
+                      );
+                    }
+
+                    List<UserContactStatusModel> statuses = snapshot.data!;
+
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // "All" Button to fetch all clients
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: selectedStatus == null
+                                  ? const Color.fromRGBO(200, 200, 200, 1) // Selected state
+                                  : Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                side: BorderSide(color: Color.fromRGBO(90, 90, 90, 1)),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                selectedStatus = null; // Reset to null to fetch all
+                              });
+                              ref.read(clientProvider.notifier).fetchClients(status: null); // Fetch all clients
+                            },
+                            child: Text(
+                              'All',
+                              style: AppTextStyles.interMedium14dark.copyWith(
+                                color: selectedStatus == null // Fixed condition
+                                    ? selectedTextColor
+                                    : unselectedTextColor,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+
+                          // Dynamically generate buttons for each status
+                          ...statuses.map((UserContactStatusModel status) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: selectedStatus == status.statusId
+                                      ? const Color.fromRGBO(200, 200, 200, 1) // Selected state
+                                      : Colors.transparent,
+                                  foregroundColor: Colors.white,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                    side: BorderSide(color: Color.fromRGBO(90, 90, 90, 1)),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    selectedStatus = status.statusId; // Set selected status
+                                  });
+                                  ref
+                                      .read(clientProvider.notifier)
+                                      .fetchClients(status: selectedStatus); // Fetch filtered clients
+                                },
+                                child: Text(
+                                  status.statusName,
+                                  style: AppTextStyles.interMedium14dark.copyWith(
+                                    color: selectedStatus == status.statusId // Fixed condition
+                                        ? selectedTextColor
+                                        : unselectedTextColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-                onPressed: () {
-                  setState(() {
-                    selectedStatus = status.statusId;
-                  });
-                  ref.read(clientProvider.notifier).fetchClients(status: selectedStatus);
-                },
-                child: Text(
-                  status.statusName,
-                  style: AppTextStyles.interMedium14dark.copyWith(
-                    color: selectedStatus == status.statusName ? selectedTextColor : unselectedTextColor,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 32,
+                      padding: const EdgeInsets.only(left: 3, right: 3),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          shape: BoxShape.rectangle,
+                          color: const Color.fromRGBO(200, 200, 200, 1)),
+                      child: DropdownButton<String>(
+                        value: selectedSort,
+                        style: AppTextStyles.interRegular10
+                            .copyWith(color: theme.textFieldColor),
+                        underline: const SizedBox(),
+                        icon: Icon(Icons.sort, color: theme.textFieldColor),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedSort = newValue;
+                          });
+                          // Sortowanie po zmianie opcji
+                          ref.read(clientProvider.notifier).fetchClients(
+                                status: selectedStatus,
+                                searchQuery: searchController.text,
+                                sort: selectedSort,
+                              );
+                        },
+                        items: sortOptions.entries
+                            .map<DropdownMenuItem<String>>((entry) {
+                          return DropdownMenuItem<String>(
+                            value: entry.key,
+                            child: Text(
+                              entry.value, // Wyświetlaj przetłumaczone wartości
+                              style: AppTextStyles.interMedium14dark
+                                  .copyWith(color: theme.textFieldColor),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            );
-          }).toList(),
+              ],
+            ),
+          ),
         ],
       ),
-    );
-  },
-),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 3, right: 3),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        shape: BoxShape.rectangle,
-                        color: theme.fillColor),
-                    child: DropdownButton<String>(
-                      value: selectedSort,
-                      style: AppTextStyles.interRegular10
-                          .copyWith(color: theme.textFieldColor),
-                      underline: const SizedBox(),
-                      // underline: Container(
-                      //     height: 1, // Wysokość podkreślenia
-                      //     color: theme
-                      //         .textFieldColor // Ustawienie koloru podkreślenia
-                      //     ),
-                      icon: Icon(Icons.sort, color: theme.textFieldColor),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedSort = newValue;
-                        });
-                        // Sortowanie po zmianie opcji
-                        ref.read(clientProvider.notifier).fetchClients(
-                              status: selectedStatus,
-                              searchQuery: searchController.text,
-                              sort: selectedSort,
-                            );
-                      },
-                      items: sortOptions.entries
-                          .map<DropdownMenuItem<String>>((entry) {
-                        return DropdownMenuItem<String>(
-                          value: entry.key,
-                          child: Text(
-                            entry.value, // Wyświetlaj przetłumaczone wartości
-                            style: AppTextStyles.interMedium14dark
-                                .copyWith(color: theme.textFieldColor),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

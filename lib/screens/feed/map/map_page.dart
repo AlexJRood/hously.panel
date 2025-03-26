@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
@@ -12,6 +11,7 @@ import 'package:hously_flutter/state_managers/data/filter_provider.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:hously_flutter/widgets/screens/feed/map/map_markers.dart';
 import 'package:latlong2/latlong.dart';
+
 
 final userLocationProvider = StateProvider<LatLng?>((ref) => null);
 
@@ -42,11 +42,13 @@ class MapPage extends ConsumerWidget {
           return FlutterMap(
             mapController: mapController,
             options: MapOptions(
-              center: userLocation,
-              interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+              initialCenter: userLocation!,
+              interactionOptions:InteractionOptions(
+                flags:  InteractiveFlag.pinchZoom | InteractiveFlag.drag
+              ),
               onPositionChanged: (position, hasGesture) {
                 if (hasGesture) {
-                  var bounds = mapController.bounds!;
+                  var bounds = mapController.camera.visibleBounds;
                   var filtered = ads.where((ads) {
                     var latLng = LatLng(ads.latitude, ads.longitude);
                     return bounds.contains(latLng);

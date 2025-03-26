@@ -75,7 +75,7 @@ class ClientDashboardContent extends ConsumerWidget {
                         ],
                       ),
                       SizedBox(
-                        height: downSectionHeight,
+                        height: downSectionHeight ,
                         child: Row(
                           spacing: dynamicSpacer,
                           children: [

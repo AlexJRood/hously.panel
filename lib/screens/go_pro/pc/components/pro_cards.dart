@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
 class PremiumCard extends ConsumerWidget {
@@ -89,7 +91,7 @@ class PremiumCard extends ConsumerWidget {
                     child: Text(
                       title,
                       style:  TextStyle(
-                        fontSize: 25,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).iconTheme.color,
                       ),
@@ -104,7 +106,7 @@ class PremiumCard extends ConsumerWidget {
                       // Original price
                       Flexible(
                         child: Text(
-                          originalPrice,
+                          discountedPrice,
                           style:  TextStyle(
                             color:  Theme.of(context).iconTheme.color,
                             decoration: TextDecoration.lineThrough,
@@ -118,9 +120,9 @@ class PremiumCard extends ConsumerWidget {
                       ),
                       Flexible(
                         child: Text(
-                          discountedPrice,
+                          originalPrice,
                           style:  TextStyle(
-                            fontSize: 35,
+                            fontSize: 27,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).iconTheme.color,
@@ -227,7 +229,7 @@ class PremiumCard extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
-           Icon(Icons.check, color: Theme.of(context).iconTheme.color, size: 18),
+           SvgPicture.asset(AppIcons.check, color: Theme.of(context).iconTheme.color, height: 18,width: 18,),
           const SizedBox(width: 8),
           // Ensure feature text wraps properly
           Flexible(

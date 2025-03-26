@@ -89,10 +89,10 @@ class _HomePageMobileState extends ConsumerState<HomePageMobile> {
                                 const SizedBox(height: 10.0),
                                 const HelpBar(),
                                 const SizedBox(height: 25.0),
-                                if (isUserLoggedIn) ...[
-                                  const RecentlyViewedAds(),
-                                  const SizedBox(height: 25),
-                                ],
+                                // if (isUserLoggedIn) ...[
+                                //   const RecentlyViewedAds(),
+                                //   const SizedBox(height: 25),
+                                // ],
                                 const HotCarousel(),
                                 const SizedBox(height: 50.0),
                                 const RecomendedForYou(),

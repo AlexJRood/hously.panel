@@ -41,7 +41,7 @@ class FilterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentthememode = ref.watch(themeProvider);
-    final colorScheme = Theme.of(context).primaryColor;
+    final colorScheme = Theme.of(context).colorScheme;
     final selectedBackgroundColor = colorScheme;
 
     final unselectedBackgroundColor = currentthememode == ThemeMode.system
@@ -50,8 +50,9 @@ class FilterButton extends ConsumerWidget {
             ? Colors.white // Light mode background
             : AppColors.dark; // Dark mode background
 
-    final selectedTextColor =
-        currentthememode == ThemeMode.system ? Colors.white : Colors.black;
+    final selectedTextColor = currentthememode == ThemeMode.system
+        ? Colors.white
+        : colorScheme.onPrimary;
 
     final unselectedTextColor = currentthememode == ThemeMode.system
         ? AppColors.textColorDark
@@ -78,8 +79,9 @@ class FilterButton extends ConsumerWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
-        backgroundColor:
-            isSelected ? selectedBackgroundColor : unselectedBackgroundColor,
+        backgroundColor: isSelected
+            ? selectedBackgroundColor.primary
+            : unselectedBackgroundColor,
         foregroundColor: isSelected ? selectedTextColor : unselectedTextColor,
         side: isSelected ? null : const BorderSide(color: Colors.grey),
       ),
@@ -251,27 +253,24 @@ class BuildTextField extends ConsumerWidget {
     final currentthememode = ref.watch(themeProvider);
     final themecolors = ref.watch(themeColorsProvider);
     final textFieldColor = themecolors.textFieldColor;
-    return Material(
-      borderRadius: BorderRadius.circular(10.0),
-      elevation: 2,
-      child: SizedBox(
-        height: 35.0,
-        child: TextField(
-          controller: controller,
-          onChanged: (value) {
-            ref.read(filterCacheProvider.notifier).addFilter(filterKey, value);
-          },
-          style: AppTextStyles.interMedium14dark.copyWith(color: textFieldColor),
-          cursorColor: currentthememode == ThemeMode.system ? Colors.black : cursorcolor,
-          decoration: InputDecoration(
-            labelText: labelText,
-            filled: inputDecorationTheme.filled,
-            fillColor: inputDecorationTheme.fillColor,
-            border: inputDecorationTheme.border,
-            focusedBorder: inputDecorationTheme.focusedBorder,
-            labelStyle: inputDecorationTheme.labelStyle,
-            floatingLabelStyle: inputDecorationTheme.floatingLabelStyle,
-          ),
+    return SizedBox(
+      height: 35.0,
+      child: TextField(
+        controller: controller,
+        onChanged: (value) {
+          ref.read(filterCacheProvider.notifier).addFilter(filterKey, value);
+        },
+        style: AppTextStyles.interMedium14dark.copyWith(color: textFieldColor),
+        cursorColor:
+            currentthememode == ThemeMode.system ? Colors.black : cursorcolor,
+        decoration: InputDecoration(
+          labelText: labelText,
+          filled: inputDecorationTheme.filled,
+          fillColor: inputDecorationTheme.fillColor,
+          border: inputDecorationTheme.border,
+          focusedBorder: inputDecorationTheme.focusedBorder,
+          labelStyle: inputDecorationTheme.labelStyle,
+          floatingLabelStyle: inputDecorationTheme.floatingLabelStyle,
         ),
       ),
     );
@@ -295,51 +294,48 @@ class BuildNumberField extends ConsumerWidget {
     final formatter = NumberFormat('#,###');
 
     final currentthememode = ref.watch(themeProvider);
-    final themecolors=ref.watch(themeColorsProvider);
+    final themecolors = ref.watch(themeColorsProvider);
     final textFieldColor = themecolors.textFieldColor;
     final cursorcolor = Theme.of(context).primaryColor;
     final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
 
-    return Material(
-      borderRadius: BorderRadius.circular(10.0),
-      elevation: 2,
-      child: SizedBox(
-        height: 35.0,
-        child: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            TextInputFormatter.withFunction((oldValue, newValue) {
-              if (newValue.text.isEmpty) {
-                return newValue.copyWith(text: '');
-              }
-              final int value = int.parse(newValue.text.replaceAll(',', ''));
-              final String newText = formatter.format(value);
-              return newValue.copyWith(
-                text: newText,
-                selection: TextSelection.collapsed(offset: newText.length),
-              );
-            }),
-          ],
-          style: AppTextStyles.interMedium14dark.copyWith(color: textFieldColor),
-          cursorColor: currentthememode == ThemeMode.system ? Colors.black : cursorcolor,
-          decoration: InputDecoration(
-            labelText: labelText,
-            filled: inputDecorationTheme.filled,
-            fillColor: inputDecorationTheme.fillColor,
-            border: inputDecorationTheme.border,
-            focusedBorder: inputDecorationTheme.focusedBorder,
-            labelStyle: inputDecorationTheme.labelStyle,
-            floatingLabelStyle: inputDecorationTheme.floatingLabelStyle,
-          ),
-          onChanged: (value) {
-            final unformattedValue = value.replaceAll(',', '');
-            ref
-                .read(filterCacheProvider.notifier)
-                .addFilter(filterKey, unformattedValue);
-          },
+    return SizedBox(
+      height: 35.0,
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          TextInputFormatter.withFunction((oldValue, newValue) {
+            if (newValue.text.isEmpty) {
+              return newValue.copyWith(text: '');
+            }
+            final int value = int.parse(newValue.text.replaceAll(',', ''));
+            final String newText = formatter.format(value);
+            return newValue.copyWith(
+              text: newText,
+              selection: TextSelection.collapsed(offset: newText.length),
+            );
+          }),
+        ],
+        style: AppTextStyles.interMedium14dark.copyWith(color: textFieldColor),
+        cursorColor:
+            currentthememode == ThemeMode.system ? Colors.black : cursorcolor,
+        decoration: InputDecoration(
+          labelText: labelText,
+          filled: inputDecorationTheme.filled,
+          fillColor: inputDecorationTheme.fillColor,
+          border: inputDecorationTheme.border,
+          focusedBorder: inputDecorationTheme.focusedBorder,
+          labelStyle: inputDecorationTheme.labelStyle,
+          floatingLabelStyle: inputDecorationTheme.floatingLabelStyle,
         ),
+        onChanged: (value) {
+          final unformattedValue = value.replaceAll(',', '');
+          ref
+              .read(filterCacheProvider.notifier)
+              .addFilter(filterKey, unformattedValue);
+        },
       ),
     );
   }
@@ -368,90 +364,84 @@ class BuildDropdownButtonFormField extends ConsumerWidget {
     final colorSchemecheck = ref.watch(colorSchemeProvider);
 
     //  final theme=Theme.of(context);
-    return Material(
-      borderRadius: BorderRadius.circular(10.0),
-      elevation: 2,
-      child: SizedBox(
-        height: 35.0,
-        child: DropdownButtonFormField<String>(
-          style: TextStyle(
-            color: currentthememode == ThemeMode.system
+    return SizedBox(
+      height: 35.0,
+      child: DropdownButtonFormField<String>(
+        style: TextStyle(
+          color: currentthememode == ThemeMode.system
+              ? AppColors.light
+              : currentthememode == ThemeMode.light
+                  ? AppColors.light
+                  : AppColors.light,
+        ),
+        dropdownColor: currentthememode == ThemeMode.system
+            ? AppColors.light
+            : currentthememode == ThemeMode.light
                 ? AppColors.light
+                : AppColors.dark,
+        focusColor: currentthememode == ThemeMode.system
+            ? AppColors.light
+            : currentthememode == ThemeMode.light
+                ? colorScheme
+                : colorScheme,
+        value: currentValue,
+        items: items.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value,
+                style: AppTextStyles.interMedium14dark.copyWith(
+                  color: currentthememode == ThemeMode.system
+                      ? AppColors.textColorDark
+                      : currentthememode == ThemeMode.light
+                          ? AppColors.textColorDark
+                          : AppColors.textColorLight,
+                )),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          ref
+              .read(filterButtonProvider.notifier)
+              .updateFilter(filterKey, newValue);
+          ref.read(filterCacheProvider.notifier).addFilter(filterKey, newValue);
+        },
+        decoration: InputDecoration(
+          labelText: labelText,
+          labelStyle: AppTextStyles.interMedium14dark.copyWith(
+            color: currentthememode == ThemeMode.system
+                ? AppColors.textColorDark
                 : currentthememode == ThemeMode.light
-                    ? AppColors.light
-                    : AppColors.light,
+                    ? AppColors.textColorDark
+                    : AppColors.textColorLight,
           ),
-          dropdownColor: currentthememode == ThemeMode.system
+          floatingLabelStyle: TextStyle(
+            color: colorSchemecheck == null &&
+                    (currentthememode == ThemeMode.system ||
+                        currentthememode == ThemeMode.dark)
+                ? textFieldColor
+                : colorScheme,
+          ),
+          contentPadding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
+          fillColor: currentthememode == ThemeMode.system
               ? AppColors.light
               : currentthememode == ThemeMode.light
                   ? AppColors.light
                   : AppColors.dark,
-          focusColor: currentthememode == ThemeMode.system
-              ? AppColors.light
-              : currentthememode == ThemeMode.light
-                  ? colorScheme
-                  : colorScheme,
-          value: currentValue,
-          items: items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value,
-                  style: AppTextStyles.interMedium14dark.copyWith(
-                    color: currentthememode == ThemeMode.system
-                        ? AppColors.textColorDark
-                        : currentthememode == ThemeMode.light
-                            ? AppColors.textColorDark
-                            : AppColors.textColorLight,
-                  )),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            ref
-                .read(filterButtonProvider.notifier)
-                .updateFilter(filterKey, newValue);
-            ref
-                .read(filterCacheProvider.notifier)
-                .addFilter(filterKey, newValue);
-          },
-          decoration: InputDecoration(
-            labelText: labelText,
-            labelStyle: AppTextStyles.interMedium14dark.copyWith(
-              color: currentthememode == ThemeMode.system
-                  ? AppColors.textColorDark
-                  : currentthememode == ThemeMode.light
-                      ? AppColors.textColorDark
-                      : AppColors.textColorLight,
-            ),
-            floatingLabelStyle: TextStyle(
-              color: colorSchemecheck == null &&
-                      (currentthememode == ThemeMode.system ||
-                          currentthememode == ThemeMode.dark)
-                  ? textFieldColor
-                  : colorScheme,
-            ),
-            contentPadding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
-            fillColor: currentthememode == ThemeMode.system
-                ? AppColors.light
-                : currentthememode == ThemeMode.light
-                    ? AppColors.light
-                    : AppColors.dark,
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: colorScheme),
-            ),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
           ),
-          isExpanded: true,
-          iconSize: 24.0,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: colorScheme),
+          ),
         ),
+        isExpanded: true,
+        iconSize: 24.0,
       ),
     );
   }

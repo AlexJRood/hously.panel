@@ -3,16 +3,17 @@ import 'package:hously_flutter/screens/filters/filters_page_pop_mobile.dart';
 import 'package:hously_flutter/screens/filters/filters_page_pop_pc.dart';
 
 class FiltersPage extends StatelessWidget {
-  const FiltersPage({super.key});
+  final tag;
+  const FiltersPage({super.key, required this.tag});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth < 1080) {
-          return FiltersPagePopMobile(); 
+          return const FiltersPagePopMobile();
         } else {
-          return const FiltersPagePopPc(); 
+          return FiltersPagePopPc(tag: tag);
         }
       },
     );

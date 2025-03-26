@@ -78,139 +78,134 @@ class NewClientMobile extends ConsumerWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    const NewClientListMobile(),
+                    //const NewClientListMobile(),
                     Expanded(
-                      child: SizedBox(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Column(
-                              children: [
-                                NewClientCardMobile(
-                                  onTap: () {},
-                                  id: clientViewPop.id ?? '',
-                                  avatar: clientViewPop.avatar ?? '',
-                                  name: clientViewPop.name ?? '',
-                                  lastName: clientViewPop.lastName ?? '',
-                                  email: clientViewPop.email ?? '',
-                                  phoneNumber: clientViewPop.phoneNumber ?? '',
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                const NewClientDetailsMobile(),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Planned Events",
-                                      style: TextStyle(
-                                          color: theme.whitewhiteblack,
-                                          fontSize: 18),
-                                    ),
-                                    const Spacer(),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 20,
-                                          color: theme.whitewhiteblack,
-                                        )),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                    padding: const EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                      color: theme.clientTilecolor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const NewClientEventMobile()),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                todo.isNotEmpty
-                                    ? Row(
-                                        children: [
-                                          Text(
-                                            "To-Do",
-                                            style: TextStyle(
-                                                color: theme.whitewhiteblack,
-                                                fontSize: 18),
-                                          ),
-                                          const Spacer(),
-                                          IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(
-                                                Icons.add,
-                                                size: 20,
-                                                color: theme.whitewhiteblack,
-                                              )),
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                SizedBox(
-                                    height: 400,
-                                    child: todo.isNotEmpty
-                                        ? TodoListMobile(
-                                            todo: todo,
-                                          )
-                                        : const TodoNoclient(
-                                            isPc: false,
-                                          )),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Transaction",
-                                      style: TextStyle(
-                                          color: theme.whitewhiteblack,
-                                          fontSize: 18),
-                                    ),
-                                    const Spacer(),
-                                    TextButton(
-                                        onPressed: () {
-                                          ref
-                                              .read(navigationService)
-                                              .pushNamedScreen(
-                                                '${Routes.proClients}/${clientViewPop.id}/dashboard/alltransaction',
-                                              );
-                                        },
-                                        child: const Text(
-                                          "View All",
-                                          style: TextStyle(
-                                              color: clienttileTextcolor,
-                                              fontSize: 18),
-                                        ))
-                                  ],
-                                ),
-                                NewClientMobileTransaction(
-                                  id: clientViewPop.id ?? '',
-                                  data: clientViewPop,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  height: 350,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    gradient: CustomBackgroundGradients
-                                        .getMainMenuBackground(context, ref),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Column(
+                            children: [
+                              NewClientCardMobile(
+                                onTap: () {},
+                                id: clientViewPop.id ?? '',
+                                avatar: clientViewPop.avatar ?? '',
+                                name: clientViewPop.name ?? '',
+                                lastName: clientViewPop.lastName ?? '',
+                                email: clientViewPop.email ?? '',
+                                phoneNumber: clientViewPop.phoneNumber ?? '',
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              const NewClientDetailsMobile(),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Planned Events",
+                                    style: TextStyle(
+                                        color: theme.mobileTextcolor,
+                                        fontSize: 18),
                                   ),
-                                  child: const NewClientPremium(),
-                                )
-                              ],
-                            ),
+                                  const Spacer(),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.add,
+                                        size: 20,
+                                        color: theme.mobileTextcolor,
+                                      )),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: theme.clientTilecolor,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const NewClientEventMobile()),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              todo.isNotEmpty
+                                  ? Row(
+                                      children: [
+                                        Text(
+                                          "To-Do",
+                                          style: TextStyle(
+                                              color: theme.mobileTextcolor,
+                                              fontSize: 18),
+                                        ),
+                                        const Spacer(),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.add,
+                                              size: 20,
+                                              color: theme.mobileTextcolor,
+                                            )),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 400,
+                                child: todo.isNotEmpty
+                                    ? TodoListMobile(todo: todo)
+                                    : const TodoNoclient(isPc: false),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Transaction",
+                                    style: TextStyle(
+                                        color: theme.mobileTextcolor,
+                                        fontSize: 18),
+                                  ),
+                                  const Spacer(),
+                                  TextButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(navigationService)
+                                            .pushNamedScreen(
+                                              '${Routes.proClients}/${clientViewPop.id}/dashboard/alltransaction',
+                                            );
+                                      },
+                                      child: const Text(
+                                        "View All",
+                                        style: TextStyle(
+                                            color: clienttileTextcolor,
+                                            fontSize: 18),
+                                      ))
+                                ],
+                              ),
+                              NewClientMobileTransaction(
+                                id: clientViewPop.id ?? '',
+                                data: clientViewPop,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                height: 350,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  gradient: CustomBackgroundGradients
+                                      .getMainMenuBackground(context, ref),
+                                ),
+                                child: const NewClientPremium(),
+                              )
+                            ],
                           ),
                         ),
                       ),

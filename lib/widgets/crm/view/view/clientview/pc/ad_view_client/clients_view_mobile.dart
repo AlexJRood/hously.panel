@@ -906,7 +906,7 @@ class ClientsViewMobileState extends ConsumerState<ClientsViewMobile> {
                             ),
                           ),
                           MobileLikeSectionFeedPop(
-                              adFeedPopId: widget.adFeedPop.id,
+                              adFeedPop: widget.adFeedPop,
                               ref: ref,
                               context: context)
                         ],

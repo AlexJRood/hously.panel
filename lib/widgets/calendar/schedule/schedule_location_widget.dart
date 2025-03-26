@@ -13,6 +13,7 @@ class ScheduleLocationWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final locationController = TextEditingController();
     final scheduleAppointmentState = ref.watch(scheduleAppointmentProvider);
     final scheduleData = scheduleAppointmentState.scheduleModel;
     const widgetSpace = 10.0;
@@ -71,9 +72,9 @@ class ScheduleLocationWidget extends ConsumerWidget {
           const SizedBox(height: widgetSpace),
           const DividerWidget(),
           const SizedBox(height: widgetSpace),
-          QuillToolbar.simple(
+          QuillSimpleToolbar(
             controller: controller,
-            configurations: const QuillSimpleToolbarConfigurations(
+            config: const QuillSimpleToolbarConfig(
               showCodeBlock: false,
               showQuote: false,
               showStrikeThrough: false,

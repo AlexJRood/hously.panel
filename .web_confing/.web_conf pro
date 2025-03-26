@@ -1,0 +1,71 @@
+mkdir -p /var/www/vhosts/hously.pro/local/bin
+mkdir -p /var/www/vhosts/hously.pro/local/lib
+mkdir -p /var/www/vhosts/hously.pro/local/src
+export PATH="/var/www/vhosts/hously.pro/local/bin:$PATH"
+
+
+
+cd /var/www/vhosts/hously.pro/local/src
+wget https://ftp.gnu.org/gnu/bc/bc-1.07.1.tar.gz
+tar -xvzf bc-1.07.1.tar.gz
+cd bc-1.07.1
+./configure --prefix=/var/www/vhosts/hously.pro/local
+make -j$(nproc)
+make install
+
+
+
+cd /var/www/vhosts/hously.pro/local/src
+wget http://ftp.gnu.org/gnu/gawk/gawk-5.1.0.tar.gz
+tar -xvzf gawk-5.1.0.tar.gz
+cd gawk-5.1.0
+./configure --prefix=/var/www/vhosts/hously.pro/local
+make -j$(nproc)
+make install
+
+
+cd /var/www/vhosts/hously.pro/local/src
+wget http://ftp.gnu.org/gnu/sed/sed-4.8.tar.gz
+tar -xvzf sed-4.8.tar.gz
+cd sed-4.8
+./configure --prefix=/var/www/vhosts/hously.pro/local
+make -j$(nproc)
+make install
+
+
+
+cd /var/www/vhosts/hously.pro/local/src
+wget http://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.gz
+tar -xvzf findutils-4.9.0.tar.gz
+cd findutils-4.9.0
+./configure --prefix=/var/www/vhosts/hously.pro/local
+make -j$(nproc)
+make install
+
+# Stwórz katalog na źródła, jeśli nie istnieje
+mkdir -p /var/www/vhosts/hously.pro/local/src
+cd /var/www/vhosts/hously.pro/local/src
+
+# Pobierz aktualną wersję findutils (4.9.0 może już nie być dostępne)
+wget http://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.xz
+
+# Rozpakuj pliki
+tar -xvf findutils-4.9.0.tar.xz
+cd findutils-4.9.0
+
+# Skonfiguruj i skompiluj z instalacją do lokalnego katalogu
+./configure --prefix=/var/www/vhosts/hously.pro/local
+make -j$(nproc)
+make install
+
+
+
+
+cd /var/www/vhosts/hously.pro/local/src
+wget https://github.com/google/brotli/archive/refs/tags/v1.0.9.tar.gz -O brotli-1.0.9.tar.gz
+tar -xvzf brotli-1.0.9.tar.gz
+cd brotli-1.0.9
+mkdir out && cd out
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/var/www/vhosts/hously.pro/local ..
+make -j$(nproc)
+make install

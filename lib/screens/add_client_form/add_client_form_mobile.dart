@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/screens/add_client_form/provider/add_client_form_provider.dart';
+import 'package:hously_flutter/screens/add_client_form/provider/send_form_provider.dart';
 import 'package:hously_flutter/screens/add_client_form/widgets/note_and_submit.dart';
-import 'package:hously_flutter/screens/add_client_form/widgets/user_contacts_widget.dart';
+import 'package:hously_flutter/screens/add_client_form/components/usercontact/add_user_contacts.dart';
 
 import 'add_client_form_pc.dart';
 
@@ -25,7 +25,7 @@ class _AddClientFormMobileState extends ConsumerState<AddClientFormMobile> {
     final selectedTab = ref.watch(selectedTabProvider);
     final addClientProvider = ref.read(addClientFormProvider.notifier);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 40),
         child: SingleChildScrollView(
@@ -172,7 +172,7 @@ class _AddClientFormMobileState extends ConsumerState<AddClientFormMobile> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserContactsWidget(
+                  AddUserContactsCrm(
                     viewFormKey: _viewFormKey,
                     sellFormKey: _sellFormKey,
                     buyFormKey: _buyFormKey,
@@ -183,6 +183,7 @@ class _AddClientFormMobileState extends ConsumerState<AddClientFormMobile> {
                     viewFormKey: _viewFormKey,
                     sellFormKey: _sellFormKey,
                     buyFormKey: _buyFormKey,
+                    isMobile: true,
                     onSubmit: () async {
                       if (selectedTab == 'VIEW') {
                         addClientProvider
@@ -192,13 +193,13 @@ class _AddClientFormMobileState extends ConsumerState<AddClientFormMobile> {
                             },);
                       } else if (selectedTab == 'SELL') {
                         addClientProvider
-                            .sellTransAction()
+                            .sellTransAction(ref)
                             .whenComplete(() {
                               // addClientProvider.clearForm();
                             },);
                       } else if (selectedTab == 'BUY') {
                         addClientProvider
-                            .buyTransAction()
+                            .buyTransAction(ref)
                             .whenComplete(() {
                           // addClientProvider.clearForm();
                         },);

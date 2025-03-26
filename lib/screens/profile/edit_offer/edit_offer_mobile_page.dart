@@ -1,8 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/data/profile/edit_offer/edit_provider.dart';
 import 'package:hously_flutter/widgets/appbar/hously/mobile/appbar_mobile.dart';
@@ -232,7 +234,7 @@ class EditOfferMobilePage extends ConsumerWidget {
                                               top: 0,
                                               right: 0,
                                               child: IconButton(
-                                                icon: const Icon(Icons.delete,
+                                                icon: SvgPicture.asset(AppIcons.delete,
                                                     color: AppColors.light),
                                                 onPressed: () {
                                                   if (editOfferState

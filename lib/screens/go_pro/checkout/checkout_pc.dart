@@ -1,3 +1,5 @@
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/screens/go_pro/checkout/components/checkout_components.dart';
@@ -83,7 +85,7 @@ class _CheckoutPcState extends ConsumerState<CheckoutPc> {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.arrow_back),
+                                        SvgPicture.asset(AppIcons.arrowBack),
                                         const SizedBox(
                                           width: 5,
                                         ),

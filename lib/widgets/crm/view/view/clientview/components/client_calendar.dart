@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/colors.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -33,12 +35,12 @@ class CustomTableCalendarPc extends ConsumerWidget {
         weekdayStyle: TextStyle(
           fontSize: MediaQuery.of(context).size.width *
               0.007, // Change font size for Mon-Fri
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
         weekendStyle: TextStyle(
           fontSize: MediaQuery.of(context).size.width *
               0.007, // Change font size for Sat-Sun
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
       ),
       calendarStyle: CalendarStyle(
@@ -54,31 +56,31 @@ class CustomTableCalendarPc extends ConsumerWidget {
           color: isDark ? clienttileTextcolor : primaryColor,
         ),
         weekendTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: MediaQuery.of(context).size.width * 0.007,
         ),
         outsideTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: MediaQuery.of(context).size.width * 0.007,
         ),
         defaultTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: MediaQuery.of(context).size.width * 0.007,
         ),
       ),
       headerStyle: HeaderStyle(
         leftChevronIcon: Icon(
           Icons.arrow_back_ios_new_rounded,
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
         rightChevronIcon: Icon(
           Icons.arrow_forward_ios_rounded,
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
         titleCentered: true,
         formatButtonVisible: false,
         titleTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: MediaQuery.of(context).size.width * 0.008,
         ),
       ),
@@ -157,11 +159,11 @@ class CustomTableCalendarMobile extends ConsumerWidget {
       daysOfWeekStyle: DaysOfWeekStyle(
         weekdayStyle: TextStyle(
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
         weekendStyle: TextStyle(
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ),
       ),
       calendarStyle: CalendarStyle(
@@ -174,27 +176,27 @@ class CustomTableCalendarMobile extends ConsumerWidget {
             fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
             color: isDark ? clienttileTextcolor : primaryColor),
         weekendTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
         ),
         outsideTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
         ),
         defaultTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
         ),
       ),
       headerStyle: HeaderStyle(
-        leftChevronIcon: Icon(Icons.arrow_back_ios_new_rounded,
-            color: theme.whitewhiteblack),
+        leftChevronIcon: SvgPicture.asset(AppIcons.iosArrowLeft,
+            color: theme.mobileTextcolor),
         rightChevronIcon:
-            Icon(Icons.arrow_forward_ios_rounded, color: theme.whitewhiteblack),
+            SvgPicture.asset(AppIcons.iosArrowRight, color: theme.mobileTextcolor),
         titleCentered: true,
         formatButtonVisible: false,
         titleTextStyle: TextStyle(
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
           fontSize: screenWidth > 600 ? fontsizetab : fontsizemobile,
         ),
       ),

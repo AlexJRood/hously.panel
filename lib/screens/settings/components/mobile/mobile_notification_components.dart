@@ -39,7 +39,7 @@ class NotificationToggleTileMobile extends ConsumerWidget {
                   style: TextStyle(
                       color: onGradient
                           ? Theme.of(context).iconTheme.color
-                          : theme.popupcontainertextcolor,
+                          : theme.mobileTextcolor,
                       fontSize: fontsize),
                 ),
                 Text(
@@ -48,7 +48,7 @@ class NotificationToggleTileMobile extends ConsumerWidget {
                       fontSize: 12,
                       color: onGradient
                           ? Theme.of(context).iconTheme.color!.withOpacity(0.8)
-                          : theme.popupcontainertextcolor!.withOpacity(0.9)),
+                          : theme.mobileTextcolor!.withOpacity(0.9)),
                 ),
               ],
             ),

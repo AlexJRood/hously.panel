@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/schedule_appointment_provider.dart';
 import 'package:hously_flutter/widgets/calendar/check_box_text.dart';
 import 'package:hously_flutter/widgets/calendar/text_form_field_widget.dart';
@@ -18,9 +20,9 @@ class BookedAppointmentWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: Icon(Icons.calendar_today),
+         Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: SvgPicture.asset(AppIcons.calendar),
         ),
         Expanded(
           child: ExpansionTile(

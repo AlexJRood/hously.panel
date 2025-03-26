@@ -9,10 +9,10 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      if (constraints.maxWidth > 280) {
-        return RegisterPcPage();
+      if (constraints.maxWidth > 1080) {
+        return const RegisterPcPage();
       } else {
-        return RegisterMobilePage();
+        return const RegisterMobilePage();
       }
     });
   }

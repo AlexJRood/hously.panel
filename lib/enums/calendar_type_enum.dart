@@ -5,28 +5,28 @@ enum CalendarTypeEnum {
   schedule,
   day,
   week,
-  month,
-  year;
+  month;
+  // year;
 
   String get type => switch (this) {
         schedule => name.capitalize(),
         day => name.capitalize(),
         week => name.capitalize(),
         month => name.capitalize(),
-        year => name.capitalize(),
+        // year => name.capitalize(),
       };
 
   CalendarView get calendarView => switch (this) {
         schedule => CalendarView.schedule,
         day => CalendarView.day,
         week => CalendarView.week,
-        month => CalendarView.month,
-        year => CalendarView.timelineMonth,
+        month => CalendarView.timelineMonth,
+        // year => CalendarView.timelineMonth,
       };
 
   static CalendarTypeEnum fromString(String input) =>
       CalendarTypeEnum.values.firstWhere(
         (e) => e.name.toLowerCase() == input.toLowerCase(),
-        orElse: () => schedule,
+        orElse: () => day,
       );
 }

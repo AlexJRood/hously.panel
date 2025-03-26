@@ -134,8 +134,7 @@ class GridMobilePageState extends ConsumerState<GridMobilePage> {
                               crossAxisSpacing: 5,
                               mainAxisSpacing: 5,
                             ),
-                            builderDelegate:
-                                PagedChildBuilderDelegate<AdsListViewModel>(
+                            builderDelegate: PagedChildBuilderDelegate<AdsListViewModel>(
                               itemBuilder: (context, advertisement, index) {
                                 return BuildAdvertisementsList(
                                   adFiledSize: adFiledSize,
@@ -152,10 +151,52 @@ class GridMobilePageState extends ConsumerState<GridMobilePage> {
                                 crossAxisCount: grid,
                               ),
                               newPageProgressIndicatorBuilder: (_) =>
-                                  ShimmerPlaceholderWidget(
-                                scrollController: scrollController,
-                                adFiledSize: adFiledSize,
-                                crossAxisCount: grid,
+                                  AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      const ShimmerPlaceholder(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
+                                      Positioned(
+                                        left: 2,
+                                        bottom: 2,
+                                        child: Container(
+                                          width: 300, // Ensure width is full
+                                          height:
+                                              75, // Increase height for visibility
+                                          padding: const EdgeInsets.only(
+                                              top: 15, left: 5),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.4),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ShimmerPlaceholder(
+                                                  width: 100, height: 12),
+                                              SizedBox(height: 10),
+                                              ShimmerPlaceholder(
+                                                  width: 280, height: 10),
+                                              SizedBox(height: 8),
+                                              ShimmerPlaceholder(
+                                                  width: 120, height: 7),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                               noItemsFoundIndicatorBuilder: (_) => Center(
                                 child: Text(
@@ -170,10 +211,10 @@ class GridMobilePageState extends ConsumerState<GridMobilePage> {
                     ),
                   ),
                   if (ref.watch(bottomBarVisibilityProvider)) ...[
-                    Positioned(
+                    const Positioned(
                       bottom: 0,
                       right: 0,
-                      child: const BottomBarMobile(),
+                      child: BottomBarMobile(),
                     ),
                   ],
 
@@ -241,7 +282,7 @@ class BuildAdvertisementsList extends ConsumerWidget {
     return Column(
       children: List.generate(filteredAdvertisements.length, (index) {
         final ad = filteredAdvertisements[index];
-        final tag = 'mobileSize${ad.id}';
+        final tag = 'mobileSize${ad.id}-${UniqueKey().toString()}';
         final mainImageUrl =
             ad.images.isNotEmpty ? ad.images[0] : 'default_image_url';
         final isPro = ad.isPro;

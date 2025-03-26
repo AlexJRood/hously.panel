@@ -53,8 +53,8 @@ class _HomePcPageState extends ConsumerState<HomePcPage> {
       focusNode: FocusNode()..requestFocus(),
       onKeyEvent: (KeyEvent event) {
         // Check if the pressed key matches the stored pop key
-        KeyBoardShortcuts().filterpop(event, ref);
-        KeyBoardShortcuts().sortpopup(event, ref, context);
+        KeyBoardShortcuts().filterpop(event, ref, context);
+         KeyBoardShortcuts().sortpopup(event, ref, context);
         KeyBoardShortcuts().handleKeyNavigation(event, ref, context);
         KeyBoardShortcuts().handleKeyEvent(event, _scrollController, 200, 50);
       },
@@ -104,11 +104,11 @@ class _HomePcPageState extends ConsumerState<HomePcPage> {
                                     const SizedBox(height: 5.0),
                                     // const HelpBar(),
                                     const SizedBox(height: 25.0),
-                                    if (isUserLoggedIn) ...[
-                                      // Użycie operatora spread do opcjonalnego włączenia widżetu
-                                      const RecentlyViewedAds(),
-                                      const SizedBox(height: 50),
-                                    ],
+                                    // if (isUserLoggedIn) ...[
+                                    //   // Użycie operatora spread do opcjonalnego włączenia widżetu
+                                    //   const RecentlyViewedAds(),
+                                    //   const SizedBox(height: 50),
+                                    // ],
                                     FeaturedNewsWidget(paddingDynamic: 0),
                                     const SizedBox(height: 50),
                                     const HotCarousel(),
@@ -135,15 +135,7 @@ class _HomePcPageState extends ConsumerState<HomePcPage> {
                     ),
                   ],
                 ),
-
-                const Positioned(
-                  top: 0,
-                  right: 0,
-                  child:  TopAppBar()),
-
-
-
-
+                const Positioned(top: 0, right: 0, child: TopAppBar()),
               ],
             ),
           ),

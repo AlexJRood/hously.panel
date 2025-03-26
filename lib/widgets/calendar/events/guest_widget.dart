@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/enums/event/guest_permission_enum.dart';
 import 'package:hously_flutter/extensions/string_extension.dart';
 import 'package:hously_flutter/screens/calendar/event_option.dart';
@@ -98,8 +100,8 @@ class GuestSettingWidget extends ConsumerWidget {
                         if (!guest.isOrganizer)
                           InkWell(
                             child:  Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Icon(Icons.close, size: 18,  color: theme.textFieldColor),
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: SvgPicture.asset(AppIcons.close, height: 18,width: 18,  color: theme.textFieldColor),
                             ),
                             onTap: () => ref
                                 .read(popupCalendarProvider)

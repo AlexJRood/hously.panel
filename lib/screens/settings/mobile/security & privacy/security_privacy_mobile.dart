@@ -1,5 +1,7 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/screens/settings/components/mobile/mobile_security_tile.dart';
 import 'package:hously_flutter/screens/settings/components/mobile/mobile_settings_appbar.dart';
 import 'package:hously_flutter/screens/settings/components/deviceinfo_widget.dart';
@@ -15,10 +17,13 @@ class SecurityPrivacyMobile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final colorScheme = ref.watch(colorSchemeProvider);
     final theme = ref.watch(themeColorsProvider);
     return Scaffold(
-      backgroundColor: theme.mobileBackground,
-      body: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+            gradient:
+                CustomBackgroundGradients.getMainMenuBackground(context, ref)),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +42,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Password & Authentication",
-                          style: TextStyle(color: theme.whitewhiteblack)),
+                          style: TextStyle(color: theme.mobileTextcolor)),
                       SizedBox(
                         height: 10,
                       ),
@@ -83,7 +88,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                       Text(
                         'Aktywne sesje'.tr,
                         style: TextStyle(
-                          color: theme.whitewhiteblack,
+                          color: theme.mobileTextcolor,
                         ),
                       ),
                       const SizedBox(
@@ -93,7 +98,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                         'Oto wszystkie urządzenia, które są obecnie zalogowane. Możesz wylogować się z każdego z nich indywidualnie lub ze wszystkich innych urządzeń'
                             .tr,
                         style: TextStyle(
-                            color: theme.popupcontainertextcolor, fontSize: 12),
+                            color: theme.mobileTextcolor, fontSize: 12),
                       ),
                       const SizedBox(
                         height: 15,
@@ -101,7 +106,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                       Text(
                         'To urządzenie'.tr,
                         style: TextStyle(
-                            color: theme.popupcontainertextcolor, fontSize: 12),
+                            color: theme.mobileTextcolor, fontSize: 12),
                       ),
                       const SizedBox(
                         height: 10,
@@ -122,7 +127,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                       ),
                       Text(
                         'Aktywne urządzenia'.tr,
-                        style: TextStyle(color: theme.popupcontainertextcolor),
+                        style: TextStyle(color: theme.mobileTextcolor),
                       ),
                       const SizedBox(
                         height: 15,
@@ -156,6 +161,7 @@ class SecurityPrivacyMobile extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: Settingsbutton(
+                                isborder: colorScheme == FlexScheme.blackWhite,
                                 isPc: false,
                                 buttonheight: 48,
                                 onTap: () {},

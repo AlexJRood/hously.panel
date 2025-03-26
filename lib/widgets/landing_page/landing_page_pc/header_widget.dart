@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -156,13 +157,13 @@ class _HeaderWidgetState extends ConsumerState<HeaderWidget> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                   Text(
                                     'Connecting you to the perfect\nproperty – Effortlessly!',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: AppTextStyles.libreCaslonHeading
+                                      .copyWith(
+                                          color: Colors.white,
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.bold)
                                   ),
                                   const SizedBox(height: 30),
                                   const Text(

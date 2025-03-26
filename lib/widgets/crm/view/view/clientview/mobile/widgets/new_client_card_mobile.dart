@@ -50,7 +50,7 @@ class NewClientCardMobile extends ConsumerWidget {
                 onPressed: () {},
                 icon: Icon(
                   Icons.camera_alt_outlined,
-                  color: theme.whitewhiteblack.withOpacity(0.5),
+                  color: theme.mobileTextcolor.withOpacity(0.5),
                 ),
               ),
             ),
@@ -68,7 +68,7 @@ class NewClientCardMobile extends ConsumerWidget {
               child: Text(
                 '$name $lastName',
                 style: TextStyle(
-                  color: theme.whitewhiteblack,
+                  color: theme.mobileTextcolor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -81,7 +81,7 @@ class NewClientCardMobile extends ConsumerWidget {
               icon: Icon(
                 Icons.mode_edit_outline_outlined,
                 size: 18,
-                color: theme.whitewhiteblack,
+                color: theme.mobileTextcolor,
               ),
             ),
             const Spacer()
@@ -92,7 +92,7 @@ class NewClientCardMobile extends ConsumerWidget {
           children: [
             Icon(
               Icons.mail_outline,
-              color: theme.whitewhiteblack.withOpacity(0.5),
+              color: theme.mobileTextcolor.withOpacity(0.5),
             ),
             const SizedBox(
               width: 3,
@@ -100,7 +100,7 @@ class NewClientCardMobile extends ConsumerWidget {
             Text(
               email,
               style: TextStyle(
-                color: theme.whitewhiteblack.withOpacity(0.5),
+                color: theme.mobileTextcolor.withOpacity(0.5),
               ),
             ),
           ],
@@ -110,7 +110,7 @@ class NewClientCardMobile extends ConsumerWidget {
           children: [
             Icon(
               Icons.phone_outlined,
-              color: theme.whitewhiteblack.withOpacity(0.5),
+              color: theme.mobileTextcolor.withOpacity(0.5),
             ),
             const SizedBox(
               width: 3,
@@ -118,7 +118,7 @@ class NewClientCardMobile extends ConsumerWidget {
             Text(
               phoneNumber,
               style: TextStyle(
-                color: theme.whitewhiteblack.withOpacity(0.5),
+                color: theme.mobileTextcolor.withOpacity(0.5),
               ),
             ),
           ],

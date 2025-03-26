@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
@@ -207,7 +209,7 @@ class FiltersLandingPageState extends ConsumerState<FiltersLandingPageMobile> {
                                         : cursorcolor,
                                 decoration: InputDecoration(
                                   labelText: 'Wyszukaj'.tr,
-                                  prefixIcon: Icon(Icons.search,
+                                  prefixIcon: SvgPicture.asset(AppIcons.search,
                                       color:
                                           inputDecorationTheme.prefixIconColor),
                                   filled: inputDecorationTheme.filled,

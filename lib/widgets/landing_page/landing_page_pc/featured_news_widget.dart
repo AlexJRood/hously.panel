@@ -3,10 +3,13 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:pie_menu/pie_menu.dart';
 
 import '../../../state_managers/data/home_page/listing_provider.dart';
@@ -16,22 +19,23 @@ import '../../loading/loading_widgets.dart';
 class FeaturedNewsWidget extends ConsumerWidget {
   final double paddingDynamic;
   final bool isMobile;
-  const FeaturedNewsWidget({super.key,required this.paddingDynamic,this.isMobile =false});
+  const FeaturedNewsWidget(
+      {super.key, required this.paddingDynamic, this.isMobile = false});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final recentlyViewedAdsAsyncValue = ref.watch(listingsProvider);
     final dynamicVerticalPadding = paddingDynamic / 3;
     final scrollController = ScrollController();
 
     return Padding(
-      padding:  EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
+      padding: EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-           Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: paddingDynamic),
-            child:  Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Expanded(
@@ -44,17 +48,17 @@ class FeaturedNewsWidget extends ConsumerWidget {
                   ),
                 ),
                 if(!isMobile)
-                const Row(
+                Row(
                   children: [
-                    Text(
+                    const Text(
                       'Read all articles ',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Color.fromRGBO(35, 35, 35, 1)),
                     ),
-                    Icon(Icons.arrow_forward,
-                      color: Color.fromRGBO(35, 35, 35, 1),
+                    SvgPicture.asset(AppIcons.iosArrowRight,
+                      color: const Color.fromRGBO(35, 35, 35, 1),
       
                     ),
                   ],
@@ -64,56 +68,56 @@ class FeaturedNewsWidget extends ConsumerWidget {
           ),
           const SizedBox(height: 30),
           SizedBox(
-            height: 500,
-            child: ListView.separated(
-              controller: scrollController,
-              separatorBuilder: (context, index) => const SizedBox(width: 30,),
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index){
-                if (index == 0) {
-                  // Pierwszy element listy - dynamiczny padding
-                  return SizedBox(width: paddingDynamic);
-                }
-                final data = recentlyViewedAdsAsyncValue.value?[index - 1];
-                final tag = 'recentlyViewed3-${data?.id}';
-               return GestureDetector(
-                 onHorizontalDragUpdate: (details) {
-                   scrollController.jumpTo(
-                     scrollController.offset - details.delta.dx,
-                   );
-                 },
-                 child: PieMenu(
-                   onPressedWithDevice: (kind) {
-                     if (kind == PointerDeviceKind.mouse ||
-                         kind == PointerDeviceKind.touch) {
-                       ref.read(navigationService).pushNamedScreen(
-                         '${Routes.homepage}/${data?.id}',
-                         data: {'tag': tag, 'ad': data},
-                       );
-                     }
-                   },
-                   actions: buildPieMenuActions(ref, data, context),
-                   child: Hero(
-                     tag: tag,
-                     child: ArticleCardWidget(
-                      imageUrl:'${data?.images.last}', // Replace with your image URL
-                      title: '${data?.title}',
-                      description:
-                      '${data?.description}',
-                       readMoreUrl: '#',
-                       ref: ref,
-                                   ),
-                   ),
-                 ),
-               );}
-            ),
-          )
+              height: 500,
+              child: DragScrollView(
+                controller: scrollController,
+                child: ListView.separated(
+                    controller: scrollController,
+                    separatorBuilder: (context, index) => const SizedBox(
+                          width: 30,
+                        ),
+                    itemCount: 10,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        // Pierwszy element listy - dynamiczny padding
+                        return SizedBox(width: paddingDynamic);
+                      }
+                      final data =
+                          recentlyViewedAdsAsyncValue.value?[index - 1];
+                      final tag =
+                          'recentlyViewed3-${data?.id}-${UniqueKey().toString()}';
+                      return PieMenu(
+                        onPressedWithDevice: (kind) {
+                          if (kind == PointerDeviceKind.mouse ||
+                              kind == PointerDeviceKind.touch) {
+                            ref.read(navigationService).pushNamedScreen(
+                              '${Routes.homepage}/${data?.id}',
+                              data: {'tag': tag, 'ad': data},
+                            );
+                          }
+                        },
+                        actions: buildPieMenuActions(ref, data, context),
+                        child: Hero(
+                          tag: tag,
+                          child: ArticleCardWidget(
+                            imageUrl:
+                                '${data?.images.last}', // Replace with your image URL
+                            title: '${data?.title}',
+                            description: '${data?.description}',
+                            readMoreUrl: '#',
+                            ref: ref,
+                          ),
+                        ),
+                      );
+                    }),
+              ))
         ],
       ),
     );
   }
 }
+
 class ArticleCardWidget extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -121,14 +125,13 @@ class ArticleCardWidget extends StatelessWidget {
   final String readMoreUrl;
   final WidgetRef ref;
 
-  const ArticleCardWidget({
-    super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.description,
-    required this.readMoreUrl,
-    required this.ref
-  });
+  const ArticleCardWidget(
+      {super.key,
+      required this.imageUrl,
+      required this.title,
+      required this.description,
+      required this.readMoreUrl,
+      required this.ref});
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +139,7 @@ class ArticleCardWidget extends StatelessWidget {
     final textColor = themecolors.themeTextColor;
     return Container(
       width: 260,
-      height: 433,
+      height: 533,
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
@@ -147,21 +150,19 @@ class ArticleCardWidget extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: CachedNetworkImage(
-              height: 260,
+              height: 300,
               imageUrl: imageUrl,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
-              const ShimmerPlaceholder(
-                  width: 0, height: 0),
-              errorWidget: (context, url, error) =>
-                  Container(
-                    color: Colors.grey,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Brak obrazu'.tr,
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
+                  const ShimmerPlaceholder(width: 0, height: 0),
+              errorWidget: (context, url, error) => Container(
+                color: Colors.grey,
+                alignment: Alignment.center,
+                child: Text(
+                  'Brak obrazu'.tr,
+                  style: TextStyle(color: textColor),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -170,7 +171,7 @@ class ArticleCardWidget extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -184,7 +185,7 @@ class ArticleCardWidget extends StatelessWidget {
             child: Text(
               description,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: Colors.black54,
               ),
               maxLines: 3,

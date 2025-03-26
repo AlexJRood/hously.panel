@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/colors.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/dialogs/calendar_popup.dart';
 import 'package:hously_flutter/extensions/string_extension.dart';
@@ -120,7 +122,7 @@ class NoRepeatWidget extends ConsumerWidget {
                           const SizedBox(width: 10),
                           if (childIndex == 0)
                             IconButton(
-                              icon: const Icon(Icons.add_circle_outline),
+                              icon: SvgPicture.asset(AppIcons.circlePlus),
                               onPressed: () => ref
                                   .read(scheduleAppointmentProvider)
                                   .addAvailability(
@@ -132,7 +134,7 @@ class NoRepeatWidget extends ConsumerWidget {
                           if (availabilityDate.timeSlots.length > 1 ||
                               scheduleData.availabilityDates.length > 1)
                             IconButton(
-                              icon: const Icon(Icons.close),
+                              icon: SvgPicture.asset(AppIcons.close),
                               onPressed: () => ref
                                   .read(scheduleAppointmentProvider)
                                   .removeAvailability(

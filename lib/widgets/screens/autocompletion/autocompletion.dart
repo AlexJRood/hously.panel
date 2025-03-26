@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/widgets/screens/autocompletion/components/checkbox.dart';
 
 import 'package:hously_flutter/widgets/screens/autocompletion/components/customchip.dart';
@@ -15,10 +16,15 @@ class Mytextfield extends ConsumerStatefulWidget {
 }
 
 class _MytextfieldState extends ConsumerState<Mytextfield> {
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     print('rebuilded');
-
+    final theme = ref.watch(themeColorsProvider);
     final model =
         ref.watch(myTextFieldViewModelProvider.notifier); // Watch the provider
     final state = ref.watch(myTextFieldViewModelProvider);
@@ -29,197 +35,196 @@ class _MytextfieldState extends ConsumerState<Mytextfield> {
     final showRecentlySelected = model.filteredCities.isEmpty &&
         model.searchController.text.isEmpty &&
         state['recentList'].isNotEmpty;
+
     return Stack(
-      children: [
-        Positioned(
-          top: 0,
-          left: 0,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Column(
               children: [
                 Textfieldcontainer(
                   height: model.isLoading || model.focusNode.hasFocus
                       ? 600
                       : 50, // Adjust height based on loading
-                  child: Column(
-                    children: [
-                      Consumer(
-                        builder: (context, ref, child) {
-                          return CustomTextField(
-                            isloading: model.isLoading,
-                            controller: model.selectedDistricts.isNotEmpty
-                                ? model.districtsController
-                                : model.searchController,
-                            focusNode: model.focusNode,
-                            isReadOnly: model.selectedDistricts.isNotEmpty,
-                            hintText: "Enter your location",
-                            prefixIcon: Icons.search,
-                            selectedDistricts: model.selectedDistricts,
-                            onClear: () => model.clear(),
-                            onChanged: (text) {
-                              if (model.searchController.text.isEmpty) {
-                                model.clearExpandedCities();
-                              }
-                              model.filterCitiesAndDistricts(text);
-                            },
-                            onTap: () {
-                              model.setLoading(true);
-                              if (recent.isEmpty) {
-                                model.fetchAllCities();
-                              }
-                              if (model.searchController.text.isNotEmpty) {
-                                model.filterCitiesAndDistricts(
-                                    model.searchController.text);
-                              }
-                              print(model.isLoading);
-                            },
-                          );
-                        },
-                      ),
-                      (model.isLoading || model.focusNode.hasFocus)
-                          ? const Divider(color: Colors.black, thickness: 2)
-                          : const SizedBox(),
-                      ((model.isLoading || model.focusNode.hasFocus) &&
-                              model.searchController.text.isEmpty &&
-                              recent.isNotEmpty)
-                          ? const Align(
-                              alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Consumer(
+                          builder: (context, ref, child) {
+                            return CustomTextField(
+                              isloading: model.isLoading,
+                              controller: model.selectedDistricts.isNotEmpty
+                                  ? model.districtsController
+                                  : model.searchController,
+                              focusNode: model.focusNode,
+                              isReadOnly: model.selectedDistricts.isNotEmpty,
+                              hintText: "Search your location",
+                              prefixIcon: Icons.search,
+                              selectedDistricts: model.selectedDistricts,
+                              onClear: () => model.clear(),
+                              onChanged: (text) {
+                                if (model.searchController.text.isEmpty) {
+                                  model.clearExpandedCities();
+                                }
+                                model.filterCitiesAndDistricts(text);
+                              },
+                              onTap: () {
+                                model.setLoading(true);
+                                if (recent.isEmpty) {
+                                  model.fetchAllCities();
+                                }
+                                if (model.searchController.text.isNotEmpty) {
+                                  model.filterCitiesAndDistricts(
+                                      model.searchController.text);
+                                }
+                                print(model.isLoading);
+                              },
+                            );
+                          },
+                        ),
+                        (model.isLoading || model.focusNode.hasFocus)
+                            ? Divider(color: theme.textFieldColor, thickness: 2)
+                            : const SizedBox(),
+                        ((model.isLoading || model.focusNode.hasFocus) &&
+                                model.searchController.text.isEmpty &&
+                                recent.isNotEmpty)
+                            ? Align(
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   "recently selected",
                                   style: TextStyle(
-                                    fontFamily: 'ansaf',
-                                    color: Colors.black,
+                                    color: theme.textFieldColor,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                            )
-                          : const SizedBox(),
-                      (showRecentlySelected)
-                          ? Expanded(
-                              child: ListView.builder(
-                                itemCount: recent.length,
-                                itemBuilder: (context, index) {
-                                  final recentItem = recent[index];
+                              )
+                            : const SizedBox(),
+                        (showRecentlySelected)
+                            ? Expanded(
+                                child: ListView.builder(
+                                  itemCount: recent.length,
+                                  itemBuilder: (context, index) {
+                                    final recentItem = recent[index];
 
-                                  return Material(
-                                    color: Colors.transparent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 7),
-                                      child: Container(
+                                    return Material(
+                                      color: Colors.transparent,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 7),
+                                        child: Container(
+                                          child: ListTile(
+                                            title: Text(
+                                              recentItem,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: theme.textFieldColor),
+                                            ),
+                                            onTap: () {
+                                              model.handleRecentSelection(
+                                                  recentItem);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : SizedBox(),
+                        if (model.filteredCities.isNotEmpty)
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: model.filteredCities.length,
+                              itemBuilder: (context, index) {
+                                final city = model.filteredCities[index];
+                                final String cityName = city.city;
+                                final districts = city.districts;
+                                final isExpanded =
+                                    model.isCityExpanded(cityName);
+                                return Column(
+                                  children: [
+                                    Material(
+                                      color: Colors.transparent,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
                                         child: ListTile(
                                           title: Text(
-                                            recentItem,
+                                            cityName,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: theme.textFieldColor),
                                           ),
+                                          trailing: (districts != null &&
+                                                  districts.isNotEmpty)
+                                              ? SizedBox(
+                                                  width: 40,
+                                                  height: 30,
+                                                  child: GestureDetector(
+                                                    child: Icon(
+                                                      color:
+                                                          theme.textFieldColor,
+                                                      isExpanded
+                                                          ? Icons
+                                                              .keyboard_arrow_up
+                                                          : Icons
+                                                              .keyboard_arrow_down,
+                                                      size: 30,
+                                                    ),
+                                                    onTap: () {
+                                                      model.toggleCityExpansion(
+                                                          cityName);
+                                                    },
+                                                  ),
+                                                )
+                                              : null,
                                           onTap: () {
-                                            model.handleRecentSelection(
-                                                recentItem);
+                                            //   print(model.selectedDistricts);
+                                            model.handleCitySelection(
+                                                cityName, city);
                                           },
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                            )
-                          : SizedBox(),
-                      if (model.filteredCities.isNotEmpty)
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: model.filteredCities.length,
-                            itemBuilder: (context, index) {
-                              final city = model.filteredCities[index];
-                              final String cityName = city.city;
-                              final districts = city.districts;
-                              final isExpanded = model.isCityExpanded(cityName);
-                              return Column(
-                                children: [
-                                  Material(
-                                    color: Colors.transparent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: ListTile(
-                                        title: Text(
-                                          cityName,
-                                          style: const TextStyle(fontSize: 18),
+                                    if (isExpanded &&
+                                        districts != null &&
+                                        districts.isNotEmpty)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 16.0),
+                                        child: Column(
+                                          children:
+                                              districts.values.map((district) {
+                                            return Material(
+                                              color: Colors.transparent,
+                                              child: ListTile(
+                                                title: Text(district,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: theme
+                                                            .textFieldColor)),
+                                                onTap: () {
+                                                  model.selectDistrictFromList(
+                                                      district, city);
+                                                },
+                                              ),
+                                            );
+                                          }).toList(),
                                         ),
-                                        trailing: (districts != null &&
-                                                districts.isNotEmpty)
-                                            ? SizedBox(
-                                                width: 40,
-                                                height: 30,
-                                                child: GestureDetector(
-                                                  child: Icon(
-                                                    color: Colors.black,
-                                                    isExpanded
-                                                        ? Icons
-                                                            .keyboard_arrow_up
-                                                        : Icons
-                                                            .keyboard_arrow_down,
-                                                    size: 30,
-                                                  ),
-                                                  onTap: () {
-                                                    model.toggleCityExpansion(
-                                                        cityName);
-                                                  },
-                                                ),
-                                              )
-                                            : null,
-                                        onTap: () {
-                                          //   print(model.selectedDistricts);
-                                          model.handleCitySelection(
-                                              cityName, city);
-                                        },
                                       ),
-                                    ),
-                                  ),
-                                  if (isExpanded &&
-                                      districts != null &&
-                                      districts.isNotEmpty)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
-                                      child: Column(
-                                        children:
-                                            districts.values.map((district) {
-                                          return Material(
-                                            color: Colors.transparent,
-                                            child: ListTile(
-                                              title: Text(district,
-                                                  style: const TextStyle(
-                                                      fontSize: 16)),
-                                              onTap: () {
-                                                model.selectDistrictFromList(
-                                                    district, city);
-                                              },
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+          
         if ((model.isLoading) && model.selectedDistricts.isNotEmpty)
-          Positioned(
-            top: 20,
-            left: 20,
-            child: GestureDetector(
+          GestureDetector(
               onTap: () {
                 model.setLoading(true);
               },
               child: SecondContainer(
-                height: 400,
+                height: 600,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -269,6 +274,9 @@ class _MytextfieldState extends ConsumerState<Mytextfield> {
                                         padding: const EdgeInsets.only(top: 10),
                                         child: Text(
                                           model.cityInfo!.city,
+                                          style: TextStyle(
+                                              fontSize: 13,
+                                              color: theme.textFieldColor),
                                         ),
                                       ),
                                       leading: CustomCheckbox(
@@ -321,6 +329,9 @@ class _MytextfieldState extends ConsumerState<Mytextfield> {
                                               const EdgeInsets.only(top: 10),
                                           child: Text(
                                             entry.value,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: theme.textFieldColor),
                                           ),
                                         ),
                                         leading: CustomCheckbox(
@@ -352,7 +363,7 @@ class _MytextfieldState extends ConsumerState<Mytextfield> {
                 ),
               ),
             ),
-          ),
+        
       ],
     );
   }

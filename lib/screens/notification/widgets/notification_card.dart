@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/notification/model/notification_model.dart';
 import 'package:hously_flutter/screens/notification/widgets/image_details_widget.dart';
 
@@ -15,7 +17,7 @@ class NotificationCard extends StatelessWidget {
       color: Colors.transparent,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        leading: const Icon(Icons.notifications, color: Colors.white),
+        leading: SvgPicture.asset(AppIcons.notification, color: Colors.white),
         title: Text(
           notification.title,
           style:

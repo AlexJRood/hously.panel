@@ -2,11 +2,14 @@ import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/colors.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
@@ -19,6 +22,8 @@ import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/secure_storage.dart';
 import 'package:hously_flutter/widgets/card/seller_card.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/ad_view_client/full_screen_image.dart';
+
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 // import 'package:hously_flutter/widgets/screens/chat/chat_pc.dart';
 import 'package:hously_flutter/widgets/screens/feed/map/map_ad.dart';
@@ -77,6 +82,8 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
   Widget build(BuildContext context) {
     final userAsyncValue = ref.watch(userProvider);
     final lastPage = ref.read(navigationHistoryProvider.notifier).lastPage;
+    bool _hasPopped = false; // Flaga kontrolująca pojedyncze wywołanie beamPop
+
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -164,19 +171,12 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.arrow_back_ios_rounded,
+                                  icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                                       color: theme.popUpIconColor),
                                   onPressed: () =>
                                       ref.read(navigationService).beamPop(),
                                 ),
                                 const Spacer(),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: SellerCard(
-                                    sellerId: widget.adFeedPop.sellerId,
-                                    onTap: () {},
-                                  ),
-                                ),
                               ],
                             ),
                           ],
@@ -185,18 +185,8 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: GestureDetector(
-                        onVerticalDragUpdate: (details) {
-                          if (_scrollController.offset == 0 &&
-                              details.primaryDelta! > 0) {
-                            // Close the page when dragged down at the top
-                            ref.read(navigationService).beamPop();
-                          } else {
-                            _scrollController.jumpTo(
-                              _scrollController.offset - details.primaryDelta!,
-                            );
-                          }
-                        },
+                      child: DragScrollPop(
+                        scrollcontroller: _scrollController,
                         child: SingleChildScrollView(
                           controller: _scrollController,
                           child: Column(
@@ -261,14 +251,8 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                 height: 120,
                                 // Ensure the height is sufficient for both ListView scenarios
                                 child: widget.adFeedPop.images.isNotEmpty
-                                    ? GestureDetector(
-                                        onHorizontalDragUpdate: (details) {
-                                          // Manually scroll by dragging
-                                          _scrollController2.jumpTo(
-                                            _scrollController2.offset -
-                                                details.delta.dx,
-                                          );
-                                        },
+                                    ? DragScrollView(
+                                        controller: _scrollController2,
                                         child: ListView.builder(
                                           controller: _scrollController2,
                                           scrollDirection: Axis.horizontal,
@@ -302,8 +286,7 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                                   width: 120,
                                                   height: 120,
                                                   fit: BoxFit.cover,
-                                                  placeholder: (context,
-                                                          url) =>
+                                                  placeholder: (context, url) =>
                                                       const ShimmerPlaceholder(
                                                     width: 120,
                                                     height: 120,
@@ -320,8 +303,8 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                                         child: Material(
                                                           color: Colors
                                                               .transparent,
-                                                          child: Icon(
-                                                              Icons.error),
+                                                          child:
+                                                              Icon(Icons.error),
                                                         ),
                                                       ),
                                                     ],
@@ -1038,19 +1021,13 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                 const SizedBox(
                                   height: 60,
                                 ),
-                                // Align(
-                                //   alignment: Alignment.topRight,
-                                //   child: UserCard(
-                                //     sellerId: widget.adFeedPop.sellerId,
-                                //     onTap: () {
-                                //       // Navigacja do strony użytkownika
-                                //       // Navigator.push(
-                                //       //   context,
-                                //       //   MaterialPageRoute(builder: (context) => UserProfilePage()),
-                                //       // );
-                                //     },
-                                //   ),
-                                // ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: SellerCard(
+                                    sellerId: widget.adFeedPop.sellerId,
+                                    onTap: () {},
+                                  ),
+                                ),
                               ],
                             ),
                             Align(
@@ -1059,15 +1036,13 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                 children: [
                                   const Spacer(),
                                   const SizedBox(
-                                    height: 30,
+                                    height: 200,
                                   ),
                                   SizedBox(
                                       height: 200,
                                       width: 205,
                                       child: FullLikeSectionFeedPop(
-                                          adFeedPopId: widget.adFeedPop.id,
-                                          ref: ref,
-                                          context: context)),
+                                          adFeedPop: widget.adFeedPop,)),
                                   const Spacer(),
                                 ],
                               ),
@@ -1145,20 +1120,27 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
                                               WidgetStatePropertyAll(
                                                   theme.textFieldColor)),
                                       onPressed: () {
-                                        final userId = ref.read(userStateProvider)?.userId;
+                                        final userId =
+                                            ref.read(userStateProvider)?.userId;
                                         if (userId != null) {
-                                          final currentContext = context; // Capture context before async operation
+                                          final currentContext =
+                                              context; // Capture context before async operation
 
-                                          ref.read(fetchRoomsProvider.notifier)
+                                          ref
+                                              .read(fetchRoomsProvider.notifier)
                                               .createRoom(widget.adFeedPop.id)
                                               .whenComplete(() {
                                             if (currentContext.mounted) {
                                               Navigator.of(currentContext).push(
                                                 PageRouteBuilder(
                                                   opaque: false,
-                                                  pageBuilder: (_, __, ___) => const ChatPage(),
-                                                  transitionsBuilder: (_, anim, __, child) {
-                                                    return FadeTransition(opacity: anim, child: child);
+                                                  pageBuilder: (_, __, ___) =>
+                                                      const ChatPage(),
+                                                  transitionsBuilder:
+                                                      (_, anim, __, child) {
+                                                    return FadeTransition(
+                                                        opacity: anim,
+                                                        child: child);
                                                   },
                                                 ),
                                               );
@@ -1185,7 +1167,10 @@ class FeedPopFullState extends ConsumerState<FeedPopFull> {
               ),
             ));
       },
-      loading: () => const CircularProgressIndicator(),
+      loading: () => SizedBox(
+          height: 30,
+          width: 30,
+          child: Center(child: CircularProgressIndicator())),
       error: (error, stack) => Text('Błąd: $error'.tr),
     );
   }

@@ -66,7 +66,7 @@ class HotCarousel extends ConsumerWidget {
                 return const SizedBox.shrink();
               }
               final ad = displayedAds[index];
-              final tag = 'hotOffer233_${ad.id}_$index';
+              final tag = 'hotOffer233_${ad.id}_$index-${UniqueKey().toString()}';
               final formattedPrice = customFormat.format(ad.price);
               final mainImageUrl =
                   ad.images.isNotEmpty ? ad.images[0] : 'default_image_url';
@@ -96,11 +96,11 @@ class HotCarousel extends ConsumerWidget {
                         imageUrl: mainImageUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: const Color.fromARGB(255, 37, 37, 37),
-                          highlightColor: silver,
+                          baseColor: ShimmerColors.base(context),
+                          highlightColor: ShimmerColors.highlight(context),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: ShimmerColors.background(context),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),

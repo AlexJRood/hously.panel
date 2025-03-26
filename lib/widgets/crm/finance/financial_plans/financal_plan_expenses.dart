@@ -2,7 +2,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/data/crm/finance/api_servises_expenses_plans.dart';
@@ -158,7 +160,7 @@ class _FinancialPlansContainerState
                   onPressed: () {
                     confirmDeleteMultiplePlans(context, ref, _selectedPlans);
                   },
-                  icon: const Icon(Icons.delete),
+                  icon: SvgPicture.asset(AppIcons.delete),
                   label: const Text('Delete Selected'),
                   style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
                 ),
@@ -167,7 +169,7 @@ class _FinancialPlansContainerState
                   onPressed: () {
                     addMultiplePlansToExpenses(context, ref, _selectedPlans);
                   },
-                  icon: const Icon(Icons.add),
+                  icon: SvgPicture.asset(AppIcons.add),
                   label: const Text('Add to Expenses'),
                   style:
                       ElevatedButton.styleFrom(foregroundColor: Colors.green),
@@ -189,7 +191,7 @@ class _FinancialPlansContainerState
                       _selectedPlans.clear();
                     });
                   },
-                  icon: const Icon(Icons.clear),
+                  icon: SvgPicture.asset(AppIcons.close),
                   label: const Text('Clear Selection'),
                   style: ElevatedButton.styleFrom(foregroundColor: Colors.grey),
                 ),

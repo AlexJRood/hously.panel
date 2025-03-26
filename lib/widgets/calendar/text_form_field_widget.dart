@@ -71,35 +71,35 @@ class TextFormFieldWidget extends StatefulWidget {
 }
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
-  late TextEditingController controller;
-  final focusNode = FocusNode();
+    late TextEditingController controller;
+    final focusNode = FocusNode();
 
-  @override
-  void initState() {
-    super.initState();
+    @override
+    void initState() {
+      super.initState();
 
-    controller = TextEditingController(text: widget.text);
-    if (widget.autoFocus) focusNode.requestFocus();
-  }
-
-  @override
-  void didUpdateWidget(covariant TextFormFieldWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.text != widget.text && !focusNode.hasFocus) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => controller.text = widget.text,
-      );
+      controller = TextEditingController(text: widget.text);
+      if (widget.autoFocus) focusNode.requestFocus();
     }
 
-    if (widget.clearController != null) {
-      widget.clearController!(() => clearTextField());
-    }
-  }
+    @override
+    void didUpdateWidget(covariant TextFormFieldWidget oldWidget) {
+      super.didUpdateWidget(oldWidget);
 
-  void clearTextField() {
-    controller.clear();
-  }
+      if (oldWidget.text != widget.text && !focusNode.hasFocus) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => controller.text = widget.text,
+        );
+      }
+
+      if (widget.clearController != null) {
+        widget.clearController!(() => clearTextField());
+      }
+    }
+
+    void clearTextField() {
+      controller.clear();
+    }
 
   @override
   Widget build(BuildContext context) => TextFormField(

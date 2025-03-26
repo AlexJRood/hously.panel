@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/settings/components/settings_button.dart';
 import 'package:hously_flutter/screens/settings/components/pc/components/settings_tiles.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -345,7 +347,7 @@ class InvoiceTable extends ConsumerWidget {
                                     color: Theme.of(context).iconTheme.color,
                                     fontWeight: FontWeight.bold,
                                   ))),
-                          Icon(Icons.more_vert,
+                          SvgPicture.asset(AppIcons.moreVertical,
                               color: Theme.of(context).iconTheme.color),
                         ],
                       ),
@@ -394,7 +396,7 @@ class InvoiceTable extends ConsumerWidget {
                                     color: Theme.of(context).iconTheme.color,
                                   )),
                             ),
-                            Icon(Icons.more_vert,
+                            SvgPicture.asset(AppIcons.moreVertical,
                                 color: Theme.of(context)
                                     .iconTheme
                                     .color!

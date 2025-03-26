@@ -389,6 +389,7 @@ class AppTextStyles {
     color: AppColors
         .textColorLight, // Upewnij się, że kolor jest zdefiniowany w AppColors
   );
+  static final libreCaslonHeading = GoogleFonts.libreCaslonText();
 
   // Definiuj więcej stylów tekstu, które są używane w aplikacji
 }

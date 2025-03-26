@@ -10,27 +10,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hously_flutter/const/route_constant.dart';
-import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/url.dart';
+import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
+import 'package:hously_flutter/screens/profile/login/login/components_pc.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:hously_flutter/utils/secure_storage.dart';
 import 'package:hously_flutter/widgets/appbar/hously/pc/appbar_logo.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
+import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 import 'package:hously_flutter/widgets/sidebar/sidebar.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../widgets/side_menu/slide_rotate_menu.dart';
-import '../../../../data/design/design.dart';
-
 final avatarProvider = StateProvider<Uint8List?>((ref) => null);
 final termsAcceptedProvider = StateProvider<bool>((ref) => false);
-final marketingConsentProvider = StateProvider<bool>((ref) => false);
 
 class RegisterPcPage extends ConsumerStatefulWidget {
-  const RegisterPcPage({Key? key}) : super(key: key);
+  const RegisterPcPage({super.key});
 
   @override
   _RegisterPcPageState createState() => _RegisterPcPageState();
@@ -49,7 +46,10 @@ class _RegisterPcPageState extends ConsumerState<RegisterPcPage> {
       focusNode4,
       focusNode5,
       focusNode6;
-  bool showImagePicker = false; // Toggle between form and image picker
+  bool showImagePicker = false;
+
+  final sideMenuKey = GlobalKey<SideMenuState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -67,8 +67,6 @@ class _RegisterPcPageState extends ConsumerState<RegisterPcPage> {
     focusNode5 = FocusNode();
     focusNode6 = FocusNode();
   }
-
-  final sideMenuKey = GlobalKey<SideMenuState>();
 
   @override
   void dispose() {
@@ -89,291 +87,220 @@ class _RegisterPcPageState extends ConsumerState<RegisterPcPage> {
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>(); // Add Form Key
-    final avatarBytes = ref.watch(avatarProvider);
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final inputWidth = math.min(screenWidth * 0.5, 400);
-    final termsAccepted = ref.watch(termsAcceptedProvider);
-    final marketingConsent = ref.watch(marketingConsentProvider);
-    final theme = ref.watch(themeColorsProvider);
-    final isSmallScreen = screenWidth < 1400; // Define breakpoint
-    final horizontalPadding = isSmallScreen ? 16.0 : 24.0;
-    final verticalPadding = isSmallScreen ? 16.0 : 40.0;
+    final isSmallScreen = screenWidth < 1000; // Match LoginPcPage breakpoint
+    final containerWidth = math.min(screenWidth * 0.9, 550).toDouble();
 
     return Scaffold(
-      body: SafeArea(
+      resizeToAvoidBottomInset: false,
+      body: SideMenuManager.sideMenuSettings(
+        menuKey: sideMenuKey,
         child: Stack(
           children: [
-            Positioned.fill(
-              child: Image.asset(
-                'assets/images/registerbackground.png',
-                fit: BoxFit.cover,
-              ),
-            ),
+            const BackgroundImage(), // Match LoginPcPage background
             Row(
               children: [
-                Sidebar(
-                  sideMenuKey: sideMenuKey,
-                ),
+                Sidebar(sideMenuKey: sideMenuKey),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const TopAppBarLogoRegisterPage(),
-                            const SizedBox(height: 12),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  flex: isSmallScreen ? 2 : 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 240.0, horizontal: 40.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        FittedBox(
-                                          child: Text(
-                                            'HOUSLY.AI',
-                                            style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 40,
-                                              color: Colors.white,
-                                            ),
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Expanded(child: SizedBox(width: 4)),
+                              BrandHeader(isSmallScreen: isSmallScreen),
+                              Expanded(
+                                flex: 7,
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          AnimatedSwitcher(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            transitionBuilder:
+                                                (child, animation) {
+                                              return FadeTransition(
+                                                opacity: animation,
+                                                child: child,
+                                              );
+                                            },
+                                            child: showImagePicker
+                                                ? _buildImagePicker(
+                                                    ref.watch(avatarProvider),
+                                                    containerWidth,
+                                                    context,
+                                                  )
+                                                : RegisterForm(
+                                                    formKey: _formKey,
+                                                    containerWidth:
+                                                        containerWidth,
+                                                    isSmallScreen:
+                                                        isSmallScreen,
+                                                    firstNameController:
+                                                        _firstNameController,
+                                                    lastNameController:
+                                                        _lastNameController,
+                                                    emailController:
+                                                        _emailController,
+                                                    phoneNumberController:
+                                                        _phoneNumberController,
+                                                    passwordController:
+                                                        _passwordController,
+                                                    password2Controller:
+                                                        _password2Controller,
+                                                    onContinue: () {
+                                                      if (_formKey.currentState!
+                                                              .validate() &&
+                                                          ref.read(
+                                                              termsAcceptedProvider)) {
+                                                        setState(() {
+                                                          showImagePicker =
+                                                              true;
+                                                        });
+                                                      } else if (!ref.read(
+                                                          termsAcceptedProvider)) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: Text(
+                                                              'Musisz zaakceptować warunki korzystania z usługi, aby kontynuować.'
+                                                                  .tr,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    onRegister: () =>
+                                                        _register(context, ref),
+                                                    ref: ref,
+                                                  ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Flexible(
-                                  flex: isSmallScreen ? 3 : 4,
-                                  child: AnimatedSwitcher(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      transitionBuilder: (child, animation) {
-                                        return FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        );
-                                      },
-                                      child: showImagePicker
-                                          ? _buildImagePicker(avatarBytes,
-                                              screenHeight, context)
-                                          : _buildForm(formKey, screenWidth)),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                          ],
-                        ),
+                              ),
+                              Expanded(flex: 2, child: SizedBox(width: 4)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ],
             ),
+            const AppBarLogo(), // Match LoginPcPage app bar logo
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSocialButton(BuildContext context, String image) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmallScreen =
-        screenWidth < 800; // Define breakpoint for small screens
-
-    final buttonSize =
-        isSmallScreen ? 62.0 : 72.0; // Adjust size for small screens
-    final iconSize = isSmallScreen ? 45.0 : 60.0; // Adjust icon size
-    final padding = isSmallScreen
-        ? const EdgeInsets.symmetric(horizontal: 8, vertical: 8)
-        : const EdgeInsets.symmetric(horizontal: 12, vertical: 12);
-
-    return Container(
-      constraints: BoxConstraints(maxWidth: buttonSize), // Limit button width
-      child: ElevatedButton.icon(
-        onPressed: () {},
-        icon: Container(
-          height: buttonSize,
-          width: iconSize,
-          child: Image.asset(
-            image,
-            fit: BoxFit.contain,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: padding,
-        ),
-        label: const Text(''), // Keep the label empty as per the design
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Row(
-      children: [
-        Expanded(
-            child: Divider(
-          color: Color(0xffE2E8F0),
-        )),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: Text('lub'.tr),
-          // or
-        ),
-        Expanded(child: Divider(color: Color(0xffE2E8F0))),
-      ],
-    );
-  }
-
-  Widget _buildValidatedTextField(
-    BuildContext context,
-    TextEditingController controller,
-    String label,
-    FocusNode currentFocus,
-    FocusNode? nextFocus,
-    String? Function(String?)? validator, {
-    bool obscureText = false,
-  }) {
-    return TextFormField(
-      controller: controller,
-      focusNode: currentFocus,
-      onFieldSubmitted: (_) => nextFocus?.requestFocus(),
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(
-            color: Color(0xff919191),
-            fontWeight: FontWeight.w400,
-            fontSize: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffE2E8F0), width: 1),
-          borderRadius: BorderRadius.circular(6.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffE2E8F0), width: 1.0),
-          borderRadius: BorderRadius.circular(6.0),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffE2E8F0), width: 1.0),
-          borderRadius: BorderRadius.circular(6.0),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffE2E8F0), width: 1.0),
-          borderRadius: BorderRadius.circular(6.0),
-        ),
-        contentPadding:
-            EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Adjust padding
-      ),
-      validator: validator,
-    );
-  }
-
-  @override
   Widget _buildImagePicker(
-      Uint8List? avatarBytes, double screenHeight, BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmallScreen = screenWidth < 800; // Breakpoint
-    final containerWidth = isSmallScreen
-        ? math.min(screenWidth * 0.9, 480).toDouble()
-        : math.min(screenWidth * 0.7, 560).toDouble();
-    final containerHeight = isSmallScreen
-        ? math.min(screenHeight * 0.6, 400).toDouble()
-        : math.min(screenHeight * 0.8, 600).toDouble();
-
-    return Center(
-      child: Container(
-        height: containerHeight,
-        width: containerWidth,
-        padding: EdgeInsets.symmetric(
-          vertical: isSmallScreen ? 12 : 20,
-          horizontal: isSmallScreen ? 16 : 24,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+      Uint8List? avatarBytes, double containerWidth, BuildContext context) {
+    return Container(
+      width: containerWidth,
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Add a photo with you'.tr,
+            style: GoogleFonts.inter(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff5A5A5A),
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Add a photo with you'.tr,
-              style: GoogleFonts.inter(
-                fontSize: isSmallScreen ? 16 : 18,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff5A5A5A),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            InkWell(
-              onTap: () async {
-                await _pickAvatar(ref);
-              },
-              child: Container(
-                width: isSmallScreen ? 180 : 212,
-                height: isSmallScreen ? 180 : 212,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Colors.grey.shade300,
-                    width: 1,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          InkWell(
+            onTap: () async {
+              await _pickAvatar(ref);
+            },
+            child: Container(
+              width: 212,
+              height: 212,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                ],
+              ),
+              child: Center(
+                child: avatarBytes == null
+                    ? Image.asset(
+                        'assets/images/frame.png',
+                        height: 48,
+                        width: 48,
+                        fit: BoxFit.contain,
+                      )
+                    : CircleAvatar(
+                        radius: 96,
+                        backgroundImage: MemoryImage(avatarBytes),
+                      ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            height: 48,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              gradient: const LinearGradient(
+                colors: [Colors.black, Colors.grey], // Placeholder gradient
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: ElevatedButton(
+              onPressed: () => _register(context, ref),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: Center(
-                  child: avatarBytes == null
-                      ? Image.asset(
-                          'assets/images/frame.png',
-                          height: 48,
-                          width: 48,
-                          fit: BoxFit.contain,
-                        )
-                      : CircleAvatar(
-                          radius: isSmallScreen ? 80 : 96,
-                          backgroundImage: MemoryImage(avatarBytes),
-                        ),
+              ),
+              child: Text(
+                'Register'.tr,
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  color: Colors.white,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -388,341 +315,310 @@ class _RegisterPcPageState extends ConsumerState<RegisterPcPage> {
     }
   }
 
-  Widget _buildForm(GlobalKey<FormState> formKey, double screenWidth) {
-    final isSmallScreen = screenWidth < 800; // Breakpoint for small screens
-    final containerWidth = isSmallScreen
-        ? math.min(screenWidth * 0.9, 480).toDouble()
-        : math
-            .min(screenWidth * 0.7, 560)
-            .toDouble(); // Adjust width dynamically
+  Future<void> _register(BuildContext context, WidgetRef ref) async {
+    final registerUrl = URLs.register;
+
+    try {
+      final formData = FormData.fromMap({
+        'username': _emailController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+        'password2': _password2Controller.text,
+        'first_name': _firstNameController.text,
+        'last_name': _lastNameController.text,
+      });
+
+      final avatarData = ref.read(avatarProvider);
+      if (avatarData != null) {
+        formData.files.add(MapEntry(
+          'avatar',
+          MultipartFile.fromBytes(avatarData, filename: 'avatar.jpg'),
+        ));
+      }
+
+      final response = await ApiServices.post(registerUrl, formData: formData);
+
+      if (response != null &&
+          (response.statusCode == 200 || response.statusCode == 201)) {
+        final data = response.data;
+
+        if (data.containsKey('token')) {
+          final token = data['token'];
+          final secureStorage = SecureStorage();
+          await secureStorage.saveToken(token);
+          await ApiServices.init(token);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Registered successfully, you are logged in')),
+          );
+
+          ref
+              .read(navigationHistoryProvider.notifier)
+              .removeSpecificPages(['/login', '/register']);
+          final lastPage =
+              ref.read(navigationHistoryProvider.notifier).lastPage;
+          Navigator.of(context).pushReplacementNamed(lastPage);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Registration failed')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registration error: $response')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration error: $e')),
+      );
+    }
+  }
+}
+
+class RegisterForm extends StatelessWidget {
+  final double containerWidth;
+  final bool isSmallScreen;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
+  final TextEditingController emailController;
+  final TextEditingController phoneNumberController;
+  final TextEditingController passwordController;
+  final TextEditingController password2Controller;
+  final VoidCallback onContinue;
+  final VoidCallback onRegister;
+  final WidgetRef ref;
+  final GlobalKey<FormState> formKey;
+
+  const RegisterForm({
+    super.key,
+    required this.formKey,
+    required this.containerWidth,
+    required this.isSmallScreen,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.emailController,
+    required this.phoneNumberController,
+    required this.passwordController,
+    required this.password2Controller,
+    required this.onContinue,
+    required this.onRegister,
+    required this.ref,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final termsAccepted = ref.watch(termsAcceptedProvider);
 
-    return Center(
-      child: Container(
-        width: containerWidth,
-        padding: EdgeInsets.symmetric(
-          vertical: isSmallScreen ? 16 : 20,
-          horizontal: isSmallScreen ? 12 : 16,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Sign up to Hously'.tr,
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.bold,
-                    fontSize: isSmallScreen ? 24 : 28,
+    return FormContainer(
+      containerWidth: containerWidth,
+      isSmallScreen: isSmallScreen,
+      formContent: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FormHeader(
+                isSmallScreen: isSmallScreen, title: 'Sign up to Hously'.tr),
+            const SizedBox(height: 12),
+            SocialButtonsRow(context: context),
+            const SizedBox(height: 10),
+            const DividerWithText(),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Flexible(
+                  child: ValidatedTextField(
+                    controller: firstNameController,
+                    label: 'First Name'.tr,
+                    validator: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'First name is required'.tr;
+                      return null;
+                    },
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: _buildSocialButton(
-                        context, 'assets/images/google_button.png'),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: ValidatedTextField(
+                    controller: lastNameController,
+                    label: 'Last Name'.tr,
+                    validator: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'Last name is required'.tr;
+                      return null;
+                    },
                   ),
-                  Expanded(
-                      child: _buildSocialButton(
-                          context, 'assets/images/apple_button.png')),
-                  Expanded(
-                    child: _buildSocialButton(
-                        context, 'assets/images/facebook_button.png'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              _buildDivider(),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Flexible(
-                    child: _buildValidatedTextField(
-                        context,
-                        _firstNameController,
-                        'Imię'.tr,
-                        // 'First Name',
-                        focusNode1,
-                        focusNode2,
-                        (value) => value == null || value.isEmpty
-                            ? 'Imię jest wymagane'.tr
-                            // ? 'First name is required'
-                            : null),
-                  ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: _buildValidatedTextField(
-                        context,
-                        _lastNameController,
-                        'Last Name',
-                        focusNode2,
-                        focusNode3,
-                        (value) => value == null || value.isEmpty
-                            ? 'Last name is required'
-                            : null),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              _buildValidatedTextField(
-                  context, _emailController, 'Email', focusNode3, focusNode4,
-                  (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Email jest wymagany'.tr;
-                  // 'Email is required';
-                } else if (!value.isEmail) {
-                  return 'Niepoprawny adres email'.tr;
-                  // 'Invalid email address';
-                }
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            ValidatedTextField(
+              controller: emailController,
+              label: 'Email'.tr,
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Email is required'.tr;
+                if (!GetUtils.isEmail(value)) return 'Invalid email address'.tr;
                 return null;
-              }),
-              const SizedBox(height: 8),
-              _buildValidatedTextField(
-                  context,
-                  _phoneNumberController,
-                  'Numer Telefonu'.tr
-                  // 'Phone Number'
-                  ,
-                  focusNode4,
-                  focusNode5, (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Numer telefonu jest wymagany'.tr;
-                  // 'Phone number is required';
-                } else if (!RegExp(r'^\+?[0-9]{7,15}$').hasMatch(value)) {
-                  return 'Niepoprawny numer telefonu'.tr;
-                  // 'Invalid phone number';
-                }
+              },
+            ),
+            const SizedBox(height: 8),
+            ValidatedTextField(
+              controller: phoneNumberController,
+              label: 'Phone Number'.tr,
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Phone number is required'.tr;
                 return null;
-              }),
-              const SizedBox(height: 8),
-              _buildValidatedTextField(
-                context,
-                _passwordController,
-                'Hasło'.tr, // Password
-                focusNode5,
-                focusNode6,
-                (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Hasło jest wymagane'.tr;
-                    // Password is required
-                  } else if (value.length < 8) {
-                    return 'Hasło musi mieć co najmniej 8 znaków'.tr;
-                    // Password must be at least 8 characters long
-                  }
-                  return null;
-                },
-                obscureText: true,
-              ),
-              const SizedBox(height: 8),
-              _buildValidatedTextField(
-                context,
-                _password2Controller,
-                'Potwierdź hasło'.tr, // Confirm Password
-                focusNode6,
-                null,
-                (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Potwierdź swoje hasło'.tr;
-                    // Confirm your password
-                  } else if (value != _passwordController.text) {
-                    return 'Hasła nie pasują'.tr;
-                    // Passwords do not match
-                  }
-                  return null;
-                },
-                obscureText: true,
-              ),
-              const SizedBox(height: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: termsAccepted,
-                        onChanged: (bool? value) {
-                          ref.read(termsAcceptedProvider.notifier).state =
-                              value!;
+              },
+            ),
+            const SizedBox(height: 8),
+            ValidatedTextField(
+              controller: passwordController,
+              label: 'Password'.tr,
+              obscureText: true,
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Password is required'.tr;
+                if (value.length < 8)
+                  return 'Password must be at least 8 characters long'.tr;
+                return null;
+              },
+            ),
+            const SizedBox(height: 8),
+            ValidatedTextField(
+              controller: password2Controller,
+              label: 'Confirm Password'.tr,
+              obscureText: true,
+              validator: (value) {
+                if (value == null || value.isEmpty)
+                  return 'Confirm your password'.tr;
+                if (value != passwordController.text)
+                  return 'Passwords do not match'.tr;
+                return null;
+              },
+            ),
+            const SizedBox(height: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: termsAccepted,
+                      onChanged: (bool? value) {
+                        ref.read(termsAcceptedProvider.notifier).state = value!;
+                      },
+                      visualDensity: VisualDensity.standard,
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return const Color(0xff919191);
+                          }
+                          return Colors.transparent;
                         },
-                        visualDensity: VisualDensity.standard,
-                        fillColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.selected)) {
-                              return Color(0xff919191);
-                            }
-                            return Colors.transparent;
-                          },
-                        ),
-                        side: BorderSide(
-                          color: Color(0xff919191),
-                          width: 1.0,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Zgadzam się z naszymi '.tr,
-                            // 'I agree with our ',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
+                      side: const BorderSide(
+                        color: Color(0xff919191),
+                        width: 1.0,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'I agree with our '.tr,
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: 'Terms of Service'.tr,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.underline,
+                              ),
+                              recognizer: TapGestureRecognizer()..onTap = () {},
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'Warunkami korzystania z usługi'.tr,
-                                // 'Terms of Service',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {},
+                            const TextSpan(
+                              text: ', ',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                            ),
+                            TextSpan(
+                              text: 'Privacy Policy'.tr,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.underline,
                               ),
-                              const TextSpan(
-                                text: ', ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                ),
+                              recognizer: TapGestureRecognizer()..onTap = () {},
+                            ),
+                            TextSpan(
+                              text: ' and our default '.tr,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 12),
+                            ),
+                            TextSpan(
+                              text: 'Notification Settings'.tr,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                decoration: TextDecoration.underline,
                               ),
-                              TextSpan(
-                                text: 'Polityką prywatności'.tr,
-                                // 'Privacy Policy',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {},
-                              ),
-                              TextSpan(
-                                text: ' oraz domyślnymi '.tr,
-                                // ' and our default ',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Ustawieniami powiadomień'.tr,
-                                // 'Notification Settings',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    // Handle Notification Settings link tap
-                                  },
-                              ),
-                              const TextSpan(
-                                text: '.',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
+                              recognizer: TapGestureRecognizer()..onTap = () {},
+                            ),
+                            const TextSpan(
+                              text: '.',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                PrimaryButton(text: 'Continue'.tr, onPressed: onContinue),
+                const SizedBox(height: 8),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already have an account? '.tr,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.black,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                      TextButton(
+                        child: Text(
+                          'Log In'.tr,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: Colors.black,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
+                        onPressed: () => ref
+                            .read(navigationService)
+                            .pushNamedReplacementScreen(Routes.login),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate() && termsAccepted) {
-                          setState(() {
-                            showImagePicker = true; // Show the image picker
-                          });
-                        } else if (!termsAccepted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Musisz zaakceptować warunki korzystania z usługi, aby kontynuować.'
-                                      .tr
-                                  // 'You must agree to the terms of service to continue.
-                                  ),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        minimumSize: const Size.fromHeight(42),
-                        // Decreased button height
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(
-                        'Kontynuuj'.tr,
-                        // 'Continue',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14, // Reduced font size
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Masz już konto?'.tr,
-                          // 'Already have an account? ',
-                          style: const TextStyle(
-                            fontSize: 11,
-                            // Reduced font size
-                            color: Colors.black,
-                            decoration: TextDecoration.none,
-                          ),
-                        ),
-                        TextButton(
-                          child: Text(
-                            'Zaloguj się'.tr,
-                            // 'Log In',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              // Reduced font sizes
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -84,7 +84,7 @@ class FavMobilePage extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 0, right: 0),
+                            padding: const EdgeInsets.all(5),
                             child: GestureDetector(
                               onPanUpdate: (details) {
                                 // Handling drag for scrolling
@@ -107,8 +107,8 @@ class FavMobilePage extends ConsumerWidget {
                                               SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: grid,
                                             childAspectRatio: 1.0,
-                                            mainAxisSpacing: 0.0,
-                                            crossAxisSpacing: 0.0,
+                                            mainAxisSpacing: 5.0,
+                                            crossAxisSpacing: 5.0,
                                           ),
                                           delegate: SliverChildBuilderDelegate(
                                             (context, index) {

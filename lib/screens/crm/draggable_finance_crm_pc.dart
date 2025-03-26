@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
+import 'package:hously_flutter/screens/fliper_crm/finance/widget/finance_custom_tap_bar.dart';
 import 'package:hously_flutter/state_managers/data/Keyboardshortcuts.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -39,6 +40,8 @@ class _DraggableFinanceCrmPcState extends ConsumerState<DraggableFinanceCrmPc> {
   @override
   Widget build(BuildContext context) {
     final currentthememode = ref.watch(themeProvider);
+    final tabIndex = ref.watch(financeTabIndexProvider);
+
     return KeyboardListener(
         focusNode: FocusNode()..requestFocus(),
         onKeyEvent: (KeyEvent event) {
@@ -52,12 +55,12 @@ class _DraggableFinanceCrmPcState extends ConsumerState<DraggableFinanceCrmPc> {
           }
         },
         child: Scaffold(
+          backgroundColor: Colors.black,
           body: SideMenuManager.sideMenuSettings(
             menuKey: sideMenuKey,
             child: Container(
-              decoration: BoxDecoration(
-                gradient:
-                    CustomBackgroundGradients.customcrmright(context, ref),
+              decoration: const BoxDecoration(
+                color: Colors.black
               ),
               child: Stack(
                 children: [
@@ -68,137 +71,22 @@ class _DraggableFinanceCrmPcState extends ConsumerState<DraggableFinanceCrmPc> {
                       ),
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const TopAppBarCRM(routeName: Routes.proFinance),
+                            const FinanceCustomTapBar(),
                             Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Center(
-                                  child: Container(
-                                    width: 500,
-                                    // height: 42,
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      gradient: CustomBackgroundGradients
-                                          .crmadgradient(context, ref),
-                                      color: AppColors.light,
-                                      borderRadius: BorderRadius.circular(13.0),
-                                    ),
-                                    child: SegmentedButton<String>(
-                                      style: ButtonStyle(
-                                        foregroundColor: MaterialStateProperty
-                                            .resolveWith<Color>(
-                                          (states) {
-                                            if (states.contains(
-                                                MaterialState.selected)) {
-                                              return Theme.of(context)
-                                                  .iconTheme
-                                                  .color!;
-                                            }
-                                            return Theme.of(context)
-                                                .iconTheme
-                                                .color!;
-                                          },
-                                        ),
-                                        padding:
-                                            WidgetStateProperty.all<EdgeInsets>(
-                                          const EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 0),
-                                        ),
-                                        shape: WidgetStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                        ),
-                                        backgroundColor: WidgetStateProperty
-                                            .resolveWith<Color>(
-                                          (states) {
-                                            if (states.contains(
-                                                WidgetState.selected)) {
-                                              return (currentthememode ==
-                                                          ThemeMode.system ||
-                                                      currentthememode ==
-                                                          ThemeMode.light)
-                                                  ? AppColors.dark50
-                                                  : AppColors.light50;
-                                            }
-                                            return Colors.transparent;
-                                          },
-                                        ),
-                                        side:
-                                            WidgetStateProperty.all<BorderSide>(
-                                          BorderSide.none,
-                                        ),
-                                      ),
-                                      multiSelectionEnabled: false,
-                                      selected: {_selectedSegment},
-                                      onSelectionChanged: updateSelected,
-                                      segments: <ButtonSegment<String>>[
-                                        ButtonSegment(
-                                          label: Text(
-                                            'Przychody'.tr,
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              fontWeight:
-                                                  _selectedSegment == '/revenue'
-                                                      ? FontWeight.bold
-                                                      : FontWeight.normal,
-                                              fontSize: 14,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          value: '/revenue',
-                                          icon: Icon(
-                                            Icons.check,
-                                            color:
-                                                _selectedSegment == '/revenue'
-                                                    ? Colors.white
-                                                    : Colors.transparent,
-                                          ),
-                                        ),
-                                        ButtonSegment(
-                                          label: Text(
-                                            'Koszty'.tr,
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              fontWeight: _selectedSegment ==
-                                                      '/expenses'
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal,
-                                              fontSize: 14,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          value: '/expenses',
-                                          icon: Icon(
-                                            Icons.check,
-                                            color:
-                                                _selectedSegment == '/expenses'
-                                                    ? Colors.white
-                                                    : Colors.transparent,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                              child: IndexedStack(
+                                index: tabIndex,
+                                children:  [
+                                  Center(
+                                    child: CrmRevenueBoard(ref: ref),
                                   ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 9,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                // Wyświetlanie odpowiedniego widżetu w zależności od wybranego segmentu
-                                child: Center(
-                                  child: _selectedSegment == '/revenue'
-                                      ? CrmRevenueBoard(ref: ref)
-                                      : CrmExpensesBoard(ref: ref),
-                                ),
+                                  Center(
+                                    child: CrmExpensesBoard(ref: ref),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

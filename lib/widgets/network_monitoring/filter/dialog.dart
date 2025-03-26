@@ -4,9 +4,11 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/search_page/filters_provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/search_page/filters_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:hously_flutter/utils/secure_storage.dart'; // Import SecureStorage
@@ -93,7 +95,7 @@ class _SaveSearchDialogState extends ConsumerState<SaveSearchDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
+                  icon: SvgPicture.asset(AppIcons.iosArrowLeft),
                   onPressed: _scrollLeft,
                 ),
                 Expanded(
@@ -107,7 +109,7 @@ class _SaveSearchDialogState extends ConsumerState<SaveSearchDialog> {
                           child: CircleAvatar(
                             radius: 30,
                             backgroundColor: Colors.grey[300],
-                            child: const Icon(Icons.add, color: Colors.white),
+                            child: SvgPicture.asset(AppIcons.add, color: Colors.white),
                           ),
                         ),
                         ...defaultAvatars.map((avatarPath) {
@@ -125,7 +127,7 @@ class _SaveSearchDialogState extends ConsumerState<SaveSearchDialog> {
                                 backgroundImage: AssetImage(avatarPath),
                                 radius: 30,
                                 child: selectedAvatar == avatarPath
-                                    ? const Icon(Icons.check,
+                                    ? SvgPicture.asset(AppIcons.check,
                                         color: Colors.white)
                                     : null,
                               ),
@@ -137,7 +139,7 @@ class _SaveSearchDialogState extends ConsumerState<SaveSearchDialog> {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.arrow_forward_ios),
+                  icon: SvgPicture.asset(AppIcons.iosArrowRight),
                   onPressed: _scrollRight,
                 ),
               ],

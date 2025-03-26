@@ -68,13 +68,13 @@ class CustomClientTile extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: TextStyle(color: theme.whitewhiteblack, fontSize: 14),
+            style: TextStyle(color: theme.mobileTextcolor, fontSize: 14),
           ),
           const SizedBox(height: 4),
           Text(
             data,
             style: TextStyle(
-              color: theme.whitewhiteblack,
+              color: theme.mobileTextcolor,
               fontWeight: FontWeight.bold,
               fontSize: 18, // Slightly increased for emphasis
             ),

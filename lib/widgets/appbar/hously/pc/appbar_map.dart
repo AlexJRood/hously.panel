@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/pop_pages/sort_pop_page.dart';
@@ -50,7 +52,7 @@ class TopAppBarMap extends ConsumerWidget {
               );
             },
             child: Hero(
-              tag: 'CoToMaRobic', // Dodajemy Hero z tym samym tagiem
+              tag: 'CoToMaRobic-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
               child: Container(
                 key: coToMaRobicTopAppBarMap,
                 height: 35,
@@ -70,15 +72,15 @@ class TopAppBarMap extends ConsumerWidget {
                           .createShader(bounds);
                     }
                   },
-                  child: Icon(Icons.pie_chart,
-                      color: Theme.of(context).iconTheme.color, size: 30.0),
+                  child: SvgPicture.asset(AppIcons.pie,
+                      color: Theme.of(context).iconTheme.color, height: 30.0,width: 30,),
                 ),
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: custom_search_bar.SearchBar(),
             ),
           ),
@@ -105,7 +107,7 @@ class TopAppBarMap extends ConsumerWidget {
                   );
                 },
                 child: Hero(
-                  tag: 'SortBarButton', // Dodajemy Hero z tym samym tagiem
+                  tag: 'SortBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
                   child: Container(
                     key: sortButtonTopAppBarMap,
                     height: 35,
@@ -125,8 +127,8 @@ class TopAppBarMap extends ConsumerWidget {
                               .createShader(bounds);
                         }
                       },
-                      child: Icon(Icons.sort,
-                          color: Theme.of(context).iconTheme.color, size: 30.0),
+                      child: SvgPicture.asset(AppIcons.sort,
+                          color: Theme.of(context).iconTheme.color, height: 30.0,width: 30,),
                     ),
                   ),
                 ),

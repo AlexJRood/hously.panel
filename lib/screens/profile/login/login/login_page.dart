@@ -10,9 +10,9 @@ class LoginPage extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth > 1080) {
-          return const LoginPcPage();
+          return  LoginPcPage();
         } else {
-          return LoginMobilePage();
+          return const LoginMobilePage();
         }
       },
     );

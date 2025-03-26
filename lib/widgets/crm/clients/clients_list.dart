@@ -1,22 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/clients_pro.dart';
-import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:pie_menu/pie_menu.dart';
 
 const configUrl = URLs.baseUrl;
-
-const defaultAvatarUrl = '$configUrl/media/avatars/avatar.jpg'; // Zmienna do przechowywania URL domyślnego awatara
+const defaultAvatarUrl = '$configUrl/media/avatars/avatar.jpg';
 
 class ClientList extends ConsumerWidget {
-  const ClientList({super.key});
+  final bool isMobile;
+  const ClientList({super.key, this.isMobile = false});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,157 +27,251 @@ class ClientList extends ConsumerWidget {
           return Center(
             child: Text(
               'No clients available',
-              style: AppTextStyles.interMedium16
-                  .copyWith(color: Theme.of(context).iconTheme.color),
+              style: AppTextStyles.interMedium16.copyWith(
+                color: Colors.white,
+              ),
             ),
           );
         }
-        return ListView.builder(
-          itemCount: clients.length,
-          itemBuilder: (context, index) {
-            final client = clients[index];
-            print('hello$client');
-            return PieMenu(
-              onPressedWithDevice: (kind) {
-                if (kind == PointerDeviceKind.mouse ||
-                    kind == PointerDeviceKind.touch) {
-                  ref.read(navigationService).pushNamedScreen(
-                    '${Routes.proClients}/${client.id}/Dashboard',
-                    data: {'clientViewPop': client},
-                  );
-                }
-              },
-              actions: buildPieMenuActionsClientsPro(
-                  ref, client.id, client, context),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    width: containerWidth,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient:
-                          CustomBackgroundGradients.adGradient1(context, ref),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    client.avatar ?? defaultAvatarUrl),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${client.name} ${client.lastName}',
-                                  style: AppTextStyles.interMedium18.copyWith(
-                                      color: Theme.of(context).iconTheme.color),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(client.email!,
-                                    style: AppTextStyles.interMedium.copyWith(
-                                        color:
-                                            Theme.of(context).iconTheme.color)),
-                              ]),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-      loading: () => SingleChildScrollView(
-        child: Column(
-          children: List.generate(
-            10,
-            (index) => Padding(
-              padding: const EdgeInsets.all(4),
-              child: Container(
-                height: 80,
-                width: containerWidth,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient:
-                      CustomBackgroundGradients.crmadgradient(context, ref),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ShimmerPlaceholder(width: 60, height: 60),
-                    SizedBox(width: 6),
-                    Expanded(
-                      child: ShimmerPlaceholderwithoutwidth(height: 50),
-                    ),
-                    SizedBox(width: 5),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      error: (err, stack) {
-        return SingleChildScrollView(
+
+        return Container(
+          color: isMobile
+              ? const Color.fromRGBO(19, 19, 19, 1)
+              : const Color.fromRGBO(30, 30, 30, 1),
+          padding: const EdgeInsets.all(12),
           child: Column(
-            children: List.generate(
-              10,
-              (index) => Padding(
-                padding: const EdgeInsets.all(4),
-                child: Container(
-                  height: 80,
-                  width: containerWidth,
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    gradient:
-                        CustomBackgroundGradients.crmadgradient(context, ref),
-                  ),
+            spacing: 10,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!isMobile) ...[
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  color: const Color.fromRGBO(40, 40, 40, 1),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 6),
-                      const Stack(
-                        children: [
-                          ShimmerPlaceholder(width: 60, height: 60),
-                          Positioned(
-                              left: 16,
-                              top: 16,
-                              child: Icon(
-                                Icons.error,
-                                color: Colors.red,
-                              ))
-                        ],
-                      ),
-                      const SizedBox(width: 6),
-                      ShimmerPlaceholder(
-                          width: (containerWidth) * 0.86, height: 50),
-                      const SizedBox(width: 5),
+                      Expanded(
+                          flex: 3, child: Text('Name', style: _headerStyle)),
+                      Expanded(child: Text('Type', style: _headerStyle)),
+                      Expanded(child: Text('Status', style: _headerStyle)),
+                      Expanded(
+                          flex: 2, child: Text('Email', style: _headerStyle)),
+                      Expanded(
+                          child: Text('Phone Number', style: _headerStyle)),
+                      const SizedBox(
+                        width: 40,
+                      )
                     ],
                   ),
                 ),
+                const Divider(height: 1, color: Color.fromRGBO(50, 50, 50, 1)),
+              ],
+
+              Expanded(
+                child: ListView.builder(
+                  itemCount: clients.length,
+                  itemBuilder: (context, index) {
+                    final client = clients[index];
+
+                    if (isMobile) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromRGBO(40, 40, 40, 1),
+                        ),
+                        child: ExpansionTile(
+                          tilePadding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          collapsedBackgroundColor:
+                              const Color.fromRGBO(19, 19, 19, 1),
+                          backgroundColor:
+                              const Color.fromRGBO(87, 148, 221, 0.1),
+                          iconColor: Colors.white54,
+                          leading: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color.fromRGBO(145, 145, 145, 1),
+                          ),
+                          showTrailingIcon: false,
+                          collapsedIconColor: Colors.white54,
+                          title: Text(
+                            '${client.name} ${client.lastName}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                          children: [
+                            ListTile(
+                              title: const Text(
+                                'Status',
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                              trailing: Text(
+                                client.contactType ?? '-',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromRGBO(161, 236, 230, 1),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: const Text(
+                                'Email',
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                              trailing: Text(
+                                client.email ?? '-',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromRGBO(161, 236, 230, 1),
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              title: const Text(
+                                'Phone',
+                                style: TextStyle(color: Colors.white54),
+                              ),
+                              trailing: Text(
+                                client.phoneNumber ?? '-',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromRGBO(161, 236, 230, 1),
+                                ),
+                              ),
+                            ),
+                            const Divider(color: Colors.white12),
+                            InkWell(
+                              onTap: () {
+                                ref.read(navigationService).pushNamedScreen(
+                                  '${Routes.proClients}/${client.id}/Dashboard',
+                                  data: {'clientViewPop': client},
+                                );
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.remove_red_eye,
+                                        color: Colors.white),
+                                    Text(
+                                      "View profile",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return PieMenu(
+                        onPressedWithDevice: (kind) {
+                          if (kind == PointerDeviceKind.mouse ||
+                              kind == PointerDeviceKind.touch) {
+                            ref.read(navigationService).pushNamedScreen(
+                              '${Routes.proClients}/${client.id}/Dashboard',
+                              data: {'clientViewPop': client},
+                            );
+                          }
+                        },
+                        actions: buildPieMenuActionsClientsPro(
+                            ref, client.id, client, context),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
+                          color: const Color.fromRGBO(30, 30, 30, 1),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  '${client.name} ${client.lastName}',
+                                  style: _rowTextStyle,
+                                ),
+                              ),
+                              Expanded(
+                                  child: Text(client.contactType ?? '-',
+                                      style: _rowTextStyle)),
+                              Expanded(
+                                  child: Text(client.serviceType ?? '-',
+                                      style: _rowTextStyle)),
+                              Expanded(
+                                  flex: 2,
+                                  child: Text(client.email ?? '-',
+                                      style: _rowTextStyle)),
+                              Expanded(
+                                  child: Text(client.phoneNumber ?? '-',
+                                      style: _rowTextStyle)),
+                              IconButton(
+                                icon: const Icon(Icons.more_vert,
+                                    color: Colors.white54),
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
+              // Footer Pagination
+              if (!isMobile)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  color: const Color.fromRGBO(30, 30, 30, 1),
+                  child: Row(
+                    children: [
+                      Text('Showing ${clients.length} out of ${clients.length}',
+                          style: const TextStyle(
+                              color: Colors.white54, fontSize: 12)),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.chevron_left,
+                            color: Colors.white54),
+                        onPressed: () {},
+                      ),
+                      const Text('1', style: TextStyle(color: Colors.white)),
+                      IconButton(
+                        icon: const Icon(Icons.chevron_right,
+                            color: Colors.white54),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+      loading: () =>
+          const Center(child: CircularProgressIndicator(color: Colors.white)),
+      error: (err, stack) {
+        return Center(
+          child: Text(
+            'Error loading clients',
+            style: AppTextStyles.interMedium16.copyWith(color: Colors.red),
           ),
         );
       },
     );
   }
+
+  TextStyle get _headerStyle => const TextStyle(
+        color: Colors.white70,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      );
+
+  TextStyle get _rowTextStyle => const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+      );
 }

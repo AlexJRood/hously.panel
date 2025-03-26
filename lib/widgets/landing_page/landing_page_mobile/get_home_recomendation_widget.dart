@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 class GetHomeRecommendation extends StatelessWidget {
   const GetHomeRecommendation({super.key});
@@ -10,18 +11,19 @@ class GetHomeRecommendation extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       color: const Color.fromRGBO(255, 255, 255, 1),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Get home recommendations',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: AppTextStyles.libreCaslonHeading
+                      .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   'Join us to access personalized recommendations, exclusive listings, and more features tailored just for you.',
@@ -84,94 +86,7 @@ class GetHomeRecommendation extends StatelessWidget {
                                 ),
                               ],
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/landingpage.webp'),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.topCenter),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        '---- Property type / 04 June 2024',
-                                        style: TextStyle(
-                                            fontSize: 7,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                            Color.fromRGBO(145, 145, 145, 1)),
-                                      ),
-                                      const Text(
-                                        'Parker Rd. Allentown',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w600,
-                                            color:
-                                            Color.fromRGBO(145, 145, 145, 1)),
-                                      ),
-                                      const Text(
-                                        'Milan, ITALY',
-                                        style: TextStyle(
-                                            fontSize: 7,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                            Color.fromRGBO(145, 145, 145, 1)),
-                                      ),
-                                      RichText(
-                                          text: const TextSpan(children: [
-                                            TextSpan(
-                                              text: '\$165.00',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                            TextSpan(
-                                              text: '/1700 sq.ft',
-                                              style: TextStyle(
-                                                  fontSize: 12.93,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                          ])),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 30,
-                        left: 150,
-                        child: Container(
-                          width: 215,
-                          height: 166,
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Color.fromRGBO(34, 57, 62, 1),
-                                Color.fromRGBO(22, 25, 32, 1),
-                              ]),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(10))),
+                                  const BorderRadius.all(Radius.circular(10))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -192,9 +107,9 @@ class GetHomeRecommendation extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
                                         '---- Property type / 04 June 2024',
@@ -222,23 +137,111 @@ class GetHomeRecommendation extends StatelessWidget {
                                       ),
                                       RichText(
                                           text: const TextSpan(children: [
-                                            TextSpan(
-                                              text: '\$165.00',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                            TextSpan(
-                                              text: '/1700 sq.ft',
-                                              style: TextStyle(
-                                                  fontSize: 12.93,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                          ])),
+                                        TextSpan(
+                                          text: '\$165.00',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                        TextSpan(
+                                          text: '/1700 sq.ft',
+                                          style: TextStyle(
+                                              fontSize: 12.93,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                      ])),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 30,
+                        left: 150,
+                        child: Container(
+                          width: 215,
+                          height: 166,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Color.fromRGBO(34, 57, 62, 1),
+                                Color.fromRGBO(22, 25, 32, 1),
+                              ]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: const DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/landingpage.webp'),
+                                      fit: BoxFit.cover,
+                                      alignment: Alignment.topCenter),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        '---- Property type / 04 June 2024',
+                                        style: TextStyle(
+                                            fontSize: 7,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color.fromRGBO(
+                                                145, 145, 145, 1)),
+                                      ),
+                                      const Text(
+                                        'Parker Rd. Allentown',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color.fromRGBO(
+                                                145, 145, 145, 1)),
+                                      ),
+                                      const Text(
+                                        'Milan, ITALY',
+                                        style: TextStyle(
+                                            fontSize: 7,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color.fromRGBO(
+                                                145, 145, 145, 1)),
+                                      ),
+                                      RichText(
+                                          text: const TextSpan(children: [
+                                        TextSpan(
+                                          text: '\$165.00',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                        TextSpan(
+                                          text: '/1700 sq.ft',
+                                          style: TextStyle(
+                                              fontSize: 12.93,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                      ])),
                                     ],
                                   ),
                                 ),
@@ -268,7 +271,7 @@ class GetHomeRecommendation extends StatelessWidget {
                             decoration: const BoxDecoration(
                                 color: Color.fromRGBO(255, 255, 255, 1),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(32))),
+                                    BorderRadius.all(Radius.circular(32))),
                             child: const Icon(
                               Icons.location_on_outlined,
                               size: 12,
@@ -358,7 +361,7 @@ class GetHomeRecommendation extends StatelessWidget {
                             decoration: const BoxDecoration(
                                 color: Color.fromRGBO(35, 35, 35, 1),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(32))),
+                                    BorderRadius.all(Radius.circular(32))),
                             child: const Center(
                               child: Text(
                                 '10K+',

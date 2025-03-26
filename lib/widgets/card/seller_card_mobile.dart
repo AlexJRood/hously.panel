@@ -22,7 +22,7 @@ class SellerCardMobile extends ConsumerWidget {
     final sellerFuture = ref.watch(sellerProviderFamily(sellerId));
     double screenWidth = MediaQuery.of(context).size.width;
     double itemWidth = screenWidth / 3;
-    double dynamicFontSize = 20;
+    double dynamicFontSize = screenWidth < 400 ? 16 : 20;
     final theme = ref.watch(themeColorsProvider);
     return GestureDetector(
       onTap: onTap,
@@ -41,8 +41,8 @@ class SellerCardMobile extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.all(5),
                   child: Container(
-                    width: itemWidth,
-                    height: itemWidth,
+                    width: screenWidth < 400 ? itemWidth * 0.8 : itemWidth,
+                    height: screenWidth < 400 ? itemWidth * 0.8 : itemWidth,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(18),
                       image: DecorationImage(
@@ -54,23 +54,23 @@ class SellerCardMobile extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 10),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (firstName.isNotEmpty) ...[
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       Text(
                         '$firstName $lastName',
-                        style: AppTextStyles.interSemiBold
-                            .copyWith(fontSize: dynamicFontSize),
+                        style: AppTextStyles.interSemiBold.copyWith(
+                            fontSize: dynamicFontSize,
+                            color: theme.popUpIconColor),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign
-                            .center, // lub TextAlign.left, TextAlign.right w zależności od potrzeb
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       Text(
                         'Hej! Interesuje Cię ta nieruchomość?'.tr,
                         style: AppTextStyles.interRegular.copyWith(
@@ -78,10 +78,9 @@ class SellerCardMobile extends ConsumerWidget {
                             color: theme.popUpIconColor),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign
-                            .center, // lub TextAlign.left, TextAlign.right w zależności od potrzeb
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 3),
                       Text(
                         'Napisz do mnie!'.tr,
                         style: AppTextStyles.interRegular.copyWith(
@@ -89,22 +88,21 @@ class SellerCardMobile extends ConsumerWidget {
                             color: theme.popUpIconColor),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign
-                            .center, // lub TextAlign.left, TextAlign.right w zależności od potrzeb
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ],
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 3),
               ],
             );
           },
-          loading: () => const Center(
+          loading: () => Center(
             child: SizedBox(
-              width: 24,
-              height: 24,
+              width: 20,
+              height: 20,
               child: CircularProgressIndicator(
-                color: AppColors.light,
+                color: theme.popUpIconColor,
                 strokeWidth: 2,
               ),
             ),

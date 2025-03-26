@@ -4,7 +4,9 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/state_managers/data/user_provider.dart';
@@ -153,7 +155,7 @@ class ArticlePopFull extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back_ios_rounded,
+                            icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                                 color: AppColors.light),
                             onPressed: () =>
                                 ref.read(navigationService).beamPop(),

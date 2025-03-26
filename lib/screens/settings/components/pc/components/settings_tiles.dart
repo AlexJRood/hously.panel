@@ -2,7 +2,9 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 
 import 'package:hously_flutter/screens/settings/components/pc/components/settings_tile_providers.dart';
 import 'package:hously_flutter/screens/settings/components/pc/components/user_tile.dart';
@@ -199,7 +201,7 @@ class _AccountSwitcherWidgetState extends ConsumerState<AccountSwitcherWidget> {
             onTap: () {},
             child: Row(children: [
               const Spacer(),
-              Icon(Icons.add, color: theme.whitewhiteblack),
+              SvgPicture.asset(AppIcons.add, color: theme.whitewhiteblack),
               const SizedBox(
                 width: 4,
               ),

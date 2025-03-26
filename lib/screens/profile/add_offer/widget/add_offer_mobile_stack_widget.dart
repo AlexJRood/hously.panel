@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/state_managers/data/profile/add_offer/add_provider.dart';
@@ -209,7 +211,7 @@ class AddOfferMobileStackWidget extends ConsumerWidget {
                                       top: 0,
                                       right: 0,
                                       child: IconButton(
-                                        icon: const Icon(Icons.delete,
+                                        icon: SvgPicture.asset(AppIcons.delete,
                                             color: AppColors.light),
                                         onPressed: () {
                                           if (addOfferState.imagesData.length >

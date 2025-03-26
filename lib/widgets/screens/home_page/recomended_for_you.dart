@@ -11,6 +11,7 @@ import 'package:hously_flutter/state_managers/data/home_page/listing_provider.da
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart';
@@ -72,20 +73,15 @@ class _RecomendedForYouState extends ConsumerState<RecomendedForYou> {
         ),
         const SizedBox(height: 20.0),
         listingsAsyncValue.when(
-          data: (listings) => GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              // Manually scroll by dragging
-              _scrollController.jumpTo(
-                _scrollController.offset - details.primaryDelta!,
-              );
-            },
+          data: (listings) => DragScrollView(
+            controller: _scrollController,
             child: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: listings.map((recommended) {
                   final tag =
-                      'recommended${recommended.id}'; // Unique tag for each item
+                      'recommended${recommended.id}-${UniqueKey().toString()}'; // Unique tag for each item
                   final formattedPrice = customFormat.format(recommended.price);
                   final mainImageUrl = recommended.images.isNotEmpty
                       ? recommended.images[0]

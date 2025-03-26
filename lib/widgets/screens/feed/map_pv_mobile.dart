@@ -59,27 +59,15 @@ class _MapViewPageState extends ConsumerState<MapPvMobile>
                     ),
                   ),
                   Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: ShaderMask(
-                      shaderCallback: (bounds) =>
-                          BackgroundGradients.appBarGradient.createShader(bounds),
-                      child:  AppBarMobile(sideMenuKey: sideMenuKey,),
-                    ),
-                  ),
-                  Positioned(
                     right: 0,
                     top: 0,
                     bottom: 0,
                     child: Container(
-                      width: screenWidth * 0.25,
+                      width: calculateDynamicWidth(screenWidth),
                       color: Colors.transparent,
                     ),
 
                   ),
-
-
                 ],
               ),
             ),
@@ -91,4 +79,16 @@ class _MapViewPageState extends ConsumerState<MapPvMobile>
 
   @override
   bool get wantKeepAlive => true; // Keep the state alive
+}
+
+double calculateDynamicWidth(double screenWidth) {
+  if (screenWidth <= 350) {
+    return screenWidth * 0.21;
+  } else if (screenWidth >= 1080) {
+    return screenWidth * 0.1;
+  } else {
+    // Interpolacja liniowa pomiędzy 0.25 a 0.1
+    double factor = 0.21 - ((screenWidth - 350) / (1080 - 350)) * (0.25 - 0.1);
+    return screenWidth * factor;
+  }
 }

@@ -4,7 +4,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/const/colors.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/platforms/html_utils_stub.dart'
- if (dart.library.html) 'package:hously_flutter/platforms/html_utils_web.dart';
+    if (dart.library.html) 'package:hously_flutter/platforms/html_utils_web.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
@@ -17,8 +17,6 @@ import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'dart:ui' as ui;
 import 'package:hously_flutter/theme/apptheme.dart';
 
-
-
 class BottomBarMobile extends ConsumerWidget {
   const BottomBarMobile({super.key});
 
@@ -27,157 +25,182 @@ class BottomBarMobile extends ConsumerWidget {
     final userAsyncValue = ref.watch(userProvider);
     final isUserLoggedIn = ApiServices.isUserLoggedIn();
     final navigationHistory = ref.watch(navigationHistoryProvider);
-    final currentRoute = navigationHistory.isNotEmpty ? navigationHistory.last : '/homepage';
+    final currentRoute =
+        navigationHistory.isNotEmpty ? navigationHistory.last : '/homepage';
     final currentthememode = ref.watch(themeProvider);
     double screenWidth = MediaQuery.of(context).size.width;
 
-    final double dynamicPadding = screenWidth/ 8;
+    final double dynamicPadding = screenWidth / 9;
 
     return Container(
       height: 55.0,
       width: MediaQuery.of(context).size.width,
       child: ClipRRect(
         child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-            child: Container(
+          filter: ui.ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+          child: Container(
             decoration: BoxDecoration(
                 color: currentthememode == ThemeMode.system ||
                         currentthememode == ThemeMode.light
                     ? Colors.black.withOpacity(0.1)
                     : Colors.white.withOpacity(0.1)),
             child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-              
-                        SizedBox(width: dynamicPadding),
-                        Container(
-                    width: 60,height: 55,
-                          child: BuildIconButton(
-                                        icon: Icons.home_outlined,
-                                        label: 'Home',
-                                        onPressed: () {
-                                          ref.read(navigationHistoryProvider.notifier)
-                                              .addPage(Routes.homepage);
-                                          ref.read(navigationService).pushNamedScreen(Routes.homepage);
-                                        },
-                                        currentRoute: currentRoute,
-                          ),
-                        ),
-                        Container(
-                    width: 60,height: 55,
-                          child: BuildIconButton(
-                                        icon: Icons.add,
-                                        label: 'Szukaj'.tr,
-                                        onPressed: () {
-                                          String selectedFeedView =
-                                          ref.read(selectedFeedViewProvider); // Odczytaj wybrany widok
-                                          ref.read(navigationHistoryProvider.notifier).addPage(selectedFeedView);
-                                          ref.read(navigationService).pushNamedScreen(selectedFeedView);
-                                        },
-                                        currentRoute: currentRoute,
-                          ),
-                        ),
-                        if (isUserLoggedIn) ...[
-              Container(
-                    width: 60,height: 55,
-                child: BuildIconButton(
-                  icon: Icons.favorite_border,
-                  label: 'Ulubione'.tr,
-                  onPressed: () {
-                    ref.read(navigationService).pushNamedScreen(Routes.fav);
-                  },
-                  currentRoute: currentRoute,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: dynamicPadding),
+                Container(
+                  width: 60,
+                  height: 55,
+                  child: BuildIconButton(
+                    icon: Icons.home_outlined,
+                    label: 'Home',
+                    onPressed: () {
+                      ref
+                          .read(navigationHistoryProvider.notifier)
+                          .addPage(Routes.homepage);
+                      ref
+                          .read(navigationService)
+                          .pushNamedScreen(Routes.homepage);
+                    },
+                    currentRoute: currentRoute,
+                  ),
                 ),
-              ),
-                        ],
-                        Container(
-                    width: 60,height: 55,
-                          child: BuildIconButton(
-                                        icon: Icons.add_box_outlined,
-                                        label: 'Dodaj'.tr,
-                                        onPressed: () {
-                                          ref.read(navigationService).pushNamedScreen(Routes.add);
-                                        },
-                                        currentRoute: currentRoute,
-                          ),
-                        ),
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                if (isUserLoggedIn) {
-                  return Row(
-                    children: [
-                      userAsyncValue.when(
-                        data: (userData) => userData != null
-                            ? Container(
-                    width: 60,height: 55,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    ref.read(navigationService).pushNamedScreen(Routes.profile);
-                                  },
-                                  style: elevatedButtonStyleRounded10,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: shimmercolor,
-                                        backgroundImage: NetworkImage(userData
-                                                .avatarUrl ?? 'assets/images/default_avatar.webp'),
-                                        radius: 12.5,
+                Container(
+                  width: 60,
+                  height: 55,
+                  child: BuildIconButton(
+                    icon: Icons.add,
+                    label: 'Szukaj'.tr,
+                    onPressed: () {
+                      String selectedFeedView = ref.read(
+                          selectedFeedViewProvider); // Odczytaj wybrany widok
+                      ref
+                          .read(navigationHistoryProvider.notifier)
+                          .addPage(selectedFeedView);
+                      ref
+                          .read(navigationService)
+                          .pushNamedScreen(selectedFeedView);
+                    },
+                    currentRoute: currentRoute,
+                  ),
+                ),
+                if (isUserLoggedIn) ...[
+                  Container(
+                    width: 60,
+                    height: 55,
+                    child: BuildIconButton(
+                      icon: Icons.favorite_border,
+                      label: 'Ulubione'.tr,
+                      onPressed: () {
+                        ref.read(navigationService).pushNamedScreen(Routes.fav);
+                      },
+                      currentRoute: currentRoute,
+                    ),
+                  ),
+                ],
+                Container(
+                  width: 60,
+                  height: 55,
+                  child: BuildIconButton(
+                    icon: Icons.add_box_outlined,
+                    label: 'Dodaj'.tr,
+                    onPressed: () {
+                      ref.read(navigationService).pushNamedScreen(Routes.add);
+                    },
+                    currentRoute: currentRoute,
+                  ),
+                ),
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    if (isUserLoggedIn) {
+                      return Row(
+                        children: [
+                          userAsyncValue.when(
+                            data: (userData) => userData != null
+                                ? Container(
+                                    width: 60,
+                                    height: 55,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(navigationService)
+                                            .pushNamedScreen(Routes.profile);
+                                      },
+                                      style: elevatedButtonStyleRounded10,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withOpacity(0.9),
+                                            backgroundImage: NetworkImage(userData
+                                                    .avatarUrl ??
+                                                'assets/images/default_avatar.webp'),
+                                            radius: 12.5,
+                                          ),
+                                          const SizedBox(height: 3.0),
+                                          Text('Profil'.tr,
+                                              style: const TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.white)),
+                                        ],
                                       ),
-                                      const SizedBox(height: 3.0),
-                                      Text('Profil'.tr,
-                                          style: const TextStyle(
-                                              fontSize: 10, color: Colors.white)),
-                                    ],
-                                  ),
+                                    ),
+                                  )
+                                : Container(),
+                            loading: () => const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ShimmerPlaceholdercircle(
+                                  radius: 12.5,
                                 ),
-                            )
-                            : Container(),
-                        loading: () => const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ShimmerPlaceholdercircle(
-                              radius: 12.5,
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                ShimmerPlaceholder(
+                                  width: 30,
+                                  height: 8,
+                                  radius: 0,
+                                )
+                              ],
                             ),
-                            SizedBox(height: 8,),
-                            ShimmerPlaceholder(
-                              width: 30,
-                              height: 8,
-                              radius: 0,
-                            )
-                          ],
-                        ),
-                        error: (error, stack) => Text('Error: $error'),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [ 
-                    Container(
-                    width: 60,height: 55,
-                        child: BuildIconButton(
-                          icon: Icons.person,
-                          label: 'Login',
-                          onPressed: () {
-                            ref.read(navigationService).pushNamedScreen(Routes.login);
-                          },
-                          currentRoute: currentRoute,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-              },
+                            error: (error, stack) => Text('Error: $error'),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 55,
+                            child: BuildIconButton(
+                              icon: Icons.person,
+                              label: 'Login',
+                              onPressed: () {
+                                ref
+                                    .read(navigationService)
+                                    .pushNamedScreen(Routes.login);
+                              },
+                              currentRoute: currentRoute,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+                SizedBox(width: dynamicPadding),
+              ],
             ),
-            SizedBox(width: dynamicPadding),
-          ],
+          ),
         ),
-       ),
       ),
-     ),
     );
   }
 }

@@ -29,37 +29,35 @@ class NotificationMobileScreen extends ConsumerWidget {
                   height: double.infinity,
                 ),
               ),
-              Expanded(
-                child: notifications.isEmpty
-                    ? ListView.builder(
+              notifications.isEmpty
+                  ? ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: 10 + 1, // Zwiększamy itemCount o 1
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return const SizedBox(height: 60); // Pusty kontener na górze
+                      }
+                      return const NotificationCardShimmer();
+                    },
+                  )
+
+                  : ListView.builder(
                       padding: const EdgeInsets.all(16),
-                      itemCount: 10 + 1, // Zwiększamy itemCount o 1
+                      itemCount: notifications.length + 1, // Zwiększamy itemCount o 1
                       itemBuilder: (context, index) {
                         if (index == 0) {
                           return const SizedBox(height: 60); // Pusty kontener na górze
                         }
-                        return const NotificationCardShimmer();
+                        final notification = notifications[index - 1]; // Przesuwamy indeks
+                        return InkWell(
+                          onTap: () {
+                            ref.read(notificationProvider.notifier)
+                                .makeNotificationSeen(notification.id);
+                          },
+                          child: NotificationCard(notification: notification),
+                        );
                       },
-                    )
-
-                    : ListView.builder(
-                        padding: const EdgeInsets.all(16),
-                        itemCount: notifications.length + 1, // Zwiększamy itemCount o 1
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return const SizedBox(height: 60); // Pusty kontener na górze
-                          }
-                          final notification = notifications[index - 1]; // Przesuwamy indeks
-                          return InkWell(
-                            onTap: () {
-                              ref.read(notificationProvider.notifier)
-                                  .makeNotificationSeen(notification.id);
-                            },
-                            child: NotificationCard(notification: notification),
-                          );
-                        },
-                      ),
-              ),
+                    ),
             ],
           ),
           const Positioned(

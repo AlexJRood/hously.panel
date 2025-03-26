@@ -3,7 +3,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:intl/intl.dart';
 
@@ -136,7 +138,7 @@ class _GradientDateDropdownState extends ConsumerState<GradientDateDropdown> {
                 ),
               ),
               widget.isPc
-                  ? Icon(Icons.arrow_drop_down, color: theme.themeTextColor)
+                  ? SvgPicture.asset(AppIcons.iosArrowDown, color: theme.themeTextColor)
                   : IntrinsicWidth(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -212,7 +214,7 @@ class _GradientDropdownState extends ConsumerState<GradientDropdown> {
               fontWeight: FontWeight.normal),
         ),
         icon: widget.isPc
-            ? const Icon(Icons.keyboard_arrow_down_rounded)
+            ? SvgPicture.asset(AppIcons.iosArrowDown)
             : IntrinsicWidth(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -336,7 +338,7 @@ class _GradientDropdownCountryState
               },
               iconStyleData: IconStyleData(
                 icon: widget.isPc
-                    ? const Icon(Icons.keyboard_arrow_down_rounded)
+                    ? SvgPicture.asset(AppIcons.iosArrowDown)
                     : IntrinsicWidth(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,

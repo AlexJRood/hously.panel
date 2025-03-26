@@ -45,7 +45,7 @@ class BlockedUserTileMobile extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
-                    color: theme.whitewhiteblack,
+                    color: theme.mobileTextcolor,
                   ),
                 ),
                 const SizedBox(height: 4.0),
@@ -53,7 +53,7 @@ class BlockedUserTileMobile extends ConsumerWidget {
                   email,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: theme.whitewhiteblack.withOpacity(0.7),
+                    color: theme.mobileTextcolor.withOpacity(0.7),
                   ),
                 ),
               ],
@@ -63,14 +63,14 @@ class BlockedUserTileMobile extends ConsumerWidget {
           OutlinedButton(
             onPressed: onUnblock,
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: theme.whitewhiteblack.withOpacity(0.7)),
+              side: BorderSide(color: theme.mobileTextcolor.withOpacity(0.7)),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
             child:  Text(
               'Unblock',
-              style: TextStyle(color: theme.whitewhiteblack),
+              style: TextStyle(color: theme.mobileTextcolor),
             ),
           ),
         ],

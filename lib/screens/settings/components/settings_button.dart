@@ -45,7 +45,7 @@ class Settingsbutton extends ConsumerWidget {
             : theme.popupcontainercolor.withOpacity(0.5));
 
     BorderSide borderSide = isborder
-        ? BorderSide(width: 2, color: theme.whitewhiteblack!)
+        ? BorderSide(width: 2, color: textColor)
         : BorderSide.none;
 
     final shape = RoundedRectangleBorder(

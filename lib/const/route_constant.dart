@@ -10,6 +10,9 @@ class Routes {
   static const homepage = '/homepage';
   static const eventWidget = '/event-widget';
   static const settings = '/settings';
+    static const addCard = '/addcard';
+     static const addpayment = '/addpayment';
+      static const twostep = '/two-step';
   static const settingsprofile = '/settings/profile';
   static const settingsnotification = '/settings/notification';
   static const settingssecurity = '/settings/security';
@@ -28,8 +31,6 @@ class Routes {
   static const learnCenter = '/learnCenter';
   static const sellPage = '/sprzedaj-nieruchomosc';
   static const rentPage = '/wynajmnij-nieruchomość';
-  static const networkMonitoring = '/network-monitoring';
-  static const networkMonitoringSingle = '$networkMonitoring/:monitoringId';
   static const feedView = '/feedview';
   static const adFeedView = '$feedView/:id';
   static const adHomePage = '$homepage/:id';
@@ -38,8 +39,28 @@ class Routes {
   static const adMapView = '$mapView/:id';
   static const adListView = '$listview/:id';
   static const adFullSize = '$fullSize/:id';
+  static const basicviewAd = '$basicview/:id';
+
+
+
+//////////////////////////NETWORK MONITORING///////////////////////////////////
+  static const networkMonitoring = '/network-monitoring';
   static const homeNetworkMonitoring = '/home-network-monitoring';
   static const saveNetworkMonitoring = '/save-network-monitoring';
+
+  static const networkMonitoringSingle = '$networkMonitoring/:offer/:id';
+  static const nmAdHomePage = '$homeNetworkMonitoring/:offer/:id';
+  // static const nmAdFeedView = '$networkMonitoring/offer/:monitoringId';
+
+
+///////CLIENTS
+  static const proHomeNetworkClient = '$homeNetworkMonitoring/:clientId/:activeSection';
+  static const proSaveNetworkClient = '$saveNetworkMonitoring/:clientId/:activeSection';
+  static const networkMonitoringClient ='$networkMonitoring/client/:clientId/:activeSection';
+
+
+
+
   static const fullSize = '/full-size';
   static const listview = '/listview';
   static const mapView = '/mapview';
@@ -48,6 +69,7 @@ class Routes {
   static const fullmap = '/fullmap';
   static const proRegister = '/pro/register';
   static const goPro = '/go-pro';
+    static const forgotpassword = '/forgotpassword';
   static const checkOut = '/checkout';
   static const success = '/success';
   static const chat = '/chat';
@@ -61,6 +83,7 @@ class Routes {
   static const proTodo = '/pro/todo';
   static const proBoard = '/pro/board';
   static const proCalendar = '/pro/calendar';
+  static const calendarSearchScreen = '$proCalendar/calendar-search-screen';
   static const proClients = '/pro/clients';
   static const repeatWidget = '/repeat-widget';
   static const guestWidget = '/guest-widget';
@@ -91,12 +114,6 @@ class Routes {
   static const proDashboardClient = '$proDashboard/:clientId/:activeSection';
   static const proPlansClient = '$proPlans/:clientId/:activeSection';
   static const proFinanceClient = '$proFinance/:clientId/:activeSection';
-  static const proHomeNetworkClient =
-      '$homeNetworkMonitoring/:clientId/:activeSection';
-  static const proSaveNetworkClient =
-      '$saveNetworkMonitoring/:clientId/:activeSection';
-  static const networkMonitoringClient =
-      '$networkMonitoring/:clientId/:activeSection';
   static const proTodoClient = '$proTodo/:clientId/:activeSection';
   static const proFinanceCosts = 'pro/finance/costs/add';
   static const proFinanceRevenue = '/pro/finance/revenue';
@@ -104,7 +121,16 @@ class Routes {
   static const proAddClient = '/pro/add/client';
   static const transaction = '$proSingleClient/:transactionid';
   static const allTransaction = '$proSingleClient/alltransaction';
-  static const addClientForm = '/add/client/form';
+  
+  
+  static const addClientForm = '/add-client';
+  static const addClientFormDashboard = '$proDashboard$addClientForm';
+  static const addClientFormFinance = '$proFinance$addClientForm';
+  static const addClientFormCalendar = '$proCalendar$addClientForm';
+  static const addClientFormToDo = '$proTodo$addClientForm';
+  static const addClientFormClientList = '$proSingleClient$addClientForm';
+
+
 
   /// To handle the cookies
   // static const paths = [Routes.entry];
@@ -166,6 +192,7 @@ final Map<String, String> _allWebsiteTitles = {
   Routes.saveNetworkMonitoring: 'Save Network Monitoring',
   Routes.fullSize: 'Full Size',
   Routes.basicview: 'Basic View',
+  Routes.basicviewAd: 'Basic View Ad',
   Routes.aboutusview: 'About Us View',
   Routes.listview: 'List',
   Routes.mapView: 'Map',

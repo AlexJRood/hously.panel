@@ -38,7 +38,7 @@ class AdditionalInfoWidget extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: 8.0,
             crossAxisSpacing: 8.0,
-            childAspectRatio: 2.5,
+            childAspectRatio: 4,
           ),
           itemCount: additionalFilters.length,
           itemBuilder: (context, index) {

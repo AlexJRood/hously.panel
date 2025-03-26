@@ -1,7 +1,9 @@
 //lib/components/appbar.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart'; 
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
@@ -139,7 +141,7 @@ Widget adsViewTopAppBar(BuildContext context, WidgetRef ref) {
             );
           },
           child: Hero(
-            tag: 'CoToMaRobic',
+            tag: 'CoToMaRobic-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Container(
               key: coToMaRobicTopAppBar,
               height: 35,
@@ -147,7 +149,7 @@ Widget adsViewTopAppBar(BuildContext context, WidgetRef ref) {
               color: Colors.transparent,
               child: Row(
                 children: [
-                  Icon(Icons.pie_chart, size: 30.0, color: iconcolor),
+                  SvgPicture.asset(AppIcons.pie, height: 30.0,width: 30, color: iconcolor),
                 ],
               ),
             ),
@@ -167,7 +169,7 @@ Widget adsViewTopAppBar(BuildContext context, WidgetRef ref) {
             );
           },
           child: Hero(
-            tag: 'ViewChangerBarButton',
+            tag: 'ViewChangerBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Container(
               key: viewChangerButtonTopAppBar,
               height: 35,
@@ -232,7 +234,7 @@ Widget adsViewTopAppBar(BuildContext context, WidgetRef ref) {
                           children: [
                             IconButton(
                               icon:
-                                  const Icon(Icons.filter_list, color: Colors.white),
+                                  SvgPicture.asset(AppIcons.filterAlt, color: Colors.white),
                               onPressed: () {
                                 // Handle filter icon press
                               },

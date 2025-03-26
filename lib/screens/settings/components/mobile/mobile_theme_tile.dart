@@ -49,7 +49,7 @@ class ThemetileMobile extends ConsumerWidget {
                       : colorscheme == FlexScheme.blackWhite
                           ? Colors.lightBlueAccent
                           : Theme.of(context).colorScheme.secondary
-                  : theme.popupcontainertextcolor!,
+                  : theme.mobileTextcolor,
             )),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -57,7 +57,7 @@ class ThemetileMobile extends ConsumerWidget {
             Radio<ThemeMode>(
               value: currentheme,
               groupValue: groupValue,
-              activeColor: theme.whitewhiteblack,
+              activeColor: theme.mobileTextcolor,
               onChanged: (_) => onTap(),
             ),
             const SizedBox(width: 5),
@@ -67,7 +67,7 @@ class ThemetileMobile extends ConsumerWidget {
                 title,
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  color: theme.popupcontainertextcolor,
+                  color: theme.mobileTextcolor,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.ellipsis,
@@ -126,8 +126,7 @@ class CustomProThemeMobile extends ConsumerWidget {
                             Text(
                               'Kolor niestandardowy'.tr,
                               style: TextStyle(
-                                  color: theme.popupcontainertextcolor,
-                                  fontSize: 20),
+                                  color: theme.mobileTextcolor, fontSize: 20),
                             ),
                             const SizedBox(height: 13),
                             Text(
@@ -135,8 +134,7 @@ class CustomProThemeMobile extends ConsumerWidget {
                                   .tr,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: theme.popupcontainertextcolor
-                                    .withOpacity(0.9),
+                                color: theme.mobileTextcolor.withOpacity(0.9),
                               ),
                             ),
                             const SizedBox(height: 9),
@@ -165,7 +163,7 @@ class CustomProThemeMobile extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50,
                       ),
                     ],
@@ -184,8 +182,7 @@ class CustomProThemeMobile extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Wybierz schemat kolorów".tr,
-                            style: TextStyle(
-                                color: theme.popupcontainertextcolor)),
+                            style: TextStyle(color: theme.mobileTextcolor)),
                         const SizedBox(height: 15),
                         Expanded(
                           child: Container(
@@ -274,6 +271,7 @@ class CustomProThemeMobile extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Settingsbutton(
+                            isborder: colorscheme == FlexScheme.blackWhite,
                             icon: Icons.auto_awesome,
                             hasIcon: true,
                             isPc: false,

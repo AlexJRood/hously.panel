@@ -84,7 +84,7 @@ class ViewSettingsPopState extends ConsumerState<ViewSettingsPage> {
             ),
           ),
           Hero(
-            tag: 'CoToMaRobic',
+            tag: 'CoToMaRobic-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Padding(
               padding: widget.buttonPosition != null
                   ? EdgeInsets.only(

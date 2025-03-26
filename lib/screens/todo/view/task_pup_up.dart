@@ -45,7 +45,7 @@ class _TaskDetailsPopupState extends ConsumerState<TaskDetailsPopup> {
         (files != null && files.isNotEmpty) ? files.last.file : null;
 
     return Dialog(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.7),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       insetPadding: const EdgeInsets.all(16),
       child: Container(

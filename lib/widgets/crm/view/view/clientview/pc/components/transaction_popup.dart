@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
 void showCustomMenutransaction(
@@ -17,7 +19,7 @@ void showCustomMenutransaction(
 
   final double leftPosition = buttonPosition.dx;
   final double topPosition = buttonPosition.dy + button.size.height;
-final theme=ref.watch(themeColorsProvider);
+  final theme = ref.watch(themeColorsProvider);
   showMenu(
     menuPadding: const EdgeInsets.symmetric(vertical: 4),
     context: context,
@@ -32,19 +34,19 @@ final theme=ref.watch(themeColorsProvider);
       PopupMenuItem(
         enabled: false,
         child: IconTheme(
-          data:  IconThemeData(color:theme.textFieldColor),
+          data: IconThemeData(color: theme.textFieldColor),
           child: DefaultTextStyle(
-            style:  TextStyle(fontSize: 12, color: theme.textFieldColor),
+            style: TextStyle(fontSize: 12, color: theme.textFieldColor),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 InkWell(
                   onTap: () {},
-                  child: const Row(
+                  child:  Row(
                     children: [
-                      Icon(Icons.tune, size: 15),
-                      SizedBox(width: 4),
-                      Text("View details"),
+                      SvgPicture.asset(AppIcons.sort, height: 15,width: 15,),
+                      const SizedBox(width: 4),
+                      const Text("View details"),
                     ],
                   ),
                 ),
@@ -53,11 +55,11 @@ final theme=ref.watch(themeColorsProvider);
                   onTap: () {
                     // Handle "Edit" tap
                   },
-                  child: const Row(
+                  child:  Row(
                     children: [
-                      Icon(Icons.mode_edit_outlined, size: 15),
-                      SizedBox(width: 4),
-                      Text("Edit"),
+                      SvgPicture.asset(AppIcons.pencil, height: 15,width: 15,),
+                      const SizedBox(width: 4),
+                      const Text("Edit"),
                     ],
                   ),
                 ),
@@ -97,7 +99,7 @@ class Customiconbuttom extends ConsumerWidget {
         },
         icon: Icon(
           Icons.more_horiz_outlined,
-          color: theme.whitewhiteblack,
+          color: theme.mobileTextcolor,
         ));
   }
 }

@@ -37,10 +37,10 @@ class _LanguageTileState extends ConsumerState<LanguageTile> {
         decoration: BoxDecoration(
           color: widget.index == widget.groupValue
               ? widget.isPc
-                  ? theme.popupcontainercolor
+                  ? theme.mobileTextcolor
                   : theme.settingsMenutile
               : widget.isPc
-                  ? theme.popupcontainercolor.withOpacity(0.6)
+                  ? theme.mobileTextcolor.withOpacity(0.6)
                   : theme.settingsMenutile.withOpacity(0.6),
           borderRadius: BorderRadius.circular(5),
         ),
@@ -51,14 +51,14 @@ class _LanguageTileState extends ConsumerState<LanguageTile> {
             Radio<int>(
               value: widget.index,
               groupValue: widget.groupValue,
-              activeColor: theme.popupcontainertextcolor,
+              activeColor: theme.mobileTextcolor,
               onChanged: (int? value) {
                 if (widget.onTap != null) widget.onTap!();
               },
             ),
             const SizedBox(width: 10),
             Text(widget.countryname,
-                style: TextStyle(color: theme.popupcontainertextcolor)),
+                style: TextStyle(color: theme.mobileTextcolor)),
             const Spacer(),
             CountryFlag.fromCountryCode(
               widget.countrycode,

@@ -12,6 +12,7 @@ import 'package:hously_flutter/state_managers/data/feed/feed_pop/providers/simil
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart';
@@ -78,13 +79,8 @@ class _SimilarAdsState extends ConsumerState<SimilarAds> {
         ),
         const SizedBox(height: 20.0),
         similaradProvider.when(
-          data: (similarOffers) => GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              // Manually scroll by dragging
-              _scrollController.jumpTo(
-                _scrollController.offset - details.delta.dx,
-              );
-            },
+          data: (similarOffers) => DragScrollView(
+            controller: _scrollController,
             child: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
@@ -92,7 +88,7 @@ class _SimilarAdsState extends ConsumerState<SimilarAds> {
                 children: similarOffers.map((similarOffers) {
                   String formattedPrice =
                       customFormat.format(similarOffers.price);
-                  final tag = 'SimilarAds${similarOffers.id}';
+                  final tag = 'SimilarAds${similarOffers.id}-${UniqueKey().toString()}';
                   final mainImageUrl = similarOffers.images.isNotEmpty
                       ? similarOffers.images[0]
                       : '';

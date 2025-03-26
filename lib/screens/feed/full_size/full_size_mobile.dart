@@ -227,7 +227,7 @@ class BuildAdvertisementsList extends ConsumerWidget {
     return Column(
       children: List.generate(filteredAdvertisements.length, (index) {
         final fullSizeAd = filteredAdvertisements[index];
-        final tag = 'fullSize${fullSizeAd.id}';
+        final tag = 'fullSize${fullSizeAd.id}-${UniqueKey().toString()}';
         final mainImageUrl = fullSizeAd.images.isNotEmpty
             ? fullSizeAd.images[0]
             : 'default_image_url';

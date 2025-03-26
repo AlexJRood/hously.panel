@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
@@ -186,7 +188,7 @@ class _DashboardCrmMobileState extends ConsumerState<DashboardCrmMobile> {
                                     top: 0,
                                     bottom: 0,
                                     child: IconButton(
-                                      icon: Icon(Icons.arrow_left,
+                                      icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                                           color:
                                               Theme.of(context).iconTheme.color),
                                       onPressed: () {
@@ -204,7 +206,7 @@ class _DashboardCrmMobileState extends ConsumerState<DashboardCrmMobile> {
                                     top: 0,
                                     bottom: 0,
                                     child: IconButton(
-                                      icon: Icon(Icons.arrow_right,
+                                      icon: SvgPicture.asset(AppIcons.iosArrowRight,
                                           color:
                                               Theme.of(context).iconTheme.color),
                                       onPressed: () {
@@ -304,7 +306,7 @@ class _DashboardCrmMobileState extends ConsumerState<DashboardCrmMobile> {
                                     top: 0,
                                     bottom: 0,
                                     child: IconButton(
-                                      icon: Icon(Icons.arrow_left,
+                                      icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                                           color:
                                               Theme.of(context).iconTheme.color),
                                       onPressed: () {
@@ -322,7 +324,7 @@ class _DashboardCrmMobileState extends ConsumerState<DashboardCrmMobile> {
                                     top: 0,
                                     bottom: 0,
                                     child: IconButton(
-                                      icon: Icon(Icons.arrow_right,
+                                      icon: SvgPicture.asset(AppIcons.iosArrowRight,
                                           color:
                                               Theme.of(context).iconTheme.color),
                                       onPressed: () {

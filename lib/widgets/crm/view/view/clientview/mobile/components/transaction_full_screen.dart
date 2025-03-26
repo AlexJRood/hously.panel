@@ -152,14 +152,14 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen> {
                           Row(
                             children: [
                               Icon(Icons.credit_card_rounded,
-                                  color: theme.whitewhiteblack),
+                                  color: theme.mobileTextcolor),
                               const SizedBox(width: 5),
                               Expanded(
                                 child: Text(
                                   overflow: TextOverflow.ellipsis,
                                   transaction!['project'] ?? '',
                                   style: TextStyle(
-                                      color: theme.whitewhiteblack,
+                                      color: theme.mobileTextcolor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -228,7 +228,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen> {
                                     "Notes",
                                     style: TextStyle(
                                         fontSize: 14,
-                                        color: theme.whitewhiteblack),
+                                        color: theme.mobileTextcolor),
                                   ),
                                 ],
                               ),
@@ -253,7 +253,7 @@ class _TransactionScreenState extends ConsumerState<TransactionScreen> {
                                       softWrap:
                                           true, // Ensures text wraps properly
                                       style: TextStyle(
-                                        color: theme.whitewhiteblack,
+                                        color: theme.mobileTextcolor,
                                         fontSize: 14,
                                       ),
                                     ),
@@ -318,13 +318,13 @@ class TransactionRow extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: TextStyle(color: theme.whitewhiteblack),
+            style: TextStyle(color: theme.mobileTextcolor),
           ),
           isStatus
               ? value
               : Text(
                   value,
-                  style: TextStyle(color: theme.whitewhiteblack),
+                  style: TextStyle(color: theme.mobileTextcolor),
                 ),
         ],
       ),

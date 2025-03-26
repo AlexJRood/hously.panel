@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/calendar/booking_form_data.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/add_item_booking_provider.dart';
 import 'package:hously_flutter/state_managers/screen/calendar/schedule_appointment_provider.dart';
@@ -21,9 +23,9 @@ class BookingFormWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: Icon(Icons.list),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: SvgPicture.asset(AppIcons.formatListBulleted),
         ),
         Expanded(
           child: ExpansionTile(
@@ -59,9 +61,10 @@ class BookingFormWidget extends ConsumerWidget {
                               ),
                               if (value.isEditable)
                                 InkWell(
-                                  child: const Icon(
-                                    Icons.edit,
-                                    size: 18,
+                                  child: SvgPicture.asset(
+                                    AppIcons.pencil,
+                                    height: 18,
+                                    width: 18,
                                   ),
                                   onTap: () {
                                     addItemBookingState.init(value);
@@ -116,11 +119,11 @@ class BookingFormWidget extends ConsumerWidget {
               SizedBox(
                 width: 150,
                 child: ElevatedButtonWidget(
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.add, color: Colors.white),
-                      SizedBox(),
-                      Text(
+                      SvgPicture.asset(AppIcons.add, color: Colors.white),
+                      const SizedBox(),
+                      const Text(
                         'Add an item',
                         style: TextStyle(color: Colors.white),
                       ),

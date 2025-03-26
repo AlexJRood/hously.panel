@@ -5,6 +5,7 @@ import 'package:hously_flutter/widgets/crm/view/card/transactions_buttons.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/dashboard_client_panel/widgets/new_clientview_content.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/dashboard_client_panel/widgets/new_client_transaction.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/comment/comment_section_pc.dart';
+import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/saved_search_client/saved_seaches_list.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/saved_search_client/saved_search_section_pc.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/transactions/transactions_section.dart';
 
@@ -60,7 +61,7 @@ class ClientViewContent extends StatelessWidget {
           ),
         ],
         if (activeSection == 'Wyszukiwania') ...[
-          ClientSavedSearchSection(clientId: clientViewPop.id),
+          SaveSearchByClientListViewWidget(clientId: clientViewPop.id),
         ],
       ],
     );

@@ -5,23 +5,23 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/url.dart';
-import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
+import 'package:hously_flutter/screens/profile/login/login/components_mobile.dart';
+import 'package:hously_flutter/screens/profile/login/login/providers/login_provider.dart';
+import 'package:hously_flutter/state_managers/data/profile/login/social_login/apple_login.dart';
+import 'package:hously_flutter/state_managers/data/profile/login/social_login/facebook_login.dart';
+import 'package:hously_flutter/state_managers/data/profile/login/social_login/google_login.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/state_managers/services/notification_service.dart';
 import 'package:hously_flutter/utils/api_services.dart';
-import 'package:hously_flutter/utils/secure_storage.dart'; // Zaimportuj SecureStorage
-import 'package:hously_flutter/widgets/appbar/hously/mobile/appbar_mobile.dart';
-import 'package:hously_flutter/widgets/bottom_bar_mobile/bottom_bar.dart';
+import 'package:hously_flutter/utils/secure_storage.dart';
+
 import 'package:hously_flutter/widgets/installpopup/install_popup.dart';
-import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
-import 'package:hously_flutter/widgets/social_login_module.dart';
-import '../../../../widgets/side_menu/slide_rotate_menu.dart';
 
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
 class LoginMobilePage extends ConsumerStatefulWidget {
   const LoginMobilePage({Key? key}) : super(key: key);
@@ -31,199 +31,227 @@ class LoginMobilePage extends ConsumerStatefulWidget {
 }
 
 class _LoginMobilePageState extends ConsumerState<LoginMobilePage> {
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late FocusNode focusNode1, focusNode2;
-  final sideMenuKey = GlobalKey<SideMenuState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    focusNode1 = FocusNode();
-    focusNode2 = FocusNode();
-    _checkForToken(context, ref);
-
-    focusNode1.addListener(() {
-      if (focusNode1.hasFocus) {
-        print("FocusNode1 has focus");
-      }
-    });
-
-    focusNode2.addListener(() {
-      if (focusNode2.hasFocus) {
-        print("FocusNode2 has focus");
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    focusNode1.dispose();
-    focusNode2.dispose();
-    super.dispose();
-  }
-
-
   @override
   Widget build(BuildContext context) {
-
-
     double screenWidth = MediaQuery.of(context).size.width;
-    double inputWidth = math.max(screenWidth * 0.33, 350);
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    const double maxWidth = 1920;
+    const double minWidth = 360;
+    const double maxPadding = 100;
+    const double minPadding = 10;
+
+    // Dynamic padding calculation
+    double dynamicPadding = (screenWidth - minWidth) /
+            (maxWidth - minWidth) *
+            (maxPadding - minPadding) +
+        minPadding;
+    final loginprovider = ref.watch(loginProvider);
+    // Clamp to ensure padding stays within min/max range
+    dynamicPadding = dynamicPadding.clamp(minPadding, maxPadding);
 
     return PopupListener(
-        child: SafeArea(
-          child: Scaffold(
-          body: SideMenuManager.sideMenuSettings(
-           menuKey: sideMenuKey,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient:
-                    CustomBackgroundGradients.getMainMenuBackground(context, ref),
-              ),
-              child: Column(
-                children: [
-                   AppBarMobile(sideMenuKey: sideMenuKey,),
-                  Expanded(
-                    child: SizedBox(
-                      width: inputWidth,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const SizedBox(
-                            height: 60,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                gradient: CustomBackgroundGradients.adGradient1(
-                                    context, ref)),
-                            child: TextField(
-                              autofillHints: const [AutofillHints.email],
-                              cursorColor: Theme.of(context).iconTheme.color,
-                              controller: _emailController,
-                              focusNode: focusNode1,
-                                    onSubmitted: (_) {
-                                      FocusScope.of(context)
-                                          .requestFocus(focusNode1);
-                                    },
-                              style: TextStyle(
-                                  color: Theme.of(context).iconTheme.color),
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                labelStyle: TextStyle(
-                                    color: Theme.of(context).iconTheme.color),
-                                floatingLabelStyle: TextStyle(
-                                    color: Theme.of(context).iconTheme.color),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide.none),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Theme.of(context).iconTheme.color!)),
-                                filled: true,
-                                fillColor: Colors.transparent,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: CustomBackgroundGradients.adGradient1(
-                                    context, ref)),
-                            child: TextField(
-                              focusNode: focusNode2,
-                                    onSubmitted: (_) {FocusScope.of(context).requestFocus(focusNode2);},
-                              autofillHints: const [AutofillHints.password],
-                              cursorColor: Theme.of(context).iconTheme.color,
-                              controller: _passwordController,
-                              style: TextStyle(color: Theme.of(context).iconTheme.color),
-                              decoration: InputDecoration(
-                                floatingLabelStyle: TextStyle(color: Theme.of(context).iconTheme.color),
-                                labelText: 'Password',
-                                labelStyle: TextStyle(
-                                    color: Theme.of(context).iconTheme.color),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide.none),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Theme.of(context).iconTheme.color!)),
-                                filled: true,
-                                fillColor: Colors.transparent,
-                              ),
-                              obscureText: true,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Container(
-                                height: 48,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      shadowColor: Colors.transparent,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10))),
-                                  onPressed: () => ref
-                                      .read(navigationService)
-                                      .pushNamedReplacementScreen(Routes.register),
-                                  child: Text('Zarejestruj się'.tr,
-                                      style: AppTextStyles.interRegular.copyWith(
-                                          fontSize: 16,
-                                          color: Theme.of(context).iconTheme.color)),
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                width: inputWidth / 3,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: CustomBackgroundGradients.adGradient1(
-                                        context, ref)),
-                                child: ElevatedButton(
-                                  onPressed: () => _login(context, ref),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      shadowColor: Colors.transparent,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10))),
-                                  child: Text('Login',
-                                      style: AppTextStyles.interRegular.copyWith(
-                                          fontSize: 16,
-                                          color:
-                                              Theme.of(context).iconTheme.color)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          SocialLogin(),
-                        ],
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.arrow_back_ios_sharp,
+                            color: Colors.black),
                       ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+
+                // Add vertical spacing dynamically
+
+                Expanded(
+                  flex: 20,
+                  child: Container(
+                    width: screenWidth > 600 ? 400 : screenWidth * 0.9,
+                    padding: EdgeInsets.symmetric(horizontal: dynamicPadding),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context)
+                                .copyWith(scrollbars: false),
+                            child: SingleChildScrollView(
+                              child: Form(
+                                key: loginprovider.formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 50),
+                                    Text(
+                                      'Log in to Hously',
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 28),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    CustomTextField(
+                                      controller: loginprovider.emailController,
+                                      focusNode: loginprovider.emailFocusNode,
+                                      label: 'Email',
+                                      autofillHints: const [
+                                        AutofillHints.email
+                                      ],
+                                      nextFocus:
+                                          loginprovider.passwordFocusNode,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    CustomTextField(
+                                      controller:
+                                          loginprovider.passwordController,
+                                      focusNode:
+                                          loginprovider.passwordFocusNode,
+                                      label: 'Password',
+                                      autofillHints: const [
+                                        AutofillHints.password
+                                      ],
+                                      obscureText: true,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: Row(
+                                        children: [
+                                          const Spacer(),
+                                          InkWell(
+                                            onTap: () => ref
+                                                .read(navigationService)
+                                                .pushNamedScreen(
+                                                    Routes.forgotpassword),
+                                            child: const Text(
+                                              "Forgot Password?",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Center(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 50,
+                                        child: ElevatedButton(
+                                          onPressed: () => _login(context, ref,
+                                              loginprovider.formKey),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xff232323),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: Text('Login',
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 14)),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 40),
+                                    const DividerWithText(),
+                                    const SizedBox(height: 20),
+                                    SocialButtonMobile(
+                                      imagePath: 'assets/images/google.png',
+                                      label: 'Continue with Google',
+                                      onPressed: () {
+                                        handleGoogleSignIn(context, ref);
+                                      },
+                                    ),
+                                    const SizedBox(height: 7),
+                                    SocialButtonMobile(
+                                      imagePath: 'assets/images/apple.png',
+                                      label: 'Continue with Apple',
+                                      onPressed: () {
+                                        handleAppleSignIn(context, ref);
+                                      },
+                                    ),
+                                    const SizedBox(height: 7),
+                                    SocialButtonMobile(
+                                      imagePath: 'assets/images/facebook.png',
+                                      label: 'Continue with Facebook',
+                                      onPressed: () {
+                                        handleFacebookSignIn(context, ref);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const BottomBarMobile(),
-                ],
-              ),
-            ),
                 ),
-               ),
+
+                // Push bottom section down dynamically when screen height > 1100
+                if (screenHeight > 1100) ...[
+                  const Spacer(flex: 3), // Push content upward
+                ],
+
+                if (screenHeight > 400) ...[
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Don't have an account? ",
+                              style: GoogleFonts.inter(
+                                  fontSize: 11, color: Colors.black),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                ref
+                                    .read(navigationService)
+                                    .pushNamedReplacementScreen(
+                                        Routes.register);
+                              },
+                              child: Text(
+                                'Register now',
+                                style: GoogleFonts.inter(
+                                  fontSize: 11,
+                                  color:
+                                      const Color.fromARGB(255, 104, 104, 104),
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+
+                const Expanded(child: SizedBox()),
+              ],
+            ),
+          ),
         ),
+      ),
     );
   }
 
@@ -235,41 +263,45 @@ class _LoginMobilePageState extends ConsumerState<LoginMobilePage> {
     }
   }
 
-  Future<void> _login(BuildContext context, WidgetRef ref) async {
-    final response = await ApiServices.post(
-      URLs.restAuthLogin,
-      headers: {'Content-Type': 'application/json'},
-      data: {
-        'username': _emailController.text,
-        'password': _passwordController.text
-      },
-    );
+  Future<void> _login(
+    BuildContext context,
+    WidgetRef ref,
+    GlobalKey<FormState> formKey,
+  ) async {
+    final loginprovider = ref.watch(loginProvider);
+    if (formKey.currentState!.validate()) {
+      final response = await ApiServices.post(
+        URLs.restAuthLogin,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          'username': loginprovider.emailController.text,
+          'password': loginprovider.passwordController.text
+        },
+      );
 
-    if (response != null && response.statusCode == 201) {
-      var data = response.data;
-      var token = data['token'];
-      print('token is $token');
-      final secureStorage = SecureStorage();
-      await secureStorage.saveToken(token);
-      await ApiServices.init(ref);
+      if (response != null && response.statusCode == 201) {
+        var data = response.data;
+        var token = data['token'];
+        print('token is $token');
+        final secureStorage = SecureStorage();
+        await secureStorage.saveToken(token);
+        await ApiServices.init(ref);
 
-      ref.read(navigationService).pushNamedReplacementScreen(Routes.homepage);
-      final snackBar = Customsnackbar().showSnackBar(
-                "Hurra!.".tr, 'Jesteś zalogowany'.tr, "success",
-                () {
-              _login(context, ref);
-            });
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      ref.watch(fcmTokenProvider);
-
-     
-    } else {
-      final snackBar = Customsnackbar().showSnackBar(
-          "Logowanie nie powiodło się".tr, 'Sprawdź swoje dane'.tr, "error",
-          () {
-        _login(context, ref);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ref.read(navigationService).pushNamedReplacementScreen(Routes.homepage);
+        final snackBar = Customsnackbar()
+            .showSnackBar("Hurra!.".tr, 'Jesteś zalogowany'.tr, "success", () {
+          _login(context, ref, formKey);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ref.watch(fcmTokenProvider);
+      } else {
+        final snackBar = Customsnackbar().showSnackBar(
+            "Logowanie nie powiodło się".tr, 'Sprawdź swoje dane'.tr, "error",
+            () {
+          _login(context, ref, formKey);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
   }
 }

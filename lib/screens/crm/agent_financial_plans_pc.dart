@@ -44,9 +44,7 @@ class _AgentFinancalPlansState extends ConsumerState<AgentFinancialPlanspc> {
               .read(navigationService)
               .pushNamedScreen(Routes.proFinanceRevenueAdd);
         }
-        if (ref.read(navigationService).canBeamBack()) {
-          KeyBoardShortcuts().handleBackspaceNavigation(event, ref);
-        }
+      
       },
       child: Scaffold(
         body: SideMenuManager.sideMenuSettings(

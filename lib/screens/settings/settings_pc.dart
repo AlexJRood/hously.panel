@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/screens/settings/components/gradient_dropdown.dart';
 import 'package:hously_flutter/screens/settings/components/pc/components/settings_provider.dart';
@@ -102,7 +104,7 @@ class _SettingsPcState extends ConsumerState<SettingsPc> {
                                                 icon: Icon(
                                                     Icons.more_vert_outlined,
                                                     color:
-                                                        theme.whitewhiteblack),
+                                                        theme.mobileTextcolor),
                                                 onPressed: () {
                                                   showCustomMenu(context,
                                                       iconButtonKey, ref);
@@ -295,7 +297,7 @@ class _SettingsPcState extends ConsumerState<SettingsPc> {
                             ),
                           ),
                           IconButton(
-                            icon: Icon(Icons.close,
+                            icon: SvgPicture.asset(AppIcons.close,
                                 color: theme.popupcontainertextcolor),
                             onPressed: () {
                               Navigator.of(context).pop();

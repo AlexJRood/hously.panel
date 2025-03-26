@@ -15,8 +15,10 @@ extension ContextExtension on BuildContext {
     required List<PopupMenuEntry<dynamic>> items,
     required RelativeRect relativeRect,
     BoxConstraints? boxConstraints,
+    Color? color = Colors.white
   }) async {
     await showMenu(
+      color: color,
       context: this,
       position: relativeRect,
       items: items,

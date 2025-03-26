@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
@@ -82,10 +84,11 @@ class _AboutPageMobileState extends ConsumerState<AboutPageMobile> {
                       children: [
                         TextButton(
                           onPressed: () {},
-                          child: Icon(
-                            Icons.menu,
+                          child: SvgPicture.asset(
+                            AppIcons.menu,
                             color: Colors.white,
-                            size: 18,
+                            height: 18,
+                            width: 18,
                           ),
                         ),
                         TextButton(
@@ -724,8 +727,8 @@ class _AboutPageMobileState extends ConsumerState<AboutPageMobile> {
                                           bottomRight: Radius.circular(6),
                                         ),
                                       ),
-                                      child: const Icon(
-                                        Icons.arrow_forward,
+                                      child: SvgPicture.asset(
+                                        AppIcons.simpleArrowForward,
                                         color: Colors.white,
                                       ),
                                     ),

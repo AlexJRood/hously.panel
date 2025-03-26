@@ -4,15 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/routes/navigation_history_provider.dart';
+import 'package:hously_flutter/screens/filters/filters_page.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
 
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class KeyBoardShortcuts {
+class KeyBoardShortcuts extends ChangeNotifier{
   // Function to handle the key events (Up or Down) and perform respective actions
   void handleKeyEvent(KeyEvent event, ScrollController _scrollController,
       int offsetvalue, int seconds) {
@@ -69,16 +72,44 @@ class KeyBoardShortcuts {
     }
   }
 
-  void filterpop(KeyEvent event, WidgetRef ref) {
-    if (event.logicalKey == ref.watch(filterKeyProvider) &&
-        event is KeyDownEvent) {
-      ref.read(navigationService).pushNamedScreen(Routes.filters);
+  void filterpop(KeyEvent event, WidgetRef ref, BuildContext context) {
+    final sortKey = ref.watch(filterKeyProvider);
+    final Set<LogicalKeyboardKey> pressedKeys =
+        HardwareKeyboard.instance.logicalKeysPressed;
+
+    // Log all currently pressed keys
+    debugPrint("Pressed Keys: $pressedKeys");
+
+    if (pressedKeys.contains(sortKey) &&
+        pressedKeys.contains(LogicalKeyboardKey.altLeft)) {
+      debugPrint("Ctrl + ${sortKey} detected! Opening ViewPopChangerPage...");
+
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (_, __, ___) => const FiltersPage(tag: ''),
+          transitionsBuilder: (_, anim, __, child) {
+            return FadeTransition(opacity: anim, child: child);
+          },
+        ),
+      );
+    } else {
+      debugPrint("Ctrl + ${sortKey} NOT detected.");
     }
   }
 
   void sortpopup(KeyEvent event, WidgetRef ref, BuildContext context) {
-    if (event.logicalKey == ref.watch(sortKeyProvider) &&
-        event is KeyDownEvent) {
+    final sortKey = ref.watch(sortKeyProvider);
+    final Set<LogicalKeyboardKey> pressedKeys =
+        HardwareKeyboard.instance.logicalKeysPressed;
+
+    // Log all currently pressed keys
+    debugPrint("Pressed Keys: $pressedKeys");
+
+    if (pressedKeys.contains(sortKey) &&
+        pressedKeys.contains(LogicalKeyboardKey.altLeft)) {
+      debugPrint("Ctrl + ${sortKey} detected! Opening ViewPopChangerPage...");
+
       Navigator.of(context).push(
         PageRouteBuilder(
           opaque: false,
@@ -88,22 +119,59 @@ class KeyBoardShortcuts {
           },
         ),
       );
+    } else {
+      debugPrint("Ctrl + ${sortKey} NOT detected.");
     }
   }
 
   void handleKeyNavigation(
       KeyEvent event, WidgetRef ref, BuildContext context) {
+    final Set<LogicalKeyboardKey> pressedKeys =
+        HardwareKeyboard.instance.logicalKeysPressed;
+
+    debugPrint("Pressed Keys: $pressedKeys");
+
     if (event is KeyDownEvent) {
-      if (event.logicalKey == ref.read(crmKeyProvider)) {
-        ref.read(navigationService).pushNamedScreen(Routes.proDashboard);
-      } else if (event.logicalKey == ref.read(reportsKeyProvider)) {
-        ref.read(navigationService).pushNamedScreen(Routes.reports);
-      } else if (event.logicalKey == ref.read(networkKeyProvider)) {
-        ref.read(navigationService).pushNamedScreen(Routes.networkMonitoring);
-      } else if (event.logicalKey == ref.read(portalKeyProvider)) {
-        ref.read(navigationService).pushNamedScreen(Routes.homepage);
+      final altPressed = pressedKeys.contains(LogicalKeyboardKey.altLeft);
+      if (altPressed) {
+        final keyActionMap = {
+          ref.read(crmKeyProvider): () {
+            debugPrint("Alt + CRM Key detected! Navigating to Pro Dashboard");
+            ref
+                .read(navigationService)
+                .pushNamedReplacementScreen(Routes.proDashboard);
+          },
+          ref.read(reportsKeyProvider): () {
+            debugPrint("Alt + Reports Key detected! Navigating to Reports");
+            ref
+                .read(navigationService)
+                .pushNamedReplacementScreen(Routes.reports);
+          },
+          ref.read(networkKeyProvider): () {
+            debugPrint(
+                "Alt + Network Key detected! Navigating to Network Monitoring");
+            ref
+                .read(navigationService)
+                .pushNamedReplacementScreen(Routes.networkMonitoring);
+          },
+          ref.read(portalKeyProvider): () {
+            debugPrint("Alt + Portal Key detected! Navigating to Homepage");
+            ref
+                .read(navigationService)
+                .pushNamedReplacementScreen(Routes.homepage);
+          },
+        };
+
+        for (var key in keyActionMap.keys) {
+          if (pressedKeys.contains(key)) {
+            keyActionMap[key]!(); // Execute the corresponding action
+            return; // Exit after handling the key
+          }
+        }
+        debugPrint("No matching key detected for navigation.");
       }
     }
+    notifyListeners();
   }
 }
 
@@ -231,7 +299,7 @@ Future<void> initializeLogicalKeyboardKeys(WidgetRef ref) async {
   final keyMappings = {
     'Pop': LogicalKeyboardKey.escape,
     'PDF': LogicalKeyboardKey.keyP,
-    'Filter': LogicalKeyboardKey.keyF,
+    'Filter': LogicalKeyboardKey.keyA,
     'Sort': LogicalKeyboardKey.keyS,
     'Portal': LogicalKeyboardKey.digit1,
     'CRM': LogicalKeyboardKey.digit2,
@@ -428,7 +496,7 @@ class _KeyboardSettingsScreenState
     _focusNode.requestFocus(); // Automatically focus on the listener
   }
 
-  void _scrollToExpandedTile(GlobalKey expansionKey) {
+  void scrollToExpandedTile(GlobalKey expansionKey) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final context = expansionKey.currentContext;
       if (context != null) {
@@ -507,8 +575,8 @@ class _KeyboardSettingsScreenState
                         ),
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.edit,
+                      SvgPicture.asset(
+                        AppIcons.pencil,
                         color: Theme.of(context).iconTheme.color,
                       ),
                     ],
@@ -630,7 +698,7 @@ class _KeySelectionScreenState extends State<KeySelectionScreen> {
               : Text(key.keyLabel,
                   style: TextStyle(color: Theme.of(context).iconTheme.color)),
           trailing: widget.currentkey == key
-              ? Icon(Icons.check, color: Colors.green)
+              ? SvgPicture.asset(AppIcons.check, color: Colors.green)
               : null,
           onTap: () {
             setState(() {

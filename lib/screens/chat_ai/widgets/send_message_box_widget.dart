@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/chat_ai/chat_ai_provider/chat_ai_provider.dart';
 
 class SendMessageBox extends ConsumerWidget {
@@ -78,8 +80,8 @@ class SendMessageBox extends ConsumerWidget {
                               color: Colors.black,
                             ),
                           )
-                        : const Icon(
-                            Icons.arrow_upward,
+                        : SvgPicture.asset(
+                            AppIcons.arrowUp,
                             color: Colors.black,
                           ),
                   ),

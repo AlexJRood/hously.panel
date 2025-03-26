@@ -1,6 +1,8 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/screens/chat/new_chat/chat_page.dart';
@@ -67,7 +69,10 @@ class ApptourAppbarMobile extends ConsumerWidget {
                     title: 'Sidebar',
                     description:
                         'sidebar for quick access to login/logout, profile settings, streamlining navigation and account management',
-                    child: Icon(Icons.menu_rounded, color: color, size: 30.0)),
+                    child: SvgPicture.asset(AppIcons.menu, color: color,
+                        height: 30.0,
+                        width: 30.0,
+                    )),
               ],
             ),
           ),
@@ -77,7 +82,7 @@ class ApptourAppbarMobile extends ConsumerWidget {
               ref.read(navigationService).pushNamedScreen(Routes.mobilePop);
             },
             child: Hero(
-              tag: 'MobilePopAppBar_${UniqueKey()}',
+              tag: 'MobilePopAppBar-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
               child: Container(
                 color: Colors.transparent,
                 child: Icon(Icons.view_comfortable_rounded,
@@ -99,9 +104,11 @@ class ApptourAppbarMobile extends ConsumerWidget {
                 children: [
                   Transform.rotate(
                     angle: -30 * 3.141592653589793238 / 180,
-                    child: IconButton(icon:Icon(Icons.send_rounded,
+                    child: IconButton(icon:SvgPicture.asset(AppIcons.send,
                         color: Theme.of(context).iconTheme.color,
-                        size: 25.0),
+                        height: 25.0,
+                        width: 25.0,
+                    ),
                       onPressed: () {
                         Navigator.of(context).push(
                           PageRouteBuilder(

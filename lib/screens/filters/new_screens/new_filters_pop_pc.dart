@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/filters_pop_const.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/filters/new_widgets/estate_filtered_button.dart';
 import 'package:hously_flutter/screens/filters/new_widgets/filltered_button.dart';
@@ -63,9 +65,10 @@ class NewFiltersPopPc extends ConsumerWidget {
                                     8), // Rounded corners
                                 borderSide: BorderSide.none, // No border
                               ),
-                              suffixIcon: const Icon(Icons.search,
-                                  size: 18,
-                                  color: Color.fromRGBO(
+                              suffixIcon: SvgPicture.asset(AppIcons.search,
+                                  height: 18,
+                                  width: 18,
+                                  color: const Color.fromRGBO(
                                       145, 145, 145, 1)), // Add search icon
                             ),
                           ),

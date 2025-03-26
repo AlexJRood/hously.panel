@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import '../../../../utils/api_services.dart';
 import '../provider/chat_message_provider.dart';
@@ -24,7 +26,6 @@ class ChatSideBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelected = ref.watch(isChatSelected);
     final theme = ref.watch(themeColorsProvider);
-
 
     double screenWidth = MediaQuery.of(context).size.width;
     double maxWidth = 2000;
@@ -59,19 +60,19 @@ class ChatSideBar extends ConsumerWidget {
           children: [
             Row(
               children: [
-                 if (isMobile)
-                    SizedBox(
-                      height: 50, width:50,
-                      child: IconButton(
-                        style: elevatedButtonStyleRounded10,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: const Icon(Icons.arrow_back_ios_new_rounded, 
-                                        color: AppColors.light
-                                        ),
-                      ),
+                if (isMobile)
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                      style: elevatedButtonStyleRounded10,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                          color: AppColors.light),
                     ),
+                  ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -87,50 +88,52 @@ class ChatSideBar extends ConsumerWidget {
                               height: 50,
                             ),
                           ),
-                            Padding( // change to production should be formfiled
-                              padding:
-                                  const EdgeInsets.only(right: 10.0, left: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                    const Icon(
-                                      Icons.search,
-                                      color: Color.fromRGBO(255, 255, 255, 1),
-                                      size: 25,
-                                    ),                                 
-                                  Expanded(
-                                    child: TextField(
-                                      textAlign: TextAlign.start,
-                                      showCursor: true,
-                                      cursorColor: AppColors.light,
-                                      style: const TextStyle( 
-                                      color: AppColors.light),
-                                      decoration: InputDecoration(
-                                        floatingLabelStyle: TextStyle(
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color),
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            borderSide: BorderSide.none),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            borderSide: BorderSide.none),
-                                        filled: false,
-                                        fillColor: Colors.black,
-                                      ),
+                          Padding(
+                            // change to production should be formfiled
+                            padding:
+                                const EdgeInsets.only(right: 10.0, left: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.search,
+                                  color: const Color.fromRGBO(255, 255, 255, 1),
+                                  height: 25,
+                                  width: 25,
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    textAlign: TextAlign.start,
+                                    showCursor: true,
+                                    cursorColor: AppColors.light,
+                                    style:
+                                        const TextStyle(color: AppColors.light),
+                                    decoration: InputDecoration(
+                                      floatingLabelStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .iconTheme
+                                              .color),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          borderSide: BorderSide.none),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          borderSide: BorderSide.none),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          borderSide: BorderSide.none),
+                                      filled: false,
+                                      fillColor: Colors.black,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
                         ],
                       ),
                     ),
@@ -193,17 +196,19 @@ class ChatSideBar extends ConsumerWidget {
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
-                                            return const Icon(
-                                              Icons.person,
+                                            return SvgPicture.asset(
+                                              AppIcons.person,
                                               color: Colors.white,
-                                              size: 35,
+                                              height: 35,
+                                              width: 35,
                                             );
                                           },
                                         )
-                                      : const Icon(
-                                          Icons.person,
+                                      : SvgPicture.asset(
+                                          AppIcons.person,
                                           color: Colors.white,
-                                          size: 35,
+                                          height: 35,
+                                          width: 35,
                                         ),
                                 ),
                               ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/state_managers/data/Keyboardshortcuts.dart';
@@ -124,21 +126,7 @@ class _AgentDashboardPcState extends ConsumerState<AgentDashboardPc> {
     return KeyboardListener(
       focusNode: FocusNode()..requestFocus(),
       onKeyEvent: (KeyEvent event) {
-        if (ref.read(navigationService).canBeamBack()) {
-          KeyBoardShortcuts().handleBackspaceNavigation(event, ref);
-        }
-        KeyBoardShortcuts().handleBackspaceNavigation(event, ref);
-
         KeyBoardShortcuts().handleKeyNavigation(event, ref, context);
-        final Set<LogicalKeyboardKey> pressedKeys =
-            HardwareKeyboard.instance.logicalKeysPressed;
-        final LogicalKeyboardKey? shiftKey = ref.watch(togglesidemenu1);
-        if (pressedKeys.contains(ref.watch(adclientprovider)) &&
-            !pressedKeys.contains(shiftKey)) {
-          ref
-              .read(navigationService)
-              .pushNamedScreen(Routes.proFinanceRevenueAdd);
-        }
       },
       child: Scaffold(
         body: SideMenuManager.sideMenuSettings(
@@ -216,8 +204,8 @@ class _AgentDashboardPcState extends ConsumerState<AgentDashboardPc> {
                                                       top: 0,
                                                       bottom: 0,
                                                       child: IconButton(
-                                                        icon: Icon(
-                                                            Icons.arrow_left,
+                                                        icon: SvgPicture.asset(
+                                                            AppIcons.iosArrowLeft,
                                                             color: Theme.of(
                                                                     context)
                                                                 .iconTheme
@@ -241,8 +229,8 @@ class _AgentDashboardPcState extends ConsumerState<AgentDashboardPc> {
                                                       top: 0,
                                                       bottom: 0,
                                                       child: IconButton(
-                                                        icon: Icon(
-                                                            Icons.arrow_right,
+                                                        icon: SvgPicture.asset(
+                                                            AppIcons.iosArrowRight,
                                                             color: Theme.of(
                                                                     context)
                                                                 .iconTheme
@@ -336,8 +324,8 @@ class _AgentDashboardPcState extends ConsumerState<AgentDashboardPc> {
                                                     top: 0,
                                                     bottom: 0,
                                                     child: IconButton(
-                                                      icon: Icon(
-                                                          Icons.arrow_left,
+                                                      icon: SvgPicture.asset(
+                                                          AppIcons.iosArrowLeft,
                                                           color:
                                                               Theme.of(context)
                                                                   .iconTheme
@@ -361,8 +349,8 @@ class _AgentDashboardPcState extends ConsumerState<AgentDashboardPc> {
                                                     top: 0,
                                                     bottom: 0,
                                                     child: IconButton(
-                                                      icon: Icon(
-                                                          Icons.arrow_right,
+                                                      icon: SvgPicture.asset(
+                                                          AppIcons.iosArrowRight,
                                                           color:
                                                               Theme.of(context)
                                                                   .iconTheme

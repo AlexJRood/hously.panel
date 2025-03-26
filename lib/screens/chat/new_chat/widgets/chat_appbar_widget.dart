@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/chat/new_chat/provider/web_socket_provider.dart';
@@ -59,7 +61,7 @@ class ChatAppBar extends StatelessWidget {
                                 
                               ref.read(isChatSelected.notifier).state = false;
                             },
-                            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.light),
+                            icon:  SvgPicture.asset(AppIcons.iosArrowLeft, color: AppColors.light),
                           ),
                         ),
                       Container(
@@ -76,17 +78,19 @@ class ChatAppBar extends StatelessWidget {
                                   'https://www.hously.cloud/${userData.avatar!}',
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                    return Icon(
-                                      Icons.person,
+                                    return SvgPicture.asset(
+                                      AppIcons.person,
                                       color: Colors.white,
-                                      size: isMobile ? 25 : 35,
+                                      height: isMobile ? 25 : 35,
+                                      width: isMobile ? 25 : 35,
                                     );
                                   },
                                 )
-                              : const Icon(
-                                  Icons.person,
+                              :  SvgPicture.asset(
+                                  AppIcons.person,
                                   color: Colors.white,
-                                  size: 35,
+                                  height: 35,
+                                  width: 35,
                                 ),
                         ),
                       ), Row(
@@ -126,7 +130,7 @@ class ChatAppBar extends StatelessWidget {
                           style: elevatedButtonStyleRounded10,
                           onPressed: () {
                           },
-                          icon: const Icon(Icons.more_horiz, color: AppColors.light),
+                          icon:  SvgPicture.asset(AppIcons.moreVertical, color: AppColors.light),
                         ),
                       ),
                     // Icon(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -226,11 +228,12 @@ class BuildAdvertisementsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themecolors = ref.watch(themeColorsProvider);
     final textColor = themecolors.themeTextColor;
-
+    final screenPadding = MediaQuery.of(context).size.width;
+    log(screenPadding.toString());
     return Column(
       children: List.generate(filteredAdvertisements.length, (index) {
         final fullSizeAd = filteredAdvertisements[index];
-        final tag = 'fullSize${fullSizeAd.id}';
+        final tag = 'fullSize${fullSizeAd.id}-${UniqueKey().toString()}';
         final mainImageUrl = fullSizeAd.images.isNotEmpty
             ? fullSizeAd.images[0]
             : 'default_image_url';

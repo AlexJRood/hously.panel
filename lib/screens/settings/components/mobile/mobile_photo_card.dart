@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/state_managers/data/user_provider.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
+import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 
 import 'package:shimmer/shimmer.dart';
 
@@ -58,11 +59,11 @@ class MobilePhotoCard extends ConsumerWidget {
                   "${userData.firstName} ${userData.lastName}",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: theme.popupcontainertextcolor),
+                      color: theme.mobileTextcolor),
                 ),
                 const SizedBox(height: 3),
                 Text(userData.email,
-                    style: TextStyle(color: theme.popupcontainertextcolor)),
+                    style: TextStyle(color: theme.mobileTextcolor)),
               ],
             );
           },
@@ -84,26 +85,26 @@ class _ShimmerUserCard extends StatelessWidget {
         const ShimmerMobilePhotocard(width: 140, height: 140, radius: 10),
         const SizedBox(height: 8),
         Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
+          baseColor: ShimmerColors.base(context),
+          highlightColor: ShimmerColors.highlight(context),
           child: Container(
             height: 12,
             width: 100,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: ShimmerColors.background(context),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
         ),
         const SizedBox(height: 3),
         Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
+          baseColor: ShimmerColors.base(context),
+          highlightColor: ShimmerColors.highlight(context),
           child: Container(
             height: 10,
             width: 150,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: ShimmerColors.background(context),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -130,13 +131,13 @@ class ShimmerMobilePhotocard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: ShimmerColors.base(context),
+      highlightColor: ShimmerColors.highlight(context),
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: ShimmerColors.background(context),
           borderRadius: BorderRadius.circular(radius),
         ),
       ),

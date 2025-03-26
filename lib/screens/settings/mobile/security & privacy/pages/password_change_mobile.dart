@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/screens/settings/components/mobile/mobile_settings_appbar.dart';
 import 'package:hously_flutter/screens/settings/components/mobile/mobile_settings_components.dart';
 import 'package:hously_flutter/screens/settings/components/settings_button.dart';
+import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
 class PasswordChangeMobile extends ConsumerWidget {
@@ -21,83 +23,90 @@ class PasswordChangeMobile extends ConsumerWidget {
     final theme = ref.watch(themeColorsProvider);
 
     return Scaffold(
-      backgroundColor: theme.mobileBackground,
-      body: Column(
-        children: [
-          // AppBar Section
-          MobileSettingsAppbar(
-            title: "Password",
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
 
-          // Scrollable Fields Section
-          Expanded(
-            child: Padding(
+      body: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Update Your Pasword",
-                          style: TextStyle(color: theme.whitewhiteblack)),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                          "Enter a passcode to securely verify access to your account.",
-                          style: TextStyle(
-                              color: theme.popupcontainertextcolor,
-                              fontSize: 12)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      GradientTextFieldMobile(
-                          isObscure: true,
-                          focusNode: passwordfocusnode[0],
-                          value: "",
-                          reqNode: passwordfocusnode[1],
-                          controller: _oldpasswordcontroller,
-                          hintText: "Current Password"),
-                      GradientTextFieldMobile(
-                          isObscure: true,
-                          focusNode: passwordfocusnode[1],
-                          value: "",
-                          reqNode: passwordfocusnode[2],
-                          controller: _newpasswordcontroller,
-                          hintText: "New Password"),
-                      GradientTextFieldMobile(
-                          isObscure: true,
-                          focusNode: passwordfocusnode[2],
-                          value: "",
-                          reqNode: passwordfocusnode[3],
-                          controller: _confirmpasswordcontroller,
-                          hintText: "Confirm New Password"),
-                    ],
+              decoration: BoxDecoration(
+                gradient: CustomBackgroundGradients.getMainMenuBackground(
+                    context, ref),
+              ),
+        child: Column(
+          children: [
+            // AppBar Section
+            MobileSettingsAppbar(
+              title: "Password",
+              onPressed: () {
+              ref.read(navigationService).beamPop();
+              },
+            ),
+        
+            // Scrollable Fields Section
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ScrollConfiguration(
+                  behavior:
+                      ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Update Your Pasword",
+                            style: TextStyle(color: theme.mobileTextcolor)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                            "Enter a passcode to securely verify access to your account.",
+                            style: TextStyle(
+                                color: theme.mobileTextcolor, fontSize: 12)),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GradientTextFieldMobile(
+                            isObscure: true,
+                            focusNode: passwordfocusnode[0],
+                            value: "",
+                            reqNode: passwordfocusnode[1],
+                            controller: _oldpasswordcontroller,
+                            hintText: "Current Password"),
+                        GradientTextFieldMobile(
+                            isObscure: true,
+                            focusNode: passwordfocusnode[1],
+                            value: "",
+                            reqNode: passwordfocusnode[2],
+                            controller: _newpasswordcontroller,
+                            hintText: "New Password"),
+                        GradientTextFieldMobile(
+                            isObscure: true,
+                            focusNode: passwordfocusnode[2],
+                            value: "",
+                            reqNode: passwordfocusnode[3],
+                            controller: _confirmpasswordcontroller,
+                            hintText: "Confirm New Password"),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-
-          // Fixed Bottom Button Section
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: SizedBox(
-                width: double.infinity,
-                child: CustomElevatedButton(
-                  text: 'Confirm',
-                  onTap: () {},
+        
+            // Fixed Bottom Button Section
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: SizedBox(
+                  height: 45,
+                  width: double.infinity,
+                  child: CustomElevatedButton(
+                    text: 'Confirm',
+                    onTap: () {},
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

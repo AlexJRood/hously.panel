@@ -31,15 +31,12 @@ class AddLocationWidget extends ConsumerWidget {
       },
       // proxyURL: _yourProxyURL,
       maxLines: 1,
-      overlayContainer: (child) => Material(
+      overlayContainerBuilder: (child) => Material(
         elevation: 1.0,
         borderRadius: BorderRadius.circular(12),
         child: child,
       ),
-      getPlaceDetailWithLatLng: (prediction) {
-        print('placeDetails${prediction.lng}');
-      },
-      itmClick: (prediction) => _textController.text = prediction.description!,
+      onSuggestionClicked: (prediction) => _textController.text = prediction.description!,
     );
   }
 }

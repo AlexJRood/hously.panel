@@ -1,6 +1,8 @@
 //lib/components/appbar.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart'; 
 import 'dart:ui' as ui;
 import 'package:hously_flutter/widgets/appbar/widgets/logo_hously.dart';
@@ -35,8 +37,8 @@ class TopAppBarLogoOnly extends ConsumerWidget {
               children: [
                 const SizedBox(width: 10),
                 IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new_rounded,
-                      color: Theme.of(context).iconTheme.color, size: 25.0),
+                  icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                      color: Theme.of(context).iconTheme.color, height: 25.0,width: 25,),
                   onPressed: () {
                     ref.read(navigationService).beamPop();
                   },

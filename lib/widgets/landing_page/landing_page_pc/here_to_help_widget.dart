@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 class HereToHelpWidget extends StatelessWidget {
   final double paddingDynamic;
@@ -12,7 +13,8 @@ class HereToHelpWidget extends StatelessWidget {
       color: const Color.fromRGBO(255, 255, 255, 1),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: paddingDynamic, vertical: dynamicVerticalPadding),
+          padding: EdgeInsets.symmetric(
+              horizontal: paddingDynamic, vertical: dynamicVerticalPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -20,9 +22,9 @@ class HereToHelpWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Here to Help You Move Forward',
-                    style: TextStyle(
+                    style: AppTextStyles.libreCaslonHeading.copyWith(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(35, 35, 35, 1)),
@@ -64,33 +66,39 @@ class HereToHelpWidget extends StatelessWidget {
                       child: InfoCardWidget(
                         title: 'Buy a home',
                         description:
-                        'Buying a home is a big decision. Whether you\'re a\nfirst-time buyer or an experienced investor, we\nprovide the tools, insights, and AI-powered search\nto help you find the best deals on properties that\nmatch your needs.',
+                            'Buying a home is a big decision. Whether you\'re a\nfirst-time buyer or an experienced investor, we\nprovide the tools, insights, and AI-powered search\nto help you find the best deals on properties that\nmatch your needs.',
                         buttonText: 'Browse homes',
                       ),
                     ),
 
                     // First Divider
-                    VerticalDivider(width: 40, thickness: 2, color: Color.fromRGBO(200, 200, 200, 1)),
+                    VerticalDivider(
+                        width: 40,
+                        thickness: 2,
+                        color: Color.fromRGBO(200, 200, 200, 1)),
 
                     // Second InfoCard
                     Expanded(
                       child: InfoCardWidget(
                         title: 'Sell a home',
                         description:
-                        'Ready to sell your property? We make the process\nsimple, fast, and profitable. Our platform connects\nyou with a wide network of buyers and helps you\nset the best price based on real-time market data.',
+                            'Ready to sell your property? We make the process\nsimple, fast, and profitable. Our platform connects\nyou with a wide network of buyers and helps you\nset the best price based on real-time market data.',
                         buttonText: 'See your options',
                       ),
                     ),
 
                     // Second Divider
-                    VerticalDivider(width: 40, thickness: 2, color: Color.fromRGBO(200, 200, 200, 1)),
+                    VerticalDivider(
+                        width: 40,
+                        thickness: 2,
+                        color: Color.fromRGBO(200, 200, 200, 1)),
 
                     // Third InfoCard
                     Expanded(
                       child: InfoCardWidget(
                         title: 'Rent a home',
                         description:
-                        'Looking to rent? We have a wide selection of\nrental properties to fit your lifestyle and budget.\nFrom city apartments to suburban homes, find\nyour ideal space quickly with our tailored search\noptions.',
+                            'Looking to rent? We have a wide selection of\nrental properties to fit your lifestyle and budget.\nFrom city apartments to suburban homes, find\nyour ideal space quickly with our tailored search\noptions.',
                         buttonText: 'Find rentals',
                       ),
                     ),
@@ -125,7 +133,7 @@ class InfoCardWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: AppTextStyles.libreCaslonHeading.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
@@ -152,22 +160,20 @@ class InfoCardWidget extends StatelessWidget {
           child: Container(
             width: double.infinity,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(22, 25, 32, 1),
-                Color.fromRGBO(34, 57, 62, 1),
-              ]),
-              borderRadius: BorderRadius.all(Radius.circular(6))
-            ),
+                gradient: LinearGradient(colors: [
+                  Color.fromRGBO(22, 25, 32, 1),
+                  Color.fromRGBO(34, 57, 62, 1),
+                ]),
+                borderRadius: BorderRadius.all(Radius.circular(6))),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Text(
                   buttonText,
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color.fromRGBO(233, 233, 233, 1)
-                  ),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Color.fromRGBO(233, 233, 233, 1)),
                 ),
               ),
             ),

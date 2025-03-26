@@ -62,7 +62,7 @@ class ClientEvettile extends ConsumerWidget {
                     child: Text(
                       "Planowane wydarzenia".tr,
                       style: TextStyle(
-                          color: theme.whitewhiteblack,
+                          color: theme.mobileTextcolor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     )),

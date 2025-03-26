@@ -2,8 +2,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/screens/profile/edit_offer/edit_offer_mobile_page.dart';
 import 'package:hously_flutter/widgets/appbar/hously/pc/appbar_logo.dart';
+import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/Draft/edit_offer_mobile_page.dart';
 import 'package:hously_flutter/widgets/crm/view/view/clientview/pc/Draft/edit_sell_offer_pc.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 
@@ -54,7 +54,7 @@ class CrmEditSellOfferPage extends ConsumerWidget {
                   ],
                 );
               } else {
-                return EditOfferMobilePage(offerId: offerId);
+                return CrmEditOfferMobilePage(offerId: offerId);
               }
             }),
           ],

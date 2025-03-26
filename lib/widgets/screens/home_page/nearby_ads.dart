@@ -80,7 +80,7 @@ class NearbyAds extends ConsumerWidget {
                 return const SizedBox.shrink();
               }
               final ad = adsnearme[index];
-              final tag = 'adsnearme${ad.id}';
+              final tag = 'adsnearme${ad.id}-${UniqueKey().toString()}';
               String formattedPrice = customFormat.format(ad.price);
               String mainImageUrl =
                   ad.images.isNotEmpty ? ad.images[0] : 'default_image_url';
@@ -101,11 +101,12 @@ class NearbyAds extends ConsumerWidget {
                         imageUrl: mainImageUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: const Color.fromARGB(255, 37, 37, 37),
-                          highlightColor: silver,
+                           baseColor:ShimmerColors.base(context),
+                                 
+                              highlightColor: ShimmerColors.highlight(context),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                               color:ShimmerColors.background(context),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),

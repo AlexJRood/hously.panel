@@ -3,7 +3,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/utils/api_services.dart';
@@ -168,7 +170,7 @@ class ChatScreenMobilePageState extends ConsumerState<ChatScreenMobilePage> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.send, color: AppColors.light),
+                          icon:  SvgPicture.asset(AppIcons.send, color: AppColors.light),
                           onPressed: _sendMessage,
                         ),
                       ],

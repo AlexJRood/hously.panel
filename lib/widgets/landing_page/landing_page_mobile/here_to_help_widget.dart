@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 import '../landing_page_pc/here_to_help_widget.dart';
 
@@ -10,19 +11,19 @@ class HereToHelpWidget extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(color: Color.fromRGBO(255, 255, 255, 1)),
       height: 850,
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Here to Help You Move\nForward',
-              style: TextStyle(
+              style: AppTextStyles.libreCaslonHeading.copyWith(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(35, 35, 35, 1)),
+                  color: const Color.fromRGBO(35, 35, 35, 1)),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             // First InfoCard
             InfoCardWidget(
               title: 'Buy a home',
@@ -32,7 +33,7 @@ class HereToHelpWidget extends StatelessWidget {
             ),
 
             // First Divider
-            Padding(
+            const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 child: Divider(
                   color: Color.fromRGBO(200, 200, 200, 1),
@@ -47,7 +48,7 @@ class HereToHelpWidget extends StatelessWidget {
             ),
 
             // Second Divider
-            Padding(
+            const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 child: Divider(
                   color: Color.fromRGBO(200, 200, 200, 1),

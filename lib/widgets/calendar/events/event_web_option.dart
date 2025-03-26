@@ -21,10 +21,10 @@ class EventWebOption extends ConsumerWidget {
       crossAxisAlignment: crossAxisAlignment,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: const EdgeInsets.only(top: 5),
           child: Icon(
             iconData,
-            color: theme.textFieldColor,
+            color: const Color.fromRGBO(255, 255, 255, 1),
           ),
         ),
         const SizedBox(width: 20),

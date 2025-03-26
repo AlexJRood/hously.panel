@@ -52,9 +52,18 @@ class _TimeZoneFieldWidgetState extends ConsumerState<TimeZoneFieldWidget> {
             .style
             .copyWith(fontStyle: FontStyle.italic, color: theme.textFieldColor),
         decoration: InputDecoration(
-            border: UnderlineInputBorder(),
+            filled: true,
+            fillColor: const Color.fromRGBO(0, 0, 0, 0.2),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide:  BorderSide.none),
             hintText: 'Time zone',
-            hintStyle: TextStyle(color: theme.textFieldColor)),
+            hintStyle: const TextStyle(
+                fontSize: 18,
+                color: Color.fromRGBO(255, 255, 255, 1)),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide: BorderSide.none)),
       ),
       suggestionsCallback: (pattern) => availableTimeZones
           .where(

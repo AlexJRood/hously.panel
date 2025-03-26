@@ -332,6 +332,34 @@ class CustomBackgroundGradients {
     return BackgroundGradients.adGradient;
   }
 
+  static LinearGradient crmClientAppbarGradient(
+      BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final currentScheme = ref.watch(colorSchemeProvider);
+    final colorScheme = theme.colorScheme;
+    if (theme.brightness == Brightness.dark && currentScheme != null) {
+      return LinearGradient(
+        colors: [
+          colorScheme.primary.withOpacity(0.7),
+          colorScheme.primary.withOpacity(0.7),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+    } else if (theme.brightness == Brightness.light && currentScheme != null) {
+      return LinearGradient(
+        colors: [
+          colorScheme.primary.withOpacity(0.7),
+          colorScheme.primary.withOpacity(0.7),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+    }
+
+    return BackgroundGradients.adGradient;
+  }
+
   static LinearGradient adGradient1(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final currentthememode = ref.watch(themeProvider);
@@ -527,15 +555,6 @@ class CustomBackgroundGradients {
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-      );
-    } else if (currentthememode == ThemeMode.dark && currentScheme == null) {
-      return const LinearGradient(
-        colors: [
-          AppColors.backgroundgradient1Light,
-          AppColors.backgroundgradient2Light
-        ],
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
       );
     }
 

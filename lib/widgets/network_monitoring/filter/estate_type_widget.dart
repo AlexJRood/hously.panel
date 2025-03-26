@@ -39,7 +39,7 @@ class EstateTypeWidget extends StatelessWidget {
             crossAxisCount: 2, // 2 columns
             mainAxisSpacing: 8.0, // Vertical spacing
             crossAxisSpacing: 8.0, // Horizontal spacing
-            childAspectRatio: 3, // Adjust height based on your button size
+            childAspectRatio: 4, // Adjust height based on your button size
           ),
           itemCount: estateFilters.length,
           itemBuilder: (context, index) {

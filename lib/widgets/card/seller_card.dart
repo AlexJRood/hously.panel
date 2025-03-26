@@ -53,8 +53,9 @@ class SellerCard extends ConsumerWidget {
                 padding: const EdgeInsets.all(5),
                 child: avatarUrl.startsWith(URLs.httpOrHttps)
                     ? CachedNetworkAvatar(
-                        avatarUrl: avatarUrl, itemWidth: itemWidth)
-                    : AssetAvatar(assetPath: avatarUrl, itemWidth: itemWidth),
+                        avatarUrl: avatarUrl, itemWidth: itemWidth - 10)
+                    : AssetAvatar(
+                        assetPath: avatarUrl, itemWidth: itemWidth - 10),
               ),
               const SizedBox(height: 10),
               if (firstName.isNotEmpty) ...[
@@ -126,19 +127,22 @@ class CachedNetworkAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: avatarUrl,
-      width: itemWidth,
-      height: itemWidth,
-      fit: BoxFit.cover,
-      placeholder: (context, url) => ShimmerPlaceholder(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: CachedNetworkImage(
+        imageUrl: avatarUrl,
         width: itemWidth,
         height: itemWidth,
-      ),
-      errorWidget: (context, url, error) => Center(
-        child: const Text(
-          'No image found',
-          style: TextStyle(color: Colors.red),
+        fit: BoxFit.cover,
+        placeholder: (context, url) => ShimmerPlaceholder(
+          width: itemWidth,
+          height: itemWidth,
+        ),
+        errorWidget: (context, url, error) => const Center(
+          child: Text(
+            'No image found',
+            style: TextStyle(color: Colors.red),
+          ),
         ),
       ),
     );

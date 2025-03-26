@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/const/route_constant.dart';
+import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:pie_menu/pie_menu.dart';
 
 import '../../../state_managers/data/home_page/listing_provider.dart';
@@ -15,32 +17,32 @@ class PopularSearchesWidget extends ConsumerWidget {
   const PopularSearchesWidget({super.key, required this.paddingDynamic});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final recentlyViewedAdsAsyncValue = ref.watch(listingsProvider);
     final dynamicVerticalPadding = paddingDynamic / 3;
     final scrollController = ScrollController();
 
     return Container(
         color: const Color.fromRGBO(255, 255, 255, 1),
-        height: 600,
+      
         child:  Padding(
         padding: EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: paddingDynamic),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'POPULAR SEARCHES',
-                    style: TextStyle(
-                      color: Color.fromRGBO(35, 35, 35, 1),
+                    style: AppTextStyles.libreCaslonHeading.copyWith(
+                      color: const Color.fromRGBO(35, 35, 35, 1),
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Row(
+                  const Row(
                     children: [
                       Icon(
                         Icons.arrow_back,
@@ -61,7 +63,8 @@ class PopularSearchesWidget extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 30),
-            Expanded(
+            SizedBox(
+     
               child: recentlyViewedAdsAsyncValue.when(
                 data: (adsList) {
                   return ListView.separated(
@@ -75,14 +78,10 @@ class PopularSearchesWidget extends ConsumerWidget {
                       return SizedBox(width: paddingDynamic);
                     }
                     final ad = adsList[index - 1]; // Przesuwamy indeksy, żeby zgadzały się z danymi
-                    final tag = 'recentlyViewed4-${ad.id}';
+                    final tag = 'recentlyViewed4-${ad.id}-${UniqueKey().toString()}';
 
-                        return GestureDetector(
-                          onHorizontalDragUpdate: (details) {
-                            scrollController.jumpTo(
-                              scrollController.offset - details.delta.dx,
-                            );
-                          },
+                        return DragScrollView(
+                    controller: scrollController,
                           child: PieMenu(
                             onPressedWithDevice: (kind) {
                               if (kind == PointerDeviceKind.mouse ||
@@ -110,6 +109,7 @@ class PopularSearchesWidget extends ConsumerWidget {
                           ),
                         );
                       },
+                    
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -121,7 +121,6 @@ class PopularSearchesWidget extends ConsumerWidget {
                 ),
               ),
             ),
-
           ],
         ),
       ),

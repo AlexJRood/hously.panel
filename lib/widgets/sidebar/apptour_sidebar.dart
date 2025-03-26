@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/values.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
@@ -258,9 +260,11 @@ class _NewsidebarState extends ConsumerState<Newsidebar> {
                             children: [
                               Transform.rotate(
                                 angle: -30 * 3.141592653589793238 / 180,
-                                child: IconButton(icon:Icon(Icons.send_rounded,
+                                child: IconButton(icon:SvgPicture.asset(AppIcons.send,
                                     color: Theme.of(context).iconTheme.color,
-                                    size: 25.0),
+                                    height: 25.0,
+                                    width: 25.0,
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(

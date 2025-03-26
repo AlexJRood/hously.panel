@@ -7,6 +7,7 @@ import 'package:hously_flutter/models/crm/crm_expenses_download_model.dart';
 import 'package:hously_flutter/models/crm/agent_transaction_model.dart';
 import 'package:hously_flutter/state_managers/data/crm/components/finance_chart/provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart'; // Importowanie pakietu intl
@@ -32,13 +33,8 @@ class FinancialWidget extends ConsumerWidget {
         return Column(
           children: [
             // Rząd dla przychodów
-            GestureDetector(
-              onHorizontalDragUpdate: (details) {
-                // Manually scroll by dragging
-                scrollController.jumpTo(
-                  scrollController.offset - details.delta.dx,
-                );
-              },
+            DragScrollView(
+              controller: scrollController,
               child: SingleChildScrollView(
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
@@ -130,61 +126,62 @@ class FinancialWidget extends ConsumerWidget {
           ],
         );
       },
-      loading: () => _buildShimmerPlaceholder(scrollController),
-      error: (error, stackTrace) => _buildShimmerPlaceholder(scrollController),
+      loading: () => ShimmerlistPlaceholder(),
+      error: (error, stackTrace) => ShimmerlistPlaceholder(),
     );
   }
 }
 
-Widget _buildShimmerPlaceholder(ScrollController scrollController) {
-  return Column(
-    children: [
-      GestureDetector(
-        onHorizontalDragUpdate: (details) {
-          // Manually scroll by dragging
-          scrollController.jumpTo(
-            scrollController.offset - details.delta.dx,
-          );
-        },
-        child: SingleChildScrollView(
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: List.generate(
-                  8, // Adjust the number of shimmer items
-                  (index) => Container(
-                    height: 25,
-                    margin: const EdgeInsets.only(right: 10.0),
-                    child: const ShimmerPlaceholder(
-                      radius: 5.0,
+class ShimmerlistPlaceholder extends StatelessWidget {
+  const ShimmerlistPlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    ScrollController scrollcontroller = ScrollController();
+    return Column(
+      children: [
+        DragScrollView(
+          controller: scrollcontroller,
+          child: SingleChildScrollView(
+            controller: scrollcontroller,
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: List.generate(
+                    8, // Adjust the number of shimmer items
+                    (index) => Container(
                       height: 25,
-                      width: 100, // Simulate revenue item width
+                      margin: const EdgeInsets.only(right: 10.0),
+                      child: const ShimmerPlaceholder(
+                        radius: 5.0,
+                        height: 25,
+                        width: 100, // Simulate revenue item width
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: List.generate(
-                  8, // Adjust the number of shimmer items
-                  (index) => Container(
-                    height: 25,
-                    margin: const EdgeInsets.only(right: 10.0),
-                    child: const ShimmerPlaceholder(
-                      radius: 5.0,
+                const SizedBox(height: 10),
+                Row(
+                  children: List.generate(
+                    8, // Adjust the number of shimmer items
+                    (index) => Container(
                       height: 25,
-                      width: 100, // Simulate expense item width
+                      margin: const EdgeInsets.only(right: 10.0),
+                      child: const ShimmerPlaceholder(
+                        radius: 5.0,
+                        height: 25,
+                        width: 100, // Simulate expense item width
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

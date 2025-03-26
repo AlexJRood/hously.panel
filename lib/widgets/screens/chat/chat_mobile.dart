@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/data/design/design.dart';
@@ -187,7 +189,7 @@ class ChatMobileState extends ConsumerState<ChatMobile> {
                               : null,
                           child: conversationPartner == null ||
                                   conversationPartner['avatar'] == null
-                              ? const Icon(Icons.person)
+                              ? SvgPicture.asset(AppIcons.person)
                               : null,
                         ),
                         title: Text(

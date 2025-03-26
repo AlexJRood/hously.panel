@@ -222,7 +222,7 @@ class ProfileFormState {
         linkedinLinkController = linkedinLink ?? TextEditingController(),
         countryController = country ?? TextEditingController(),
         genderController = gender ?? TextEditingController(),
-        countryCodeController = countryCode ?? TextEditingController(text: "+1"),
+        countryCodeController = countryCode ?? TextEditingController(text: "+48"),
         profileFocusNodes = focusNodes ?? List.generate(10, (index) => FocusNode());
 
   // CopyWith Method for State Updates

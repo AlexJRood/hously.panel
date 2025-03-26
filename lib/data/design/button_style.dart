@@ -84,6 +84,20 @@ final elevatedButtonStyleRounded5 = ElevatedButton.styleFrom(
   elevation: 0,
 );
 
+final elevatedButtonStyleRounded5Transparent = ElevatedButton.styleFrom(
+  minimumSize: Size.zero,
+  shadowColor: Colors.transparent,
+  foregroundColor: Colors.transparent,
+  backgroundColor: Colors.transparent,
+  surfaceTintColor: AppColors.light.withOpacity(0.3),
+  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5)),
+  ),
+  elevation: 0,
+);
+
+
 final elevatedButtonStyleRounded8 = ElevatedButton.styleFrom(
   shadowColor: Colors.transparent,
   foregroundColor: AppColors.dark,

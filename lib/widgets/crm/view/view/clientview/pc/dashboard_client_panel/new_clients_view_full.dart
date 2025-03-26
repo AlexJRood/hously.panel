@@ -29,7 +29,6 @@ import 'package:pie_menu/pie_menu.dart';
 import '../../../../../../../routes/navigation_history_provider.dart';
 import 'dart:ui' as ui;
 
-
 void copyToClipboard(BuildContext context, String listingUrl) {
   Clipboard.setData(ClipboardData(text: listingUrl)).then((_) {
     final successSnackBar = Customsnackbar().showSnackBar(
@@ -77,9 +76,9 @@ class NewClientsViewFullState extends ConsumerState<NewClientsViewFull> {
     });
   }
 
-
   // Combined function to change the section and open the transaction
-  void openTransactionSection(String section, AgentTransactionModel transaction) {
+  void openTransactionSection(
+      String section, AgentTransactionModel transaction) {
     setState(() {
       activeSection = section; // Change the active section
       openTransaction =
@@ -146,18 +145,19 @@ class NewClientsViewFullState extends ConsumerState<NewClientsViewFull> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [                         
+                          children: [
                             SidebarClientAgentCrm(
                               onTabSelected: _changeSection,
-                              activeSection: activeSection,                           
+                              activeSection: activeSection,
                             ),
                             Expanded(
                               flex: 11,
                               child: ClientViewContent(
-                                      activeSection: activeSection,
-                                      clientViewPop: widget.clientViewPop,
-                                      activeAd: widget.activeAd,
-                                      openTransaction: openTransaction, // Przekaż openTransaction
+                                activeSection: activeSection,
+                                clientViewPop: widget.clientViewPop,
+                                activeAd: widget.activeAd,
+                                openTransaction:
+                                    openTransaction, // Przekaż openTransaction
                               ),
                             ),
                             // Expanded(
@@ -196,7 +196,7 @@ class NewClientsViewFullState extends ConsumerState<NewClientsViewFull> {
                     ),
                     const Align(
                       alignment: Alignment.topRight,
-                      child: const TopAppBarCRMWithBack(
+                      child: TopAppBarCRMWithBack(
                         routeName: Routes.proClients,
                       ),
                     ), // change to production

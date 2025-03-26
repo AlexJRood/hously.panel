@@ -43,6 +43,7 @@ class MonitoringAdsModel {
   final Offerer? offerer;
   final OffererPhone? offererPhone;
   final ListingCounter? listingCounter;
+  final bool isPro;
 
   MonitoringAdsModel({
     required this.id,
@@ -67,6 +68,7 @@ class MonitoringAdsModel {
     this.bathrooms,
     this.squareFootage,
     required this.images,
+    required this.isPro,
     this.boolLeanFields,
     this.offerData,
     this.additionalInfo,
@@ -124,6 +126,7 @@ class MonitoringAdsModel {
       estateCondition: json['estate_condition'] ?? '',
       heatingType: json['heating_type'] ?? '',
       buildingType: json['building_type'] ?? '',
+      isPro: json['isPro'] ?? false,
 
       floor: json['floor'] ?? '',
       totalFloors: json['floors_num'] ?? '',

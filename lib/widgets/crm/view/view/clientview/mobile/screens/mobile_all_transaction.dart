@@ -64,10 +64,10 @@ class _MobileAllTransactionState extends ConsumerState<MobileAllTransaction> {
                   },
                 ),
                 const Spacer(),
-                const Text(
+                Text(
                   "Transaction",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: theme.mobileTextcolor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
@@ -75,38 +75,38 @@ class _MobileAllTransactionState extends ConsumerState<MobileAllTransaction> {
                   width: 30,
                 ),
                 const Spacer(),
-                const Icon(
+                Icon(
                   Icons.add,
-                  color: Colors.white,
+                  color: theme.mobileTextcolor,
                 ),
               ],
             ),
             Divider(
-              color: const Color.fromARGB(255, 152, 152, 152).withOpacity(0.2),
+              color: theme.mobileTextcolor.withOpacity(0.2),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: theme.mobileTextcolor),
                 controller: searchController,
                 onChanged: filterSearchResults,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(0),
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0),
                     fillColor: Colors.transparent,
                     filled: true,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.all(
-                        const Radius.circular(10),
+                      borderSide: BorderSide(color: theme.mobileTextcolor),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
                       ),
                     ),
                     hintText: "Search ...",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: TextStyle(color: theme.mobileTextcolor),
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.white,
+                      color: theme.mobileTextcolor,
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),

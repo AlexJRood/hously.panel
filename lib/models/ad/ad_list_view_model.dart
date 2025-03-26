@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:hously_flutter/const/url.dart';
 
 class AdsListViewModel {
@@ -27,7 +26,7 @@ class AdsListViewModel {
   final int phoneNumber;
   final double latitude;
   final double longitude;
-  
+
   final String? heatingType;
   final String? buildingMaterial;
   final int? buildYear;
@@ -43,32 +42,32 @@ class AdsListViewModel {
   final bool parkingSpace;
   final bool isPro;
 
-
+  /// **✅ Default Constructor with Default Values**
   const AdsListViewModel({
-    required this.id,
-    required this.sellerId,
-    required this.title,
-    required this.price,
-    required this.currency,
-    required this.description,
-    required this.images,
-    required this.floor,
-    required this.totalFloors,
-    required this.street,
-    required this.city,
-    required this.state,
-    required this.zipcode,
-    required this.rooms,
-    required this.bathrooms,
-    required this.squareFootage,
-    required this.lotSize,
-    required this.propertyForm,
-    required this.marketType,
-    required this.offerType,
-    required this.country,
-    required this.phoneNumber,
-    required this.latitude,
-    required this.longitude,
+    this.id = 0,
+    this.sellerId = 0,
+    this.title = '',
+    this.price = 0.0,
+    this.currency = '',
+    this.description = '',
+    this.images = const [],
+    this.floor = 0,
+    this.totalFloors = 0,
+    this.street = '',
+    this.city = '',
+    this.state = '',
+    this.zipcode = '',
+    this.rooms = 0,
+    this.bathrooms = 0,
+    this.squareFootage = 0.0,
+    this.lotSize = 0.0,
+    this.propertyForm = '',
+    this.marketType = '',
+    this.offerType = '',
+    this.country = '',
+    this.phoneNumber = 0,
+    this.latitude = 0.0,
+    this.longitude = 0.0,
     this.heatingType,
     this.buildingMaterial,
     this.buildYear,
@@ -85,19 +84,61 @@ class AdsListViewModel {
     this.isPro = false,
   });
 
+  /// **✅ `copyWith` Method for Partial Updates**
+  AdsListViewModel copyWith({
+    int? id,
+  }) {
+    return AdsListViewModel(
+      id: id ?? this.id, // ✅ Only updates `id`
+      sellerId: sellerId,
+      title: title,
+      price: price,
+      currency: currency,
+      description: description,
+      images: images,
+      floor: floor,
+      totalFloors: totalFloors,
+      street: street,
+      city: city,
+      state: state,
+      zipcode: zipcode,
+      rooms: rooms,
+      bathrooms: bathrooms,
+      squareFootage: squareFootage,
+      lotSize: lotSize,
+      propertyForm: propertyForm,
+      marketType: marketType,
+      offerType: offerType,
+      country: country,
+      phoneNumber: phoneNumber,
+      latitude: latitude,
+      longitude: longitude,
+      heatingType: heatingType,
+      buildingMaterial: buildingMaterial,
+      buildYear: buildYear,
+      balcony: balcony,
+      terrace: terrace,
+      sauna: sauna,
+      jacuzzi: jacuzzi,
+      basement: basement,
+      elevator: elevator,
+      garden: garden,
+      airConditioning: airConditioning,
+      garage: garage,
+      parkingSpace: parkingSpace,
+      isPro: isPro,
+    );
+  }
 
-
+  /// **✅ Factory Method to Convert JSON to Object**
   factory AdsListViewModel.fromJson(Map<String, dynamic> json) {
     List<String> imagesList = [];
     if (json['advertisement_images'] != null) {
-      // Sprawdź, czy json['images'] jest listą czy zakodowanym JSON-em
       if (json['advertisement_images'] is List) {
-        // Jeśli już jest listą, rzutuj bezpośrednio
         imagesList = (json['advertisement_images'] as List).map((image) {
           return URLs.baseUrl + image.toString();
         }).toList();
       } else if (json['advertisement_images'] is String) {
-        // Jeśli to string (zakodowany JSON), zdekoduj
         imagesList = List<String>.from(
           jsonDecode(json['advertisement_images']).map((image) => URLs.baseUrl + image),
         );
@@ -105,10 +146,10 @@ class AdsListViewModel {
     }
 
     return AdsListViewModel(
+      id: json['id'] ?? 0,
       sellerId: json['user'] ?? 0,
-      id: json['id'],
       title: json['title'] ?? '',
-      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      price: double.tryParse(json['price']?.toString() ?? '0') ?? 0.0,
       currency: json['currency'] ?? '',
       description: json['description'] ?? '',
       images: imagesList,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/enums/event/repeat_enum.dart';
 import 'package:hously_flutter/screens/calendar/event_option.dart';
@@ -30,7 +32,7 @@ class RepeatWidget extends ConsumerWidget {
                         color: index == 0 ? Colors.blue : null,
                       ),
                     ),
-                    if (index == 0) const Icon(Icons.check, color: Colors.blue),
+                    if (index == 0)  SvgPicture.asset(AppIcons.check, color: Colors.blue),
                   ],
                 ),
                 const SizedBox(height: 20),

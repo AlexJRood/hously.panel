@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
@@ -354,9 +356,9 @@ class HeaderWidget extends ConsumerWidget {
                                                                 Radius.circular(6)),
                                                         color: Color.fromRGBO(
                                                             255, 255, 255, 1)),
-                                                    child: const Center(
-                                                      child: Icon(Icons.search,
-                                                      color: Color.fromRGBO(35, 35, 35, 1),),
+                                                    child:  Center(
+                                                      child: SvgPicture.asset(AppIcons.search,
+                                                      color: const Color.fromRGBO(35, 35, 35, 1),),
                                                     ),
                                                   )
                                                 ],

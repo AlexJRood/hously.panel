@@ -35,7 +35,7 @@ class NewClientTodo extends ConsumerWidget {
                     Text(
                       'Lista-zadań'.tr,
                       style: TextStyle(
-                          color: theme.whitewhiteblack,
+                          color: theme.mobileTextcolor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     ),

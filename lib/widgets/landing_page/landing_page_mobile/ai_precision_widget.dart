@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 import '../landing_page_pc/gradiant_text_widget.dart';
 
@@ -21,12 +22,12 @@ class AiPrecisionWidget extends StatelessWidget {
                   height: 230,
                   fit: BoxFit.cover,
                 ),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        GradientText(
+                        const GradientText(
                           "AI ",
                           gradient: LinearGradient(
                             colors: [
@@ -43,14 +44,14 @@ class AiPrecisionWidget extends StatelessWidget {
                         ),
                         Text(
                           'Precision',
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
                     GradientText(
                       "REASON 1 ",
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           Color.fromRGBO(87, 222, 210, 1),
                           Color.fromRGBO(87, 148, 221, 1),
@@ -58,12 +59,12 @@ class AiPrecisionWidget extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      style: TextStyle(
+                      style: AppTextStyles.libreCaslonHeading.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Our AI analyzes your preferences—budget, location, lifestyle—to\nquickly find the best home options for you. Effortless and tailored\nresults!',
                       style: TextStyle(
                           fontSize: 16,
@@ -111,19 +112,19 @@ class AiPrecisionWidget extends StatelessWidget {
                   height: 230,
                   fit: BoxFit.cover,
                 ),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Text(
                           'Network ',
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         ),
                         GradientText(
                           "Monitoring",
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             colors: [
                               Color.fromRGBO(87, 222, 210, 1),
                               Color.fromRGBO(87, 148, 221, 1),
@@ -131,7 +132,7 @@ class AiPrecisionWidget extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                           ),
@@ -140,7 +141,7 @@ class AiPrecisionWidget extends StatelessWidget {
                     ),
                     GradientText(
                       "REASON 2 ",
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           Color.fromRGBO(87, 222, 210, 1),
                           Color.fromRGBO(87, 148, 221, 1),
@@ -148,12 +149,12 @@ class AiPrecisionWidget extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      style: TextStyle(
+                      style: AppTextStyles.libreCaslonHeading.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'We continuously monitor thousands of listings to ensure the properties you see are accurate, up-to-date, and ready to go. Our network monitoring ensures you never miss a property!',
                       style: TextStyle(
                           fontSize: 16,
@@ -201,14 +202,14 @@ class AiPrecisionWidget extends StatelessWidget {
                   height: 230,
                   fit: BoxFit.cover,
                 ),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         GradientText(
                           "Detailed ",
-                          gradient: LinearGradient(
+                          gradient: const LinearGradient(
                             colors: [
                               Color.fromRGBO(87, 222, 210, 1),
                               Color.fromRGBO(87, 148, 221, 1),
@@ -216,21 +217,21 @@ class AiPrecisionWidget extends StatelessWidget {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           'Reports',
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         )
                       ],
                     ),
                     GradientText(
                       "REASON 3 ",
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           Color.fromRGBO(87, 222, 210, 1),
                           Color.fromRGBO(87, 148, 221, 1),
@@ -238,12 +239,12 @@ class AiPrecisionWidget extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      style: TextStyle(
+                      style: AppTextStyles.libreCaslonHeading.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Curious about a property? Simply search and purchase a detailed report that covers every angle of the property.',
                       style: TextStyle(
                           fontSize: 16,
@@ -262,6 +263,11 @@ class AiPrecisionWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton.icon(
+                            style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8), // Ensure valid shape
+                              ),
+                            ),
                             onPressed: () {},
                             iconAlignment: IconAlignment.end,
                             label: const Text(

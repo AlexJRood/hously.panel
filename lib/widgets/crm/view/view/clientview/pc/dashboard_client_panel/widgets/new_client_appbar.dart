@@ -2,15 +2,18 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/const/colors.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/data/crm/clients/client_provider.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/clients_pro.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:pie_menu/pie_menu.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -87,7 +90,7 @@ class _NewClientAppbarState extends ConsumerState<NewClientAppbar> {
           SizedBox(
             width: 100,
             child: IconButton(
-                onPressed: () {}, icon: const Icon(Icons.arrow_back_ios_sharp)),
+                onPressed: () {}, icon: SvgPicture.asset(AppIcons.iosArrowLeft)),
           ),
           const SizedBox(width: 4),
           Expanded(
@@ -115,13 +118,8 @@ class _NewClientAppbarState extends ConsumerState<NewClientAppbar> {
                     ],
                   );
                 }
-                return GestureDetector(
-                  onHorizontalDragUpdate: (details) {
-                    // Manually scroll by dragging
-                    _scrollController.jumpTo(
-                      _scrollController.offset - details.delta.dx,
-                    );
-                  },
+                return DragScrollView(
+                  controller: _scrollController,
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
@@ -241,13 +239,8 @@ class _NewClientAppbarState extends ConsumerState<NewClientAppbar> {
                 ),
               ),
               error: (err, stack) => Expanded(
-                child: GestureDetector(
-                  onHorizontalDragUpdate: (details) {
-                    // Manually scroll by dragging
-                    _scrollController.jumpTo(
-                      _scrollController.offset - details.delta.dx,
-                    );
-                  },
+                child: DragScrollView(
+                  controller: _scrollController,
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,

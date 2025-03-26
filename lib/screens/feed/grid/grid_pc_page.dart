@@ -1,27 +1,25 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
-import 'package:hously_flutter/const/route_constant.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/ad/ad_list_view_model.dart';
+import 'package:hously_flutter/screens/feed/components/cards/selected_card.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart';
-import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
 import 'package:hously_flutter/widgets/appbar/hously/pc/appbar.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 import 'package:hously_flutter/widgets/sidebar/sidebar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart';
 
-import '../../../state_managers/data/Keyboardshortcuts.dart';
-import '../../../widgets/side_menu/slide_rotate_menu.dart';
+import 'package:hously_flutter/state_managers/data/Keyboardshortcuts.dart';
+import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
 class GridPcPage extends ConsumerStatefulWidget {
   const GridPcPage({super.key});
@@ -88,16 +86,15 @@ class GridPcPageState extends ConsumerState<GridPcPage> {
             (maxDynamicPadding - minDynamicPadding) +
         minDynamicPadding;
     final adFiledSize = (((screenWidth) - (dynamicPadding * 2)) - 80);
-
+    final _scrollController = ScrollController();
     dynamicPadding = dynamicPadding.clamp(minDynamicPadding, maxDynamicPadding);
 
     return KeyboardListener(
       focusNode: FocusNode()..requestFocus(),
       onKeyEvent: (KeyEvent event) {
-        KeyBoardShortcuts().filterpop(event, ref);
+        KeyBoardShortcuts().filterpop(event, ref, context);
         KeyBoardShortcuts().sortpopup(event, ref, context);
 
-        KeyBoardShortcuts().handleBackspaceNavigation(event, ref);
         KeyBoardShortcuts().handleKeyEvent(event, scrollController, 50, 100);
         KeyBoardShortcuts().handleKeyNavigation(event, ref, context);
       },
@@ -139,47 +136,106 @@ class GridPcPageState extends ConsumerState<GridPcPage> {
                           child: Column(
                             children: [
                               Expanded(
-                                child: PagedGridView<int, AdsListViewModel>(
-                                  pagingController: _pagingController,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: dynamicPadding, vertical: 65),
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: grid,
-                                    childAspectRatio: 1,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 8,
-                                  ),
-                                  builderDelegate: PagedChildBuilderDelegate<
-                                      AdsListViewModel>(
-                                    itemBuilder:
-                                        (context, advertisement, index) {
-                                      return BuildAdvertisementsList(
+                                child: DragScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  controller: _scrollController,
+                                  child: PagedGridView<int, AdsListViewModel>(
+                                    scrollController: _scrollController,
+                                    pagingController: _pagingController,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: dynamicPadding,
+                                        vertical: 65),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: grid,
+                                      childAspectRatio: 1,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                    ),
+                                    builderDelegate: PagedChildBuilderDelegate<
+                                        AdsListViewModel>(
+                                      itemBuilder:
+                                          (context, advertisement, index) {
+                                        return BuildAdvertisementsList(
+                                          adFiledSize: adFiledSize,
+                                          scrollController: ScrollController(),
+                                          buildShimmerPlaceholder:
+                                              ShimmerPlaceholder(
+                                                  width: adFiledSize,
+                                                  height: adFiledSize),
+                                          filteredAdvertisements: [
+                                            advertisement
+                                          ],
+                                        );
+                                      },
+                                      firstPageProgressIndicatorBuilder: (_) =>
+                                          ShimmerPlaceholderWidget(
+                                        scrollController: scrollController,
                                         adFiledSize: adFiledSize,
-                                        scrollController: ScrollController(),
-                                        buildShimmerPlaceholder:
-                                            ShimmerPlaceholder(
-                                                width: adFiledSize,
-                                                height: adFiledSize),
-                                        filteredAdvertisements: [advertisement],
-                                      );
-                                    },
-                                    firstPageProgressIndicatorBuilder: (_) =>
-                                        ShimmerPlaceholderWidget(
-                                      scrollController: scrollController,
-                                      adFiledSize: adFiledSize,
-                                      crossAxisCount: grid,
-                                    ),
-                                    newPageProgressIndicatorBuilder: (_) =>
-                                        ShimmerPlaceholderWidget(
-                                      scrollController: scrollController,
-                                      adFiledSize: adFiledSize,
-                                      crossAxisCount: grid,
-                                    ),
-                                    noItemsFoundIndicatorBuilder: (_) => Center(
-                                      child: Text(
-                                        'Upss... brak wyników wyszukiwania.',
-                                        style: AppTextStyles.interLight16,
+                                        crossAxisCount: grid,
+                                      ),
+                                      newPageProgressIndicatorBuilder: (_) =>
+                                          AspectRatio(
+                                        aspectRatio: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              const ShimmerPlaceholder(
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              ),
+                                              Positioned(
+                                                left: 2,
+                                                bottom: 2,
+                                                child: Container(
+                                                  width:
+                                                      300, // Ensure width is full
+                                                  height:
+                                                      75, // Increase height for visibility
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15, left: 5),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.4),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  child: const Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      ShimmerPlaceholder(
+                                                          width: 100,
+                                                          height: 12),
+                                                      SizedBox(height: 10),
+                                                      ShimmerPlaceholder(
+                                                          width: 280,
+                                                          height: 10),
+                                                      SizedBox(height: 8),
+                                                      ShimmerPlaceholder(
+                                                          width: 120,
+                                                          height: 7),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      noItemsFoundIndicatorBuilder: (_) =>
+                                          Center(
+                                        child: Text(
+                                          'Upss... brak wyników wyszukiwania.',
+                                          style: AppTextStyles.interLight16,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -246,130 +302,20 @@ class BuildAdvertisementsList extends ConsumerWidget {
             ad.images.isNotEmpty ? ad.images[0] : 'default_image_url';
         final isPro = ad.isPro;
 
-        return AspectRatio(
+        return SelectedCardWidget(
+          isMobile: false,
           aspectRatio: 1,
-          child: PieMenu(
-            onPressedWithDevice: (kind) {
-              if (kind == PointerDeviceKind.mouse ||
-                  kind == PointerDeviceKind.touch) {
-                handleDisplayedAction(ref, ad.id, context);
-                ref.read(navigationService).pushNamedScreen(
-                  '${Routes.feedView}/${ad.id}',
-                  data: {'tag': tag, 'ad': ad},
-                );
-              }
-            },
-            actions: buildPieMenuActions(ref, ad, context),
-            child: Hero(
-              tag: tag,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  border: isPro
-                      ? Border.all(color: AppColors.light, width: 3.0)
-                      : Border.all(),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: CachedNetworkImage(
-                          imageUrl: mainImageUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              buildShimmerPlaceholder,
-                          errorWidget: (context, url, error) => Container(
-                            color: Colors.grey,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Brak obrazu',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: -2,
-                        top: -2,
-                        child: isPro
-                            ? Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.light,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  spacing: 10,
-                                  children: [
-                                    Text(
-                                      'Sponsored',
-                                      style: AppTextStyles.interMedium12dark,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Container(),
-                      ),
-                      Positioned(
-                        left: 2,
-                        bottom: 2,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 8),
-                          decoration: BoxDecoration(
-                            color: isDefaultDarkSystem
-                                ? textFieldColor.withOpacity(0.5)
-                                : color.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  '${NumberFormat.decimalPattern().format(ad.price)} ${ad.currency}',
-                                  style: AppTextStyles.interBold.copyWith(
-                                    fontSize: 18,
-                                    color: textColor,
-                                  ),
-                                ),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  ad.title,
-                                  style: AppTextStyles.interSemiBold.copyWith(
-                                    color: textColor,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  '${ad.city}, ${ad.street}',
-                                  style: AppTextStyles.interRegular.copyWith(
-                                    color: textColor,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+          ad: ad, 
+          tag: tag, 
+          mainImageUrl: mainImageUrl, 
+          isPro: isPro, 
+          isDefaultDarkSystem: isDefaultDarkSystem, 
+          color: color, 
+          textColor: textColor, 
+          textFieldColor: textFieldColor, 
+          buildShimmerPlaceholder: buildShimmerPlaceholder, 
+          buildPieMenuActions: buildPieMenuActions(ref, ad, context),
+          );
       }),
     );
   }

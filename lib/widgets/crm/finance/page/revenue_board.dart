@@ -35,7 +35,8 @@ class _CrmRevenueBoardState extends ConsumerState<CrmRevenueBoard> {
         ref.read(navigationService).pushNamedScreen(Routes.clientsViewFull);
 
         // Aktualizacja URL
-updateUrl('/pro/clients/$clientId/Transakcje/${transaction.id}');
+      updateUrl('/pro/clients/$clientId/Transakcje/${transaction.id}');
+      
       }).catchError((error) {
         final snackBar = Customsnackbar().showSnackBar(
             "Error", 'Błąd podczas pobierania klienta: $error'.tr, "error", () {
@@ -76,8 +77,15 @@ updateUrl('/pro/clients/$clientId/Transakcje/${transaction.id}');
     setState(() {
       final currentState = ref.read(transactionProvider);
       currentState.whenData((data) {
-        final status = data.statuses.firstWhere(
+        final status = data.statuses.firstWhereOrNull(
             (status) => status.transactionIndex.contains(transaction.id));
+
+        if (status == null) {
+            print("Nie znaleziono statusu dla transakcji ID: ${transaction.id}");
+            return;
+        }
+
+
         final oldIndex = status.transactionIndex.indexOf(transaction.id);
 
         // Usuwamy element ze starej pozycji
@@ -167,8 +175,11 @@ updateUrl('/pro/clients/$clientId/Transakcje/${transaction.id}');
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Center(
-          child: Text('Failed to load transactions and statuses: $error')),
+      error: (error, _){
+        print(error);
+        return Center(
+            child: Text('Failed to load transactions and statuses: $error'));
+      },
     );
   }
 

@@ -100,48 +100,48 @@ class FiltersWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: dynamicBoxHeightGroup),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: BuildNumberField(
-                      controller: minPricePerMeterController,
-                      labelText: 'Cena za metr od'.tr,
-                      filterKey: 'min_price_per_meter',
-                    ),
-                  ),
-                  SizedBox(width: dynamiSpacerBoxWidth),
-                  Expanded(
-                    child: BuildNumberField(
-                      controller: maxPricePerMeterController,
-                      labelText: 'Cena za metr do'.tr,
-                      filterKey: 'max_price_per_meter',
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: dynamicBoxHeightGroup),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: BuildNumberField(
-                      controller: minRoomsController,
-                      labelText: 'Rok budowy od'.tr,
-                      filterKey: 'min_build_year',
-                    ),
-                  ),
-                  SizedBox(width: dynamiSpacerBoxWidth),
-                  Expanded(
-                    child: BuildNumberField(
-                      controller: maxRoomsController,
-                      labelText: 'Rok budowy do'.tr,
-                      filterKey: 'max_build_year',
-                    ),
-                  ),
-                ],
-              ),
+              // SizedBox(height: dynamicBoxHeightGroup),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: BuildNumberField(
+              //         controller: minPricePerMeterController,
+              //         labelText: 'Cena za metr od'.tr,
+              //         filterKey: 'min_price_per_meter',
+              //       ),
+              //     ),
+              //     SizedBox(width: dynamiSpacerBoxWidth),
+              //     Expanded(
+              //       child: BuildNumberField(
+              //         controller: maxPricePerMeterController,
+              //         labelText: 'Cena za metr do'.tr,
+              //         filterKey: 'max_price_per_meter',
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: dynamicBoxHeightGroup),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Expanded(
+              //       child: BuildNumberField(
+              //         controller: minRoomsController,
+              //         labelText: 'Rok budowy od'.tr,
+              //         filterKey: 'min_build_year',
+              //       ),
+              //     ),
+              //     SizedBox(width: dynamiSpacerBoxWidth),
+              //     Expanded(
+              //       child: BuildNumberField(
+              //         controller: maxRoomsController,
+              //         labelText: 'Rok budowy do'.tr,
+              //         filterKey: 'max_build_year',
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: dynamicBoxHeight),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,14 +164,14 @@ class FiltersWidget extends StatelessWidget {
                   ),
                   SizedBox(height: dynamicBoxHeightGroup),
                   SizedBox(
-                    height: 80,
+                    height: 60,
                     child: GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(), // Prevents nested scrolling issues
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5, // 2 columns
-                        mainAxisSpacing: 8.0, // Vertical spacing
+                        crossAxisCount: 6, // 2 columns
                         crossAxisSpacing: 8.0, // Horizontal spacing
+                        childAspectRatio: 1,
                       ),
                       itemCount: roomFilters.length,
                       itemBuilder: (context, index) {
@@ -180,7 +180,7 @@ class FiltersWidget extends StatelessWidget {
                           text: filter['text']!,
                           filterValue: filter['filterValue']!,
                           filterKey: 'rooms',
-                          width: 41,
+                          width: 35,
                         );
                       },
                     ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'dart:ui' as ui;
@@ -52,11 +54,13 @@ class AppBarMobileWithBack extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
           IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded,
-                color: theme.popUpIconColor, size: 25.0),
+            icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                color: theme.popUpIconColor,
+              height: 25.0,
+              width: 25.0,
+            ),
             onPressed: () {
-              ref.read(navigationService).beamPop();
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           ),
           const Spacer(),

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/crm/clients_model.dart';
 import 'package:hously_flutter/models/crm/user_contact_status_model.dart';
@@ -248,8 +250,8 @@ class AddClientFormState extends ConsumerState<AddClientForm> {
                             });
                           },
                           child: isOpen
-                              ? const Icon(Icons.remove)
-                              : const Icon(Icons.add),
+                              ? SvgPicture.asset(AppIcons.decrease)
+                              : SvgPicture.asset(AppIcons.add),
                         ),
                       ],
                     ),
@@ -313,7 +315,7 @@ class AddClientFormState extends ConsumerState<AddClientForm> {
                     });
                   },
                   child:
-                      isOpen ? const Icon(Icons.remove) : const Icon(Icons.add),
+                      isOpen ? SvgPicture.asset(AppIcons.decrease) : SvgPicture.asset(AppIcons.add),
                 ),
               ],
             ),

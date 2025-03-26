@@ -48,7 +48,7 @@ class StatusPopRevenue extends ConsumerWidget {
                 top: screenHeight * 0.05,
               ),
               child: Hero(
-                tag: 'StatusPopRevenue',
+                tag: 'StatusPopRevenue-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
                 child: Material(
                   color: Colors.transparent, // Usuń domyślne tło material
                   child: Container(

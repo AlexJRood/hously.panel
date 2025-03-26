@@ -33,8 +33,8 @@ class DraggableWidget {
         ),
       ),
       decoration: const BoxDecoration(
-        color: AppColors.light25,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        color: Color.fromRGBO(255, 255, 255, 0.2),
+        borderRadius: BorderRadius.all(Radius.circular(4)),
       ),
       header: BuildHeader(
         story.name!,
@@ -74,17 +74,17 @@ class BuildHeader extends StatelessWidget {
       width: 300,
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.only(bottom: 3),
-      decoration: BoxDecoration(
-        gradient: CrmGradients.loginGradient,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+      decoration: const BoxDecoration(
+        // gradient: CrmGradients.loginGradient,
+        color: Color.fromRGBO(35, 35, 35, 1),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(6),
+          topRight: Radius.circular(6),
         ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('  '),
           Text(
             title,
             style: AppTextStyles.interMedium14,
@@ -153,51 +153,135 @@ class BuildHeader extends StatelessWidget {
   }
 
   void _onEditProgress(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
+    final nameController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Edit Progress Name'),
-          content: TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              hintText: 'Enter progress name',
+        return Dialog(
+
+          child: Container(
+            width: 360,
+            height: 240,
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+                color: Color.fromRGBO(50, 50, 50, 1)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Update name',
+                  style: TextStyle(
+                      color: AppColors.light,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),),
+                const Text('Enter bellow the name for this contact to be updated',
+                  style: TextStyle(
+                    color: Color.fromRGBO(200, 200, 200, 1),
+                    fontSize: 14,
+                  ),),
+                const Divider(),
+                TextField(
+                  style: const TextStyle(
+                    color: AppColors.light,
+                  ),
+                  autofocus: true,
+                  controller: nameController,
+                  cursorColor: AppColors.light,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color.fromRGBO(255, 255, 255, 0.2),
+                    hintText: 'Enter List Name',
+                    hintStyle: AppTextStyles.interMedium14
+                        .copyWith(color: AppColors.light),
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                    focusedBorder:const OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                            ref
+                                .read(taskProvider.notifier)
+                                .updateProgressBar(
+                                  projectId: projectId,
+                                  progressId: progressId,
+                                  name: nameController.text.trim(),
+                                )
+                                .whenComplete(() {
+                              ref
+                                  .read(boardDetailsManagementProvider.notifier)
+                                  .fetchBoardDetails(ref.watch(boardIdProvider).toString());
+                            });
+                  },
+                  child: Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: const Color.fromRGBO(255, 255, 255, 1)
+                    ),
+                    child: const Center(
+                      child:Text('Save changes',
+                      style: TextStyle(
+                        color: Color.fromRGBO(35, 35, 35, 1),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500
+                      ),),
+                    ),
+                  ),
+                )
+
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                ref
-                    .read(taskProvider.notifier)
-                    .updateProgressBar(
-                      projectId: projectId,
-                      progressId: progressId,
-                      name: nameController.text.trim(),
-                    )
-                    .whenComplete(() {
-                  ref
-                      .read(boardDetailsManagementProvider.notifier)
-                      .fetchBoardDetails(ref.watch(boardIdProvider).toString());
-                });
-              },
-              child: const Text(
-                'Submit',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
         );
+        // return AlertDialog(
+        //   title: const Text('Edit Progress Name'),
+        //   content: TextField(
+        //     controller: nameController,
+        //     decoration: const InputDecoration(
+        //       hintText: 'Enter progress name',
+        //     ),
+        //   ),
+        //   actions: [
+        //     TextButton(
+        //       onPressed: () {
+        //         Navigator.of(context).pop(); // Close the dialog
+        //       },
+        //       child: const Text(
+        //         'Cancel',
+        //         style: TextStyle(color: Colors.black),
+        //       ),
+        //     ),
+        //     TextButton(
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //         ref
+        //             .read(taskProvider.notifier)
+        //             .updateProgressBar(
+        //               projectId: projectId,
+        //               progressId: progressId,
+        //               name: nameController.text.trim(),
+        //             )
+        //             .whenComplete(() {
+        //           ref
+        //               .read(boardDetailsManagementProvider.notifier)
+        //               .fetchBoardDetails(ref.watch(boardIdProvider).toString());
+        //         });
+        //       },
+        //       child: const Text(
+        //         'Submit',
+        //         style: TextStyle(color: Colors.black),
+        //       ),
+        //     ),
+        //   ],
+        // );
       },
     );
   }
@@ -251,36 +335,62 @@ class _BuildFooterState extends ConsumerState<BuildFooter> {
       child: Column(
         children: [
           if (!showAddTask[widget.storyIndex])
-            IconButton(
-              icon: const Icon(Icons.add),
-              color: AppColors.light,
-              onPressed: () {
+            InkWell(
+              onTap: () {
                 final currentShowAddTask = ref.watch(showAddTaskProvider);
                 currentShowAddTask[widget.storyIndex] =
                     !currentShowAddTask[widget.storyIndex];
                 ref.read(showAddTaskProvider.notifier).state =
                     List.from(currentShowAddTask);
               },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: AppColors.light,
+                      size: 15,
+                    ),
+                    Text(
+                      'Add a card',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.light),
+                    ),
+                  ],
+                ),
+              ),
             ),
           if (showAddTask[widget.storyIndex])
             Container(
               padding: const EdgeInsets.all(10),
               width: 300,
               decoration: BoxDecoration(
-                color: AppColors.light,
-                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromRGBO(255, 255, 255, 0.2),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Column(
                 children: [
                   const SizedBox(height: 5),
                   TextField(
+                    style: const TextStyle(
+                      color: AppColors.light,
+                    ),
                     autofocus: true,
                     controller: BuildFooter.taskNameController,
+                    cursorColor: AppColors.light,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromRGBO(255, 255, 255, 0.2),
                       hintText: 'Enter Task Name',
                       hintStyle: AppTextStyles.interMedium14
-                          .copyWith(color: AppColors.dark50),
-                      border: const OutlineInputBorder(),
+                          .copyWith(color: AppColors.light),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                      focusedBorder:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -366,9 +476,24 @@ class DraggableItemWidget {
         child: Padding(
           padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
           child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+            color: const Color.fromRGBO(255, 255, 255, 0.4),
             elevation: 5,
             child: ListTile(
-              title: Text(task.name!),
+              title: Text(
+                task.name!,
+                style: AppTextStyles
+                    .interSemiBold
+                    .copyWith(
+                 color: const Color.fromRGBO(255, 255, 255, 1),
+                  fontSize: 14,
+                ),
+                // style: const TextStyle(
+                //     color: Color.fromRGBO(255, 255, 255, 1), fontSize: 14,
+                // fontWeight:  FontWeight.w100),
+              ),
               trailing: task.priority == 'Accepted'
                   ? const Icon(Icons.check_circle_rounded,
                       color: AppColors.revenueGreen)

@@ -57,12 +57,12 @@ class NewClientCardPc extends ConsumerWidget {
             const SizedBox(height: 50),
             Text('$name $lastName',
                 style: AppTextStyles.interMedium18.copyWith(
-                    fontWeight: FontWeight.bold, color: theme.whitewhiteblack)),
+                    fontWeight: FontWeight.bold, color: Colors.white)),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.email_outlined,
-                  color: theme.whitewhiteblack,
+                  color: Colors.white,
                   size: 15,
                 ),
                 const SizedBox(
@@ -72,14 +72,14 @@ class NewClientCardPc extends ConsumerWidget {
                     style: AppTextStyles.interLight16.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: theme.whitewhiteblack,
+                      color: Colors.white,
                     )),
                 const SizedBox(
                   width: 15,
                 ),
                 Icon(
                   Icons.phone_outlined,
-                  color: theme.whitewhiteblack,
+                  color: Colors.white,
                   size: 15,
                 ),
                 const SizedBox(
@@ -89,7 +89,7 @@ class NewClientCardPc extends ConsumerWidget {
                     style: AppTextStyles.interLight.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: theme.whitewhiteblack,
+                      color: Colors.white,
                     )),
               ],
             ),

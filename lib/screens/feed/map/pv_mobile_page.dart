@@ -4,6 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/screens/feed/map/filters_pv_mobile_page.dart';
+import 'package:hously_flutter/widgets/appbar/hously/mobile/appbar_mobile.dart';
+import 'package:hously_flutter/widgets/bottom_bar_mobile/bottom_bar.dart';
+import 'package:hously_flutter/widgets/bottom_bar_mobile/feed_bar.dart';
+import 'package:hously_flutter/widgets/bottom_bar_mobile/feed_bar_vertical.dart';
 import 'package:hously_flutter/widgets/screens/feed/ads_pv_mobile.dart';
 import 'package:hously_flutter/widgets/screens/feed/map_pv_mobile.dart';
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
@@ -68,12 +72,26 @@ class _PvMobilePageState extends ConsumerState<PvMobilePage>
                     controller: _pageViewController,
                     onPageChanged: _handlePageViewChanged,
                     children: <Widget>[
-                      const FiltersPvMobilePage(),
                       MapPvMobile(pageController: _pageViewController),
                       const AdsPvMobile()
                     ],
                   ),
-                ],
+              Positioned(
+                top:0,
+                left: 0,
+                child: AppBarMobile(sideMenuKey: sideMenuKey),
+              ),
+              const Positioned(
+                bottom: 0,
+                left:0,
+                child: BottomBarMobile(),),
+              Positioned(
+                bottom: ref.watch(verticalBottomBarVisibilityProvider)
+                    ? 51
+                    : 5,
+                right: 5,
+                child: FeedBarVerticalMobile(ref: ref)),
+                ],               
               ),
             ),
           ),

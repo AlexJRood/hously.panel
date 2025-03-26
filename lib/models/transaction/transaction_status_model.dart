@@ -12,13 +12,15 @@ class TransactionStatus {
   });
 
   factory TransactionStatus.fromJson(Map<String, dynamic> json) {
+    final transactionIndex = json['transaction_index'];
     return TransactionStatus(
       id: json['id'],
       statusName: json['status_name'],
       statusIndex: json['status_index'],
-      transactionIndex: List<int>.from(json['transaction_index'] ?? []),
+      transactionIndex: (transactionIndex is List) ? List<int>.from(transactionIndex) : [],
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

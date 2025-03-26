@@ -90,7 +90,7 @@ class SortPopPageState extends ConsumerState<SortPopPage> {
             ),
             // Zawartość modalu
             Hero(
-              tag: 'SortBarButton',
+              tag: 'SortBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
               child: Padding(
                 padding: widget.buttonPosition != null
                     ? EdgeInsets.only(

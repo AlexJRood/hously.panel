@@ -9,8 +9,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:image/image.dart' as img;
 import 'package:hously_flutter/const/url.dart';
+import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/utils/api_services.dart';
+import 'package:hously_flutter/utils/secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:get/get_utils/get_utils.dart';
 
 // Dodajemy funkcję obliczającą cenę za metr kwadratowy
 double calculatePricePerMeter(String price, String squareFootage) {
@@ -24,19 +27,24 @@ double calculatePricePerMeter(String price, String squareFootage) {
   return 0;
 }
 
-final crmEditSellOfferProvider = StateNotifierProvider.family<
-    CrmEditSellOfferNotifier, CrmEditSellOfferState, int?>((ref, offerId) {
-  return CrmEditSellOfferNotifier(offerId: offerId);
+final crmEditSellOfferProvider =
+    StateNotifierProvider.family<CrmEditOfferNotifier, EditOfferState, int?>(
+        (ref, offerId) {
+  return CrmEditOfferNotifier(offerId: offerId);
 });
 
-class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
-  CrmEditSellOfferNotifier({int? offerId,dynamic ref}) : super(CrmEditSellOfferState()) {
+class CrmEditOfferNotifier extends StateNotifier<EditOfferState> {
+  CrmEditOfferNotifier({int? offerId, dynamic ref}) : super(EditOfferState()) {
     if (offerId != null) {
-      loadOfferData(offerId,ref);
+      loadOfferData(offerId, ref);
     }
   }
 
-  Future<void> loadOfferData(int offerId,dynamic ref) async {
+  final SecureStorage secureStorage = SecureStorage();
+
+  Future<void> loadOfferData(int offerId, dynamic ref) async {
+    if (ApiServices.token == null) return;
+
     final response = await ApiServices.get(
       ref: ref,
       URLs.singleEstateAgentAdvertismentDraft('$offerId'),
@@ -45,7 +53,7 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
 
     if (response != null && response.statusCode == 200) {
       var offerData = jsonDecode(utf8.decode(response.data));
-
+//print(offerData);
       // Dla TextFormField
       state = state.copyWith(
         titleController:
@@ -74,8 +82,9 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
 
       // Dla przycisków typu selectButtonsOptions
       String offerType = offerData['offer_type'];
+
       String offerTypeDisplayValue =
-          offerType == 'sell' ? 'Chcę sprzedać' : 'Chcę wynająć';
+          offerType == 'sell' ? 'Chcę sprzedać'.tr : 'Chcę wynająć'.tr;
       state = state.copyWith(
           offerTypeController:
               TextEditingController(text: offerTypeDisplayValue));
@@ -83,29 +92,29 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
       String estateType = offerData['estate_type'];
       String estateTypeDisplayValue = '';
       if (estateType == 'Flat') {
-        estateTypeDisplayValue = 'Mieszkanie';
+        estateTypeDisplayValue = 'Mieszkanie'.tr;
       } else if (estateType == 'Studio') {
-        estateTypeDisplayValue = 'Kawalerka';
+        estateTypeDisplayValue = 'Kawalerka'.tr;
       } else if (estateType == 'Apartment') {
         estateTypeDisplayValue = 'Apartament';
       } else if (estateType == 'House') {
-        estateTypeDisplayValue = 'Dom jednorodzinny';
+        estateTypeDisplayValue = 'Dom jednorodzinny'.tr;
       } else if (estateType == 'Twin house') {
-        estateTypeDisplayValue = 'Bliźniak';
+        estateTypeDisplayValue = 'Bliźniak'.tr;
       } else if (estateType == 'Row house') {
-        estateTypeDisplayValue = 'Szeregowiec';
+        estateTypeDisplayValue = 'Szeregowiec'.tr;
       } else if (estateType == 'Invest') {
-        estateTypeDisplayValue = 'Inwestycje';
+        estateTypeDisplayValue = 'Inwestycje'.tr;
       } else if (estateType == 'Lot') {
-        estateTypeDisplayValue = 'Działki';
+        estateTypeDisplayValue = 'Działki'.tr;
       } else if (estateType == 'Commercial') {
-        estateTypeDisplayValue = 'Lokale użytkowe';
+        estateTypeDisplayValue = 'Lokale użytkowe'.tr;
       } else if (estateType == 'Warehouse') {
-        estateTypeDisplayValue = 'Hale i magazyny';
+        estateTypeDisplayValue = 'Hale i magazyny'.tr;
       } else if (estateType == 'Room') {
-        estateTypeDisplayValue = 'Pokoje';
+        estateTypeDisplayValue = 'Pokoje'.tr;
       } else if (estateType == 'Garage') {
-        estateTypeDisplayValue = 'Garaże';
+        estateTypeDisplayValue = 'Garaże'.tr;
       }
       state = state.copyWith(
           estateTypeController:
@@ -134,7 +143,7 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
       String country = offerData['country'];
       if (['Polska', 'Kraj 2', 'Kraj 3'].contains(country)) {
         state = state.copyWith(
-            countryController: TextEditingController(text: country));
+            countryController: TextEditingController(text: country.tr));
       } else if (['Polska', 'Kraj 2', 'Kraj 3'].isNotEmpty) {
         state = state.copyWith(
             countryController: TextEditingController(text: 'Polska'));
@@ -175,35 +184,39 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
         'Loft'
       ].isNotEmpty) {
         state = state.copyWith(
-            buildingTypeController: TextEditingController(text: 'Blok'));
+            buildingTypeController: TextEditingController(text: 'Blok'.tr));
       } else {
         state = state.copyWith(
             buildingTypeController: TextEditingController(text: ''));
       }
 
+      print('zip${state.buildingTypeController.text}');
+
       String heatingType = offerData['heating_type'];
+      print(heatingType);
+      print(offerData);
       if ([
-        'Gazowe',
-        'Elektryczne',
-        'Miejskie',
-        'Pompa ciepła',
-        'Olejowe',
-        'Wszystkie',
-        'Nie podano informacji'
+        'Gazowe'.tr,
+        'Elektryczne'.tr,
+        'Miejskie'.tr,
+        'Pompa ciepła'.tr,
+        'Olejowe'.tr,
+        'Wszystkie'.tr,
+        'Nie podano informacji'.tr
       ].contains(heatingType)) {
         state = state.copyWith(
             heatingTypeController: TextEditingController(text: heatingType));
       } else if ([
-        'Gazowe',
-        'Elektryczne',
-        'Miejskie',
-        'Pompa ciepła',
-        'Olejowe',
-        'Wszystkie',
-        'Nie podano informacji'
+        'Gazowe'.tr,
+        'Elektryczne'.tr,
+        'Miejskie'.tr,
+        'Pompa ciepła'.tr,
+        'Olejowe'.tr,
+        'Wszystkie'.tr,
+        'Nie podano informacji'.tr
       ].isNotEmpty) {
         state = state.copyWith(
-            heatingTypeController: TextEditingController(text: 'Gazowe'));
+            heatingTypeController: TextEditingController(text: 'Gazowe'.tr));
       } else {
         state = state.copyWith(
             heatingTypeController: TextEditingController(text: ''));
@@ -211,34 +224,35 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
 
       String buildingMaterial = offerData['building_material'];
       if ([
-        'Cegła',
-        'Wielka płyta',
-        'Silikat',
-        'Beton',
-        'Beton Komórkowy',
-        'Pustak',
-        'Żelbet',
-        'Keramzyt',
-        'Drewno',
-        'Inne'
+        'Cegła'.tr,
+        'Wielka płyta'.tr,
+        'Silikat'.tr,
+        'Beton'.tr,
+        'Beton Komórkowy'.tr,
+        'Pustak'.tr,
+        'Żelbet'.tr,
+        'Keramzyt'.tr,
+        'Drewno'.tr,
+        'Inne'.tr
       ].contains(buildingMaterial)) {
         state = state.copyWith(
             buildingMaterialController:
                 TextEditingController(text: buildingMaterial));
       } else if ([
-        'Cegła',
-        'Wielka płyta',
-        'Silikat',
-        'Beton',
-        'Beton Komórkowy',
-        'Pustak',
-        'Żelbet',
-        'Keramzyt',
-        'Drewno',
-        'Inne'
+        'Cegła'.tr,
+        'Wielka płyta'.tr,
+        'Silikat'.tr,
+        'Beton'.tr,
+        'Beton Komórkowy'.tr,
+        'Pustak'.tr,
+        'Żelbet'.tr,
+        'Keramzyt'.tr,
+        'Drewno'.tr,
+        'Inne'.tr
       ].isNotEmpty) {
         state = state.copyWith(
-            buildingMaterialController: TextEditingController(text: 'Cegła'));
+            buildingMaterialController:
+                TextEditingController(text: 'Cegła'.tr));
       } else {
         state = state.copyWith(
             buildingMaterialController: TextEditingController(text: ''));
@@ -261,27 +275,21 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
 
       // Dla zdjęć
 // Dla zdjęć
-      List<String> imageUrls =
-          List<String>.from(jsonDecode(offerData['images']));
+      List imageUrls = offerData['advertisement_images'];
       List<Uint8List> imagesData = [];
-      List<String> supportedImageFormats = [
-        'jpg',
-        'jpeg',
-        'png',
-        'webp',
-        'bmp'
-      ];
 
       for (String url in imageUrls) {
-        final fullUrl = URLs.offerImage(url);
-        final extension = fullUrl.split('.').last.toLowerCase();
-        if (supportedImageFormats.contains(extension)) {
-          try {
-            final response = await ApiServices.get(fullUrl,ref: ref);
-            if (response != null && response.statusCode == 200) {
-              imagesData.add(response.data);
-            }
-          } catch (e) {}
+        String fullUrl =
+            '${URLs.baseUrl}$url'; // Dodanie configUrl do adresu URL
+
+        try {
+          var response = await ApiServices.get(fullUrl, ref: ref);
+
+          if (response != null && response.statusCode == 200) {
+            imagesData.add(response.data);
+          }
+        } catch (e) {
+          print(e);
         }
       }
 
@@ -318,32 +326,43 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
 
   void setMainImageIndex(int index) {
     state = state.copyWith(mainImageIndex: index);
+    print('mainimageindex:${state.mainImageIndex}');
+    print('imagelength:${state.imagesData.length}');
+    Uint8List temp = state.imagesData[0];
+    state.imagesData[0] = state.imagesData[state.mainImageIndex!];
+    state.imagesData[state.mainImageIndex!] = temp;
   }
 
   Future<void> sendData(BuildContext context, int? offerId) async {
-    // Check for required fields
     if (state.titleController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Title, description, currency, and price are required.'),
-        backgroundColor: Colors.red,
-      ));
+      final snackBar = Customsnackbar().showSnackBar(
+          "Warning", "description, currency and price are required.", "warning",
+          () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       return;
     }
-
-    // Check for authentication
     if (ApiServices.token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You need to be logged in to edit an advertisement.'),
-        backgroundColor: Colors.red,
-      ));
+      final snackBar = Customsnackbar().showSnackBar(
+          "Not logged in", "you need to login to post an ad", "warning", () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       return;
     }
-
-    // Set up Dio request with authorization
-    final updateUrl = URLs.updateOffer('$offerId');
-
+    state = state.copyWith(isLoading: true, statusMessages: ['Checking data']);
     try {
-      // Set up form data
+      state = state
+          .copyWith(statusMessages: ['Checking data', 'Compressing images']);
+
+      double pricePerMeter = calculatePricePerMeter(
+        state.priceController.text,
+        state.squareFootageController.text,
+      );
+      // Prepare FormData with fields
       final formData = FormData.fromMap({
         'title': state.titleController.text,
         'description': state.descriptionController.text,
@@ -353,6 +372,7 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
         'floor': state.floorController.text.replaceAll(RegExp(r'\D'), ''),
         'total_floors':
             state.totalFloorsController.text.replaceAll(RegExp(r'\D'), ''),
+        'price_per_meter': pricePerMeter.toString(),
         'currency': state.currencyController.text,
         'street': state.streetController.text,
         'phone_number':
@@ -386,54 +406,64 @@ class CrmEditSellOfferNotifier extends StateNotifier<CrmEditSellOfferState> {
         'parking_space': state.parkingSpaceController.value.toString(),
       });
 
-      // Ensure main image is at the start of the image list
+      // Adjust main image if needed
       if (state.mainImageIndex != null &&
           state.mainImageIndex! < state.imagesData.length) {
         Uint8List mainImage = state.imagesData.removeAt(state.mainImageIndex!);
         state.imagesData.insert(0, mainImage);
       }
 
-      // Add images to form data
+      // Add images to FormData
       for (int i = 0; i < state.imagesData.length; i++) {
-        formData.files.add(
-          MapEntry(
-            'image$i',
-            MultipartFile.fromBytes(state.imagesData[i],
-                filename: 'image$i.jpg'),
+        formData.files.add(MapEntry(
+          'image$i',
+          MultipartFile.fromBytes(
+            state.imagesData[i],
+            filename: 'image$i.jpg',
           ),
-        );
+        ));
       }
+      state = state.copyWith(statusMessages: [
+        'Checking data',
+        'Compressing images',
+        'Sending data to server'
+      ]);
 
-      // Send request
-      final response = await ApiServices.put(
-        updateUrl,
-        formData: formData,
+      // Send PUT request with Dio
+      var response = await ApiServices.put(
+        URLs.updateEstateAgentAdvertismentDraft('$offerId'),
         hasToken: true,
+        formData: formData,
       );
 
-      // Handle response
       if (response != null && response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Advertisement updated successfully.'),
-          backgroundColor: Colors.green,
-        ));
+        final snackBar = Customsnackbar().showSnackBar(
+            "success", "Advertisement added successfully", "success", () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        });
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Failed to update advertisement: ${response}'),
-          backgroundColor: Colors.red,
-        ));
+        final snackBar = Customsnackbar().showSnackBar(
+            "Error", "Failed to update Advertisement", "error", () {
+          sendData(context, offerId);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } catch (e) {
-      // Handle errors
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Failed to update advertisement: $e'),
-        backgroundColor: Colors.red,
-      ));
+      final snackBar = Customsnackbar().showSnackBar(
+          "Error",
+          " an Error has occured while sending data please retry ",
+          "error", () {
+        sendData(context, offerId);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } finally {
+      state = state.copyWith(isLoading: false);
     }
   }
 }
 
-class CrmEditSellOfferState {
+class EditOfferState {
   final TextEditingController titleController;
   final TextEditingController descriptionController;
   final TextEditingController priceController;
@@ -471,8 +501,11 @@ class CrmEditSellOfferState {
   final ValueNotifier<bool> garageController;
   final ValueNotifier<bool> parkingSpaceController;
   final int? editedOfferId;
-
-  CrmEditSellOfferState({
+  final bool isLoading; // Dodaj to pole
+  final List<String> statusMessages; // Dodaj to pole
+  EditOfferState({
+    this.isLoading = false, // Domyślnie ustaw na false
+    this.statusMessages = const [], // Dodaj to pole
     this.imagesData = const [],
     this.mainImageIndex,
     TextEditingController? titleController,
@@ -555,7 +588,7 @@ class CrmEditSellOfferState {
         parkingSpaceController =
             parkingSpaceController ?? ValueNotifier<bool>(false);
 
-  CrmEditSellOfferState copyWith({
+  EditOfferState copyWith({
     List<Uint8List>? imagesData,
     TextEditingController? titleController,
     TextEditingController? descriptionController,
@@ -592,8 +625,10 @@ class CrmEditSellOfferState {
     ValueNotifier<bool>? airConditioningController,
     ValueNotifier<bool>? garageController,
     ValueNotifier<bool>? parkingSpaceController,
+    bool? isLoading, // Dodaj to pole
+    List<String>? statusMessages, // Dodaj to pole
   }) {
-    return CrmEditSellOfferState(
+    return EditOfferState(
       imagesData: imagesData ?? this.imagesData,
       mainImageIndex: mainImageIndex ?? mainImageIndex,
       titleController: titleController ?? this.titleController,
@@ -640,6 +675,8 @@ class CrmEditSellOfferState {
       garageController: garageController ?? this.garageController,
       parkingSpaceController:
           parkingSpaceController ?? this.parkingSpaceController,
+      isLoading: isLoading ?? this.isLoading, // Dodaj to pole
+      statusMessages: statusMessages ?? this.statusMessages, // Dodaj to pole
     );
   }
 }

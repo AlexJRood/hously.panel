@@ -1,7 +1,9 @@
 // edit_status_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/expenses_status_model.dart';
 import 'package:hously_flutter/state_managers/data/crm/finance/transaction_expenses.dart';
@@ -38,13 +40,13 @@ class ExpensesStatusDialog extends ConsumerWidget {
                         children: [
                           IconButton(
                             icon:
-                                const Icon(Icons.edit, color: AppColors.light),
+                                SvgPicture.asset(AppIcons.pencil, color: AppColors.light),
                             onPressed: () =>
                                 _showEditDialog(context, ref, status),
                           ),
                           const SizedBox(width: 10),
                           IconButton(
-                            icon: const Icon(Icons.delete,
+                            icon: SvgPicture.asset(AppIcons.delete,
                                 color: AppColors.light),
                             onPressed: () => _deleteStatus(ref, status.id),
                           ),
@@ -68,7 +70,7 @@ class ExpensesStatusDialog extends ConsumerWidget {
                   onPressed: () {
                     _showCreateDialog(context, ref);
                   },
-                  child: const Icon(Icons.add),
+                  child:SvgPicture.asset(AppIcons.add),
                 ),
               ),
             ],

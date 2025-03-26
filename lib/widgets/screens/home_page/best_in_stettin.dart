@@ -50,7 +50,7 @@ class BestInStettin extends ConsumerWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: listings.map((bestIn) {
-                final tag = 'bestIn3${bestIn.id}'; // Unikalny tag dla każdego elementu
+                final tag = 'bestIn3${bestIn.id}-${UniqueKey().toString()}'; // Unikalny tag dla każdego elementu
                 // Wybieramy pierwszy obraz z listy jako główne zdjęcie, zakładamy, że lista nie jest pusta
                 final mainImageUrl =
                     bestIn.images.isNotEmpty ? bestIn.images[0] : '';

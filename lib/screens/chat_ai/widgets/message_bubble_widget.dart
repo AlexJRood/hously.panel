@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/const/url.dart';
 import 'package:hously_flutter/screens/chat_ai/chat_ai_provider/chat_ai_provider.dart';
 import 'action_icons_widget.dart';
@@ -45,12 +47,11 @@ class MessageBubble extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (!isUser) ...[
-          const SizedBox(width: 8),
-          const Avatar(),
+          const Center(child: Avatar()),
         ],
         if (isUser && !isEditing) ...[
           IconButton(
-            icon: const Icon(Icons.edit, color: Colors.white, size: 20),
+            icon: SvgPicture.asset(AppIcons.pencil, color: Colors.white, height: 20,width: 20),
             onPressed: () => ref
                 .read(messageEditingProvider(messageId).notifier)
                 .startEditing(),

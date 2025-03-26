@@ -24,40 +24,40 @@ class EventTabWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final locationController = TextEditingController();
     final popupCalendarWatch = ref.watch(popupCalendarProvider);
     final eventDetails = popupCalendarWatch.event;
     const widgetSpace = 10.0;
     final theme = ref.watch(themeColorsProvider);
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: widgetSpace),
         const DateEventWidget(),
         const SizedBox(height: widgetSpace),
-        EventWebOption(
-          iconData: Icons.group_outlined,
-          secondWidget: InkWell(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                'Add guests',
-                style: TextStyle(color: theme.textFieldColor),
-              ),
+        InkWell(
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Add guests',
+              style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
             ),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    backgroundColor: theme.fillColor,
-                    content: SizedBox(
-                      width: 400,
-                      child: GuestSettingWidget(),
-                    ),
-                  );
-                },
-              );
-            },
           ),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: theme.fillColor,
+                  content: SizedBox(
+                    width: 400,
+                    child: GuestSettingWidget(),
+                  ),
+                );
+              },
+            );
+          },
         ),
         const SizedBox(height: widgetSpace),
         EventWebOption(
@@ -67,10 +67,17 @@ class EventTabWidget extends ConsumerWidget {
             text: eventDetails.onlineCallLink,
             autoValidationMode: AutovalidateMode.onUserInteraction,
             inputDecoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Add online call link',
-              hintStyle: TextStyle(color: theme.textFieldColor),
-            ),
+                filled: true,
+                fillColor: const Color.fromRGBO(0, 0, 0, 0.2),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none),
+                hintText: 'Add online call link',
+                hintStyle: const TextStyle(
+                    fontSize: 18, color: Color.fromRGBO(255, 255, 255, 1)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none)),
             validator: (url) {
               if (url == null || url.isEmpty) {
                 return null;
@@ -91,13 +98,25 @@ class EventTabWidget extends ConsumerWidget {
         EventWebOption(
           iconData: Icons.menu,
           secondWidget: TextFormFieldWidget(
-            style: TextStyle(color: theme.textFieldColor),
+            style: const TextStyle(color: Colors.white),
             text: eventDetails.description,
             inputDecoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Add description',
-              hintStyle: TextStyle(color: theme.textFieldColor),
-            ),
+                filled: true,
+                fillColor: const Color.fromRGBO(0, 0, 0, 0.2),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none),
+                hintText: 'Add description',
+                hintStyle: const TextStyle(
+                    fontSize: 18, color: Color.fromRGBO(255, 255, 255, 1)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide.none)),
+            onChanged: (description) {
+              final newEvent = eventDetails.copyWith(description: description);
+
+              ref.read(popupCalendarProvider).event = newEvent;
+            },
           ),
         ),
         const SizedBox(height: widgetSpace),
@@ -114,6 +133,38 @@ class EventTabWidget extends ConsumerWidget {
         const SizedBox(height: widgetSpace),
         EventButtonsWidget(
           onSaved: () {
+            if (ref.watch(appointmentsProvider).isEdit) {
+              ref
+                  .read(appointmentsProvider.notifier)
+                  .editEvent(
+                    eventDetails.id,
+                    eventDetails.title,
+                    eventDetails.description,
+                    locationController.text,
+                  )
+                  .whenComplete(
+                () {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              );
+            } else {
+              ref
+                  .read(appointmentsProvider.notifier)
+                  .addEvent(
+                    eventDetails.title,
+                    eventDetails.description,
+                    locationController.text,
+                  )
+                  .whenComplete(
+                () {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
+              );
+            }
             var customRecurrence = '';
 
             if (eventDetails.repeat == RepeatEnum.custom) {

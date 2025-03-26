@@ -76,7 +76,7 @@ class _PopupTextfieldState extends ConsumerState<PopupTextfield> {
               TextStyle(color: theme.popupcontainertextcolor, fontSize: 14),
           filled: true,
           fillColor:
-              _isFocused ? theme.popupcontainercolor : theme.textfieldnofocus,
+              _isFocused ? theme.popupcontainercolor : theme.popupcontainercolor.withOpacity(0.7),
           hintStyle: TextStyle(
             color: theme.textFieldColor,
           ),

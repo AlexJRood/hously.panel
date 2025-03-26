@@ -96,33 +96,37 @@ class SideButtonsDashboard extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final theme = ref.watch(themeColorsProvider);
     final colorscheme = ref.watch(colorSchemeProvider);
-    return ElevatedButton(
-      style: buttonSideDashboard.copyWith(
-          backgroundColor: WidgetStatePropertyAll(
-              colorscheme == FlexScheme.blackWhite
-                  ? Theme.of(context).colorScheme.onSecondary.withOpacity(0.5)
-                  : theme.textFieldColor.withOpacity(
-                      0.5))), // Użycie przekazanego lub domyślnego stylu
-      onPressed: onPressed,
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: colorscheme == FlexScheme.blackWhite
-                ? theme.textFieldColor
-                : Theme.of(context).iconTheme.color,
-            size: 25,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(text,
-              style: AppTextStyles.interMedium10.copyWith(
-                color: colorscheme == FlexScheme.blackWhite
-                    ? theme.textFieldColor
-                    : Theme.of(context).iconTheme.color,
-              ))
-        ],
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: 100,
+        height: 66,
+        decoration:  BoxDecoration(
+          color: const Color.fromRGBO(33, 32, 32, 1),
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: colorscheme == FlexScheme.blackWhite
+                  ? theme.textFieldColor
+                  : Theme.of(context).iconTheme.color,
+              size: 25,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(text,
+                style: AppTextStyles.interMedium10.copyWith(
+                  color: colorscheme == FlexScheme.blackWhite
+                      ? theme.textFieldColor
+                      : Theme.of(context).iconTheme.color,
+                ))
+          ],
+        ),
       ),
     );
   }

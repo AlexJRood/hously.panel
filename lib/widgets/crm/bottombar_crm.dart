@@ -21,7 +21,7 @@ class BottombarCrm extends ConsumerWidget {
         navigationHistory.isNotEmpty ? navigationHistory.last : '/homepage';
 
     return Container(
-      height: 60.0,
+      height: 70.0,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(top: 8, bottom: 2.0),
       decoration: BoxDecoration(

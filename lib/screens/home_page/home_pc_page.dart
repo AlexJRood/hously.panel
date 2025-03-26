@@ -2,10 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/screens/home_page/homepage_mobile.dart';
-import 'package:hously_flutter/screens/home_page/homepage_pc.dart';
 import 'package:hously_flutter/screens/landing_page/landing_page_mobile.dart';
-import 'package:hously_flutter/state_managers/data/user_provider.dart';
 import 'package:hously_flutter/utils/api_services.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -20,15 +17,15 @@ class HomePage extends ConsumerWidget {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        if (isUserLoggedIn) {
+        // if (isUserLoggedIn) {
           if (constraints.maxWidth < 1080) {
             // Jeśli jest to aplikacja webowa lub aplikacja desktopowa z szerokością większą niż 1420
-            return const HomePageMobile();
-          } else {
-            // W przeciwnym razie (aplikacja mobilna lub aplikacja desktopowa z mniejszą szerokością)
-            return const HomePcPage();
-          }
-        } else if (constraints.maxWidth < 1080) {
+        //     return const HomePageMobile();
+        //   } else {
+        //     // W przeciwnym razie (aplikacja mobilna lub aplikacja desktopowa z mniejszą szerokością)
+        //     return const HomePcPage();
+        //   }
+        // } else if (constraints.maxWidth < 1080) {
           // Jeśli jest to aplikacja webowa lub aplikacja desktopowa z szerokością większą niż 1420
           return ShowCaseWidget(
               autoPlay: true,
@@ -37,7 +34,7 @@ class HomePage extends ConsumerWidget {
               },
               blurValue: 1,
               autoPlayDelay: const Duration(seconds: 10),
-              builder: (context) => const LandingPageMobile());
+              builder: (context) => LandingPageMobile(isUserLoggedIn: isUserLoggedIn));
         } else {
           // W przeciwnym razie (aplikacja mobilna lub aplikacja desktopowa z mniejszą szerokością)
           return ShowCaseWidget(
@@ -47,7 +44,7 @@ class HomePage extends ConsumerWidget {
               },
               blurValue: 1,
               autoPlayDelay: const Duration(seconds: 10),
-              builder: (context) => const LandingPagePc());
+              builder: (context) => LandingPagePc(isUserLoggedIn: isUserLoggedIn));
         }
       },
     );

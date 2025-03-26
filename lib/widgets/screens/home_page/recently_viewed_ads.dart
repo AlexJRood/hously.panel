@@ -11,12 +11,17 @@ import 'package:hously_flutter/state_managers/data/profile/displayed/displayed_p
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/utils/pie_menu/feed.dart';
+import 'package:hously_flutter/widgets/drad_scroll_widget.dart';
 import 'package:hously_flutter/widgets/loading/loading_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_menu/pie_menu.dart';
 
 class RecentlyViewedAds extends ConsumerWidget {
-  const RecentlyViewedAds({super.key});
+  final double paddingDynamic;
+
+  const RecentlyViewedAds({super.key,
+    required this.paddingDynamic,
+    });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +30,7 @@ class RecentlyViewedAds extends ConsumerWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double itemWidth = screenWidth / 1500 * 240;
     itemWidth = max(150.0, min(itemWidth, 250.0));
-    double itemHeight = itemWidth * (300 / 240);
+    double itemHeight = itemWidth * (300 / 260);
 
     double minBaseTextSize = 12;
     double maxBaseTextSize = 16;
@@ -39,125 +44,136 @@ class RecentlyViewedAds extends ConsumerWidget {
     final colorscheme = Theme.of(context).primaryColor;
     final isDefaultDarkSystem = ref.watch(isDefaultDarkSystemProvider);
     ScrollController _scrollController = ScrollController();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Ostatnio Oglądane'.tr,
-            style: AppTextStyles.interSemiBold.copyWith(
-                fontSize: baseTextSize + 6,
-                color: Theme.of(context).iconTheme.color)),
-        const SizedBox(height: 10.0),
-        recentlyViewedAdsAsyncValue.when(
-          data: (displayedAds) => GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              // Manually scroll by dragging
-              _scrollController.jumpTo(
-                _scrollController.offset - details.delta.dx,
-              );
-            },
-            child: SingleChildScrollView(
+    final dynamicVerticalPadding = paddingDynamic / 6;
+
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: dynamicVerticalPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left:paddingDynamic ),
+            child: Text('Ostatnio Oglądane'.tr,
+                style: AppTextStyles.libreCaslonHeading.copyWith(
+                    fontSize: baseTextSize + 6,
+                    color: Colors.black
+                    //Theme.of(context).iconTheme.color
+                    )),
+          ),
+          const SizedBox(height: 10.0),
+          recentlyViewedAdsAsyncValue.when(
+            data: (displayedAds) => DragScrollView(
               controller: _scrollController,
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: displayedAds.map((displayedAd) {
-                  String formattedPrice =
-                      customFormat.format(displayedAd.price);
-                  final tag = 'recentlyViewed6-${displayedAd.id}';
-                  final mainImageUrl = displayedAd.images.isNotEmpty
-                      ? displayedAd.images[0]
-                      : '';
-                  return PieMenu(
-                    onPressedWithDevice: (kind) {
-                      if (kind == PointerDeviceKind.mouse ||
-                          kind == PointerDeviceKind.touch) {
-                        ref.read(navigationService).pushNamedScreen(
-                          '${Routes.homepage}/${displayedAd.id}',
-                          data: {'tag': tag, 'ad': displayedAd},
-                        );
-                      }
-                    },
-                    actions: buildPieMenuActions(ref, displayedAd, context),
-                    child: Hero(
-                      tag: tag,
-                      child: Container(
-                        width: itemWidth,
-                        height: itemHeight,
-                        margin: EdgeInsets.only(right: baseTextSize),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Stack(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: mainImageUrl,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => ShimmerPlaceholder(
-                                  width: itemWidth, height: itemHeight),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: paddingDynamic),
+                  child: Row(
+                    children: displayedAds.map((displayedAd) {
+                      String formattedPrice =
+                          customFormat.format(displayedAd.price);
+                     final tag = 'recentlyViewed6-${displayedAd.id}${UniqueKey().toString()}';
+                      final mainImageUrl = displayedAd.images.isNotEmpty
+                          ? displayedAd.images[0]
+                          : '';
+                      return PieMenu(
+                        onPressedWithDevice: (kind) {
+                          if (kind == PointerDeviceKind.mouse ||
+                              kind == PointerDeviceKind.touch) {
+                            ref.read(navigationService).pushNamedScreen(
+                              '${Routes.homepage}/${displayedAd.id}',
+                              data: {'tag': tag, 'ad': displayedAd},
+                            );
+                          }
+                        },
+                        actions: buildPieMenuActions(ref, displayedAd, context),
+                        child: Hero(
+                          tag: tag,
+                          child: Container(
+                            width: itemWidth,
+                            height: itemHeight,
+                            margin: EdgeInsets.only(right: baseTextSize),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Stack(
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: mainImageUrl,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      ShimmerPlaceholder(
+                                          width: itemWidth, height: itemHeight),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 2,
-                              bottom: 2,
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                    top: 5, bottom: 5, right: 8, left: 8),
-                                decoration: BoxDecoration(
-                                  color: isDefaultDarkSystem
-                                      ? textFieldColor.withOpacity(0.5)
-                                      : colorscheme.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '$formattedPrice ${displayedAd.currency}',
-                                      style: AppTextStyles.interBold.copyWith(
-                                          fontSize: baseTextSize,
-                                          color: textColor),
+                                Positioned(
+                                  left: 2,
+                                  bottom: 2,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, bottom: 5, right: 8, left: 8),
+                                    decoration: BoxDecoration(
+                                      color: isDefaultDarkSystem
+                                          ? textFieldColor.withOpacity(0.5)
+                                          : colorscheme.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    Text(
-                                      '${displayedAd.city}, ${displayedAd.street}',
-                                      style: AppTextStyles.interRegular
-                                          .copyWith(
-                                              fontSize: baseTextSize - 2,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '$formattedPrice ${displayedAd.currency}',
+                                          style: AppTextStyles.interBold.copyWith(
+                                              fontSize: baseTextSize,
                                               color: textColor),
+                                        ),
+                                        Text(
+                                          '${displayedAd.city}, ${displayedAd.street}',
+                                          style: AppTextStyles.interRegular
+                                              .copyWith(
+                                                  fontSize: baseTextSize - 2,
+                                                  color: textColor),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
             ),
+            loading: () => ShimmerLoadingRow(
+                itemWidth: itemWidth,
+                itemHeight: itemHeight,
+                placeholderwidget:
+                    ShimmerPlaceholder(width: itemWidth, height: itemHeight)),
+            error: (error, stackTrace) => Text(
+              'Wystąpił błąd: $error'.tr,
+              style: AppTextStyles.interRegular.copyWith(fontSize: 16),
+            ),
           ),
-          loading: () => ShimmerLoadingRow(
-              itemWidth: itemWidth,
-              itemHeight: itemHeight,
-              placeholderwidget:
-                  ShimmerPlaceholder(width: itemWidth, height: itemHeight)),
-          error: (error, stackTrace) => Text(
-            'Wystąpił błąd: $error'.tr,
-            style: AppTextStyles.interRegular.copyWith(fontSize: 16),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

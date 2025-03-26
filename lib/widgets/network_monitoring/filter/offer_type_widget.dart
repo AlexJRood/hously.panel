@@ -24,7 +24,7 @@ class OfferTypeWidget extends StatelessWidget {
           ],
         ),
          Row(
-           spacing: 12,
+           spacing: 8,
            children: [
              Expanded(
                child: NetworkMonitoringFilterButton(

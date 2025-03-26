@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/state_managers/data/filter_provider.dart';
@@ -29,7 +30,7 @@ class FilterSlider extends ConsumerWidget {
       children: [
         // Display the start value
         Text(rangeValues.start.round().toString(),
-            style: TextStyle(color: Theme.of(context).iconTheme.color)),
+            style: const TextStyle(color: AppColors.textColorLight)),
 
         // RangeSlider widget in the middle
         Expanded(
@@ -67,7 +68,7 @@ class FilterSlider extends ConsumerWidget {
         // Display the end value
         Text(
           rangeValues.end.round().toString(),
-          style: TextStyle(color: Theme.of(context).iconTheme.color),
+          style: const TextStyle(color: AppColors.textColorLight),
         ),
       ],
     );

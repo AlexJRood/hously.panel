@@ -131,7 +131,7 @@ class MapViewPageState extends ConsumerState<MapViewMobilePage> {
                                   itemCount: filteredAds.length,
                                   itemBuilder: (context, index) {
                                     final ad = filteredAds[index];
-                                    final tag = 'mapViewMobile${ad.id}';
+                                    final tag = 'mapViewMobile${ad.id}-${UniqueKey().toString()}';
                                     final mainImageUrl = ad.images.isNotEmpty
                                         ? ad.images[0]
                                         : 'default_image_url';

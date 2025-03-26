@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/screens/filters/filters_page.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/const/backgroundgradient.dart';
@@ -21,6 +23,7 @@ class SearchBarState extends ConsumerState<SearchBar> {
 
     final iconColor = Theme.of(context).iconTheme.color;
     final textColor = themecolors.themeTextColor;
+    final tag = 'searchBar${UniqueKey().toString()}';
 
     return ElevatedButton(
       style: elevatedButtonStyleRounded,
@@ -28,14 +31,14 @@ class SearchBarState extends ConsumerState<SearchBar> {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false,
-                        pageBuilder: (_, __, ___) => const FiltersPage(),
+                        pageBuilder: (_, __, ___) => FiltersPage(tag: tag),
                         transitionsBuilder: (_, anim, __, child) {
                           return FadeTransition(opacity: anim, child: child);
                         },
                       ),
                     ),
       child: Hero(
-        tag: 'searchBar-5',
+        tag: tag, // need to be change both sides of hero need the same tag 
         child: Container(
           height: 35,
           decoration: BoxDecoration(
@@ -46,7 +49,7 @@ class SearchBarState extends ConsumerState<SearchBar> {
           child: Row(
             children: [
               const SizedBox(width: 10),
-              Icon(Icons.search, color: iconColor),
+              SvgPicture.asset(AppIcons.search, color: iconColor),
               const SizedBox(width: 10),
               Expanded(
                 child: Container(

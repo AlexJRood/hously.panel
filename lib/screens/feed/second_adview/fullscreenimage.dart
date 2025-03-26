@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart'; // Import for PointerScrollEvent
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/state_managers/services/navigation_service.dart';
 
@@ -108,7 +110,7 @@ class SecondFullScreenState extends ConsumerState<SecondFullScreen> {
               child: CircleAvatar(
                 backgroundColor: Colors.black45,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios_rounded,
+                  icon: SvgPicture.asset(AppIcons.iosArrowLeft,
                       color: Theme.of(context).iconTheme.color),
                   onPressed: () {
                     ref.read(navigationService).beamPop();
@@ -122,8 +124,10 @@ class SecondFullScreenState extends ConsumerState<SecondFullScreen> {
             top: MediaQuery.of(context).size.height * 0.5 - 30,
             child: SafeArea(
               child: IconButton(
-                icon: Icon(Icons.chevron_left,
-                    size: 30, color: Theme.of(context).iconTheme.color),
+                icon: SvgPicture.asset(AppIcons.iosArrowLeft,
+                    height: 30,
+                    width: 30,
+                    color: Theme.of(context).iconTheme.color),
                 onPressed: _goToPreviousImage,
               ),
             ),
@@ -133,8 +137,10 @@ class SecondFullScreenState extends ConsumerState<SecondFullScreen> {
             top: MediaQuery.of(context).size.height * 0.5 - 30,
             child: SafeArea(
               child: IconButton(
-                icon: Icon(Icons.chevron_right,
-                    size: 30, color: Theme.of(context).iconTheme.color),
+                icon: SvgPicture.asset(AppIcons.iosArrowRight,
+                    height: 30,
+                    width: 30,
+                    color: Theme.of(context).iconTheme.color),
                 onPressed: _goToNextImage,
               ),
             ),

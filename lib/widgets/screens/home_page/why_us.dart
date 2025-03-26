@@ -56,11 +56,11 @@ class WhyUs extends ConsumerWidget {
                   fit: BoxFit.cover,
                   width: double.infinity,
                   placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 37, 37, 37),
-                    highlightColor: silver,
+                    baseColor: ShimmerColors.base(context),
+                    highlightColor: ShimmerColors.highlight(context),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.grey,
+                        color: ShimmerColors.background(context),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),

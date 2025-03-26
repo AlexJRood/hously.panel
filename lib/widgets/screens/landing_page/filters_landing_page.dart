@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
 import 'package:hously_flutter/data/design/design.dart';
@@ -210,7 +212,7 @@ class FilterLandingPageState extends ConsumerState<FiltersLandingPage> {
                                         : cursorcolor,
                                 decoration: InputDecoration(
                                   labelText: 'Wyszukaj'.tr,
-                                  prefixIcon: Icon(Icons.search,
+                                  prefixIcon: SvgPicture.asset(AppIcons.search,
                                       color:
                                           inputDecorationTheme.prefixIconColor),
                                   filled: inputDecorationTheme.filled,

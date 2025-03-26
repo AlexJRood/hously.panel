@@ -86,6 +86,7 @@ class FeedPopMidState extends ConsumerState<FeedPopMid> {
   Widget build(BuildContext context) {
     final userAsyncValue = ref.watch(userProvider);
     // final lastPage = ref.read(navigationHistoryProvider.notifier).lastPage;
+    bool _hasPopped = false; // Flaga kontrolująca pojedyncze wywołanie beamPop
 
     NumberFormat customFormat = NumberFormat.decimalPattern('fr');
     ScrollController _scrollController = ScrollController();
@@ -166,13 +167,13 @@ class FeedPopMidState extends ConsumerState<FeedPopMid> {
                           onVerticalDragUpdate: (details) {
                             // Check if the user is at the top of the scrollable content
                             if (_scrollController.offset == 0 &&
-                                details.primaryDelta! > 0) {
-                              // Close the page when dragged down at the top
-                              ref.read(navigationService).beamPop();
+                                        details.primaryDelta! > 0 &&
+                                        !_hasPopped) {
+                                      _hasPopped = true; // Ustawiamy flagę, żeby zapobiec ponownemu wywołaniu
+                                      ref.read(navigationService).beamPop();
                             } else {
                               _scrollController.jumpTo(
-                                _scrollController.offset -
-                                    details.primaryDelta!,
+                                _scrollController.offset - details.primaryDelta!,
                               );
                             }
                           },
@@ -1044,9 +1045,7 @@ class FeedPopMidState extends ConsumerState<FeedPopMid> {
                                     const Spacer(),
                                     IntrinsicWidth(
                                         child: MidLikeSectionFeedPop(
-                                            adFeedPopId: widget.adFeedPop.id,
-                                            ref: ref,
-                                            context: context)),
+                                            adFeedPop: widget.adFeedPop,)),
                                   ],
                                 ),
                                 const Spacer(),

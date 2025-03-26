@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 class OverMissionWidget extends StatelessWidget {
   final double paddingDynamic;
@@ -28,7 +29,6 @@ class OverMissionWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -36,9 +36,9 @@ class OverMissionWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Our Mission',
-                          style: TextStyle(
+                          style: AppTextStyles.libreCaslonHeading.copyWith(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                             color: Color.fromRGBO(35, 35, 35, 1),

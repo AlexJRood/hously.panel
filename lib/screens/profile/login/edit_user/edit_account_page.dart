@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/error/custom_error_handler.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 
@@ -161,8 +163,11 @@ class EditAccountPageState extends ConsumerState<EditAccountPage> {
                               ? MemoryImage(avatarBytes)
                               : null,
                           child: avatarBytes == null
-                              ? Icon(Icons.add_a_photo,
-                                  color: theme.textFieldColor, size: 50)
+                              ? SvgPicture.asset(AppIcons.camera,
+                                  color: theme.textFieldColor,
+                              height: 50,
+                              width: 50,
+                          )
                               : null,
                         ),
                       ),

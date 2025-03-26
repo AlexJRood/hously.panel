@@ -11,13 +11,13 @@ import 'package:hously_flutter/utils/pie_menu/feed.dart';
 
 class MobileLikeSectionFeedPop extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final adFeedPopId;
+  final dynamic adFeedPop;
   final WidgetRef ref;
   final BuildContext context;
 
   const MobileLikeSectionFeedPop({
     super.key,
-    required this.adFeedPopId,
+    required this.adFeedPop,
     required this.ref,
     required this.context,
   });
@@ -47,7 +47,7 @@ class MobileLikeSectionFeedPop extends StatelessWidget {
                 padding: const EdgeInsets.all(5.0),
                 child: FutureBuilder<bool>(
                   future:
-                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPopId),
+                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPop),
                   builder: (context, snapshot) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +85,7 @@ class MobileLikeSectionFeedPop extends StatelessWidget {
                 padding: const EdgeInsets.all(5.0),
                 child: FutureBuilder<bool>(
                   future:
-                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPopId),
+                      ref.read(favAdsProvider.notifier).isFavorite(adFeedPop),
                   builder: (context, snapshot) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +117,7 @@ class MobileLikeSectionFeedPop extends StatelessWidget {
             child: ElevatedButton(
               style: elevatedButtonStyleRounded10,
               onPressed: () {
-                handleShareAction(adFeedPopId, context);
+              handleShareAction(adFeedPop, context, ref);
               },
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
@@ -152,13 +152,13 @@ class MobileLikeSectionFeedPop extends StatelessWidget {
             child: ElevatedButton(
               style: elevatedButtonStyleRounded10,
               onPressed: () {
-                handleFavoriteAction(ref, adFeedPopId, context);
+                handleFavoriteAction(ref, adFeedPop, context);
               },
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: FutureBuilder<bool>(
                   future:
-                      ref.watch(hideAdsProvider.notifier).isHide(adFeedPopId),
+                      ref.watch(hideAdsProvider.notifier).isHide(adFeedPop),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Column(
@@ -199,14 +199,14 @@ class MobileLikeSectionFeedPop extends StatelessWidget {
             child: ElevatedButton(
               style: elevatedButtonStyleRounded10,
               onPressed: () {
-                handleFavoriteAction(ref, adFeedPopId, context);
+                handleFavoriteAction(ref, adFeedPop, context);
               },
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: FutureBuilder<bool>(
                   future: ref
                       .watch(favAdsProvider.notifier)
-                      .isFavorite(adFeedPopId),
+                      .isFavorite(adFeedPop),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return Column(

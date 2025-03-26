@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/network_monitoring/search_page/filters_provider.dart';
+import 'package:hously_flutter/network_monitoring/state_managers/search_page/filters_provider.dart';
 import 'package:intl/intl.dart';
 
 final networkMonitoringFilterButtonProvider = StateNotifierProvider<
@@ -86,7 +88,7 @@ class NetworkMonitoringFilterButton extends ConsumerWidget {
             color: !isSelected ? const Color.fromRGBO(41, 41, 41, 1) : null,
             borderRadius: const BorderRadius.all(Radius.circular(6))),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(6.0),
           child: Center(
             child: Text(text,
                 textAlign: TextAlign.center,
@@ -141,7 +143,7 @@ class NetworkMonitoringEstateTypeFilterButton extends ConsumerWidget {
             .addFilterNM(filterKey, selectedValues.join(','));
       },
       child: Container(
-        height: 46,
+        height: 30,
         width: 240,
         decoration: BoxDecoration(
             gradient: isSelected
@@ -167,6 +169,8 @@ class NetworkMonitoringEstateTypeFilterButton extends ConsumerWidget {
     );
   }
 }
+
+
 
 class NetworkMonitoringAdditionalInfoFilterButton extends ConsumerWidget {
   final String text;
@@ -212,7 +216,7 @@ class NetworkMonitoringAdditionalInfoFilterButton extends ConsumerWidget {
         }
       },
       child: Container(
-        height: 50,
+        height: 30,
         decoration: BoxDecoration(
             gradient: isSelected
                 ? LinearGradient(colors: [
@@ -223,7 +227,7 @@ class NetworkMonitoringAdditionalInfoFilterButton extends ConsumerWidget {
             color: !isSelected ? const Color.fromRGBO(41, 41, 41, 1) : null,
             borderRadius: const BorderRadius.all(Radius.circular(6))),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
           child: Center(
             child: Text(text,
                 textAlign: TextAlign.center,
@@ -422,7 +426,7 @@ class BuildDropdownButtonFormField extends ConsumerWidget {
           disabledBorder: InputBorder.none,
         ),
         isExpanded: true,
-        icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+        icon: SvgPicture.asset(AppIcons.iosArrowDown, color: Colors.white),
         iconSize: 30.0,
       ),
     );

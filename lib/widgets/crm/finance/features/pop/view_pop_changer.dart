@@ -45,7 +45,7 @@ class ViewPopPageChangerCrmFinance extends ConsumerWidget {
           ),
           // Zawartość modalu
           Hero(
-            tag: 'ViewChangerBarButton',
+            tag: 'ViewChangerBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Align(
               alignment: Alignment.topRight,
               child: Padding(

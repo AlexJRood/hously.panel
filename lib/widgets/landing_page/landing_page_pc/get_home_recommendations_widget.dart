@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
+import 'package:hously_flutter/data/design/design.dart';
 
 class GetHomeRecommendationsWidget extends StatelessWidget {
   final double paddingDynamic;
@@ -10,7 +13,11 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: Colors.white,
-      padding: EdgeInsets.only(left: paddingDynamic,right: paddingDynamic, top: dynamicVerticalPadding-25, bottom: dynamicVerticalPadding),
+      padding: EdgeInsets.only(
+          left: paddingDynamic,
+          right: paddingDynamic,
+          top: dynamicVerticalPadding - 25,
+          bottom: dynamicVerticalPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,9 +29,9 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
-                const Text(
+                Text(
                   'GET HOME RECOMMENDATIONS',
-                  style: TextStyle(
+                  style: AppTextStyles.libreCaslonHeading.copyWith(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -62,7 +69,6 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
             ),
           ),
 
-
           // Right Section (Cards)
           Container(
             color: Colors.transparent,
@@ -95,7 +101,7 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                               ),
                             ],
                             borderRadius:
-                            const BorderRadius.all(Radius.circular(10))),
+                                const BorderRadius.all(Radius.circular(10))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -115,54 +121,53 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       '---- Property type / 04 June 2024',
                                       style: TextStyle(
                                           fontSize: 12.93,
                                           fontWeight: FontWeight.w400,
-                                          color: Color.fromRGBO(
-                                              145, 145, 145, 1)),
+                                          color:
+                                              Color.fromRGBO(145, 145, 145, 1)),
                                     ),
                                     const Text(
                                       'Parker Rd. Allentown',
                                       style: TextStyle(
                                           fontSize: 18.47,
                                           fontWeight: FontWeight.w600,
-                                          color: Color.fromRGBO(
-                                              145, 145, 145, 1)),
+                                          color:
+                                              Color.fromRGBO(145, 145, 145, 1)),
                                     ),
                                     const Text(
                                       'Milan, ITALY',
                                       style: TextStyle(
                                           fontSize: 12.93,
                                           fontWeight: FontWeight.w400,
-                                          color: Color.fromRGBO(
-                                              145, 145, 145, 1)),
+                                          color:
+                                              Color.fromRGBO(145, 145, 145, 1)),
                                     ),
                                     RichText(
                                         text: const TextSpan(children: [
-                                          TextSpan(
-                                            text: '\$165.00',
-                                            style: TextStyle(
-                                                fontSize: 22.16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color.fromRGBO(
-                                                    145, 145, 145, 1)),
-                                          ),
-                                          TextSpan(
-                                            text: '/1700 sq.ft',
-                                            style: TextStyle(
-                                                fontSize: 12.93,
-                                                fontWeight: FontWeight.w400,
-                                                color: Color.fromRGBO(
-                                                    145, 145, 145, 1)),
-                                          ),
-                                        ])),
+                                      TextSpan(
+                                        text: '\$165.00',
+                                        style: TextStyle(
+                                            fontSize: 22.16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromRGBO(
+                                                145, 145, 145, 1)),
+                                      ),
+                                      TextSpan(
+                                        text: '/1700 sq.ft',
+                                        style: TextStyle(
+                                            fontSize: 12.93,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color.fromRGBO(
+                                                145, 145, 145, 1)),
+                                      ),
+                                    ])),
                                   ],
                                 ),
                               ),
@@ -182,7 +187,7 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                                 Color.fromRGBO(22, 25, 32, 1),
                               ]),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10))),
+                                  BorderRadius.all(Radius.circular(10))),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -203,9 +208,9 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
                                         '---- Property type / 04 June 2024',
@@ -233,23 +238,23 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                                       ),
                                       RichText(
                                           text: const TextSpan(children: [
-                                            TextSpan(
-                                              text: '\$165.00',
-                                              style: TextStyle(
-                                                  fontSize: 22.16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                            TextSpan(
-                                              text: '/1700 sq.ft',
-                                              style: TextStyle(
-                                                  fontSize: 12.93,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color.fromRGBO(
-                                                      145, 145, 145, 1)),
-                                            ),
-                                          ])),
+                                        TextSpan(
+                                          text: '\$165.00',
+                                          style: TextStyle(
+                                              fontSize: 22.16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                        TextSpan(
+                                          text: '/1700 sq.ft',
+                                          style: TextStyle(
+                                              fontSize: 12.93,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color.fromRGBO(
+                                                  145, 145, 145, 1)),
+                                        ),
+                                      ])),
                                     ],
                                   ),
                                 ),
@@ -281,7 +286,7 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                               color: Color.fromRGBO(255, 255, 255, 1),
                               borderRadius:
                               BorderRadius.all(Radius.circular(32))),
-                          child: const Icon(Icons.location_on_outlined),
+                          child: SvgPicture.asset(AppIcons.location),
                         ),
                         const SizedBox(
                           width: 10,
@@ -361,7 +366,7 @@ class GetHomeRecommendationsWidget extends StatelessWidget {
                           decoration: const BoxDecoration(
                               color: Color.fromRGBO(35, 35, 35, 1),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(32))),
+                                  BorderRadius.all(Radius.circular(32))),
                           child: const Center(
                             child: Text(
                               '10K+',

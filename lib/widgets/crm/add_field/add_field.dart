@@ -156,7 +156,7 @@ updateUrl('/pro/finance/revenue/add/$formName');
             ref.read(navigationService).beamPop();
           }),
           Hero(
-            tag: 'addPagePop',
+            tag: 'addPagePop-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
             child: Align(
               alignment: Alignment.center,
               child: Row(

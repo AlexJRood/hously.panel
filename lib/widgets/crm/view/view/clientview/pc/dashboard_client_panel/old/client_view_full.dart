@@ -210,4 +210,3 @@ class ClientsViewFullState extends ConsumerState<ClientsViewFull> {
     );
   }
 }
-

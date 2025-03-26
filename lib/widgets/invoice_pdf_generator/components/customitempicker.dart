@@ -1,5 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/widgets/invoice_pdf_generator/model/invoise_model.dart';
 
 class ProductSearchField extends StatefulWidget {
@@ -39,10 +41,10 @@ class _ProductSearchFieldState extends State<ProductSearchField> {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<InvoiceItem>(
-              iconStyleData: const IconStyleData(
+              iconStyleData: IconStyleData(
                 icon: Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(Icons.keyboard_arrow_down_sharp),
+                  padding: const EdgeInsets.only(right: 15),
+                  child: SvgPicture.asset(AppIcons.iosArrowDown),
                 ),
               ),
               hint:

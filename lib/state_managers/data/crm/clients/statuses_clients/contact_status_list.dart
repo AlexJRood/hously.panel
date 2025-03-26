@@ -1,7 +1,9 @@
 // edit_status_dialog.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:hously_flutter/const/icons.dart';
 import 'package:hously_flutter/data/design/button_style.dart';
 import 'package:hously_flutter/data/design/design.dart';
 import 'package:hously_flutter/models/crm/clients_model.dart';
@@ -60,7 +62,7 @@ class UserContactStatusPopUp extends ConsumerWidget {
                 top: screenHeight * 0.05,
               ),
               child: Hero(
-                tag: 'StatusPopUserContactList',
+                tag: 'StatusPopUserContactList-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag 
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: BackdropFilter(
@@ -191,7 +193,7 @@ Expanded(
                             focusNode.requestFocus(); // Automatyczne ustawienie focusa
                           });
                         },
-                        child: const Icon(Icons.add, color: AppColors.backgroundColor),
+                        child: SvgPicture.asset(AppIcons.add, color: AppColors.backgroundColor),
                       ),
                     ),
             ),
@@ -259,7 +261,7 @@ Expanded(
                                           children: [
                                             IconButton(
                                               style: elevatedButtonStyleRounded10,
-                                              icon: const Icon(Icons.edit, color: AppColors.light),
+                                              icon: SvgPicture.asset(AppIcons.pencil, color: AppColors.light),
                                                       onPressed: () {
                                                       FocusScope.of(context).unfocus();
                                                       ref.read(addingStatusProvider.notifier).state = false;
@@ -269,7 +271,7 @@ Expanded(
                                             const SizedBox(width: 10),
                                             IconButton(
                                               style: elevatedButtonStyleRounded10,
-                                              icon: const Icon(Icons.delete, color: AppColors.light),
+                                              icon: SvgPicture.asset(AppIcons.delete, color: AppColors.light),
                                               onPressed: () {
                                                 FocusScope.of(context).unfocus();
                                                 ref.read(addingStatusProvider.notifier).state = false;
