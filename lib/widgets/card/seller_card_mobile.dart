@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/const/url.dart';
-import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/seller_provider.dart';
+import 'package:hously_flutter/api_services/url.dart';
+import 'package:hously_flutter/theme/design/design.dart';
+import 'package:hously_flutter/widgets/card/seller_provider.dart';
 
 class SellerCardMobile extends ConsumerWidget {
   final int sellerId;

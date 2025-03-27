@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hously_flutter/const/backgroundgradient.dart';
+import 'package:hously_flutter/theme/backgroundgradient.dart';
 
 
 class SideMenu extends ConsumerStatefulWidget {

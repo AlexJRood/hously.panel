@@ -1,7 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hously_flutter/const/icons.dart';
+import 'package:hously_flutter/theme/icons.dart';
 import 'package:hously_flutter/widgets/invoice_pdf_generator/model/invoise_model.dart';
 
 class ProductSearchField extends StatefulWidget {

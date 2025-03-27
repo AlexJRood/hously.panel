@@ -2,9 +2,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'platforms/html_utils_stub.dart'
-    if (dart.library.html) 'platforms/html_utils_web.dart';
-import 'package:hously_flutter/const/values.dart';
+import 'utils/platforms/html_utils_stub.dart'
+    if (dart.library.html) 'utils/platforms/html_utils_web.dart';
+import 'package:hously_flutter/widgets/language/values.dart';
 import 'package:beamer/beamer.dart';
 import 'package:feedback/feedback.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -14,19 +14,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import pakietu Riverpod
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:hously_flutter/const/route_constant.dart';
-import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/firebase_options.dart';
-import 'package:hously_flutter/widgets/installpopup/install_popup.dart';
-import 'package:hously_flutter/language/translation.dart';
-import 'package:hously_flutter/state_managers/data/Keyboardshortcuts.dart';
-import 'package:hously_flutter/state_managers/data/internet_checker/internet_checker_widget.dart';
-import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/routing/route_constant.dart';
+import 'package:hously_flutter/theme/design/design.dart';
+import 'package:hously_flutter/utils/firebase_options.dart';
+import 'package:hously_flutter/utils/install_popup.dart';
+import 'package:hously_flutter/widgets/language/translation.dart';
+import 'package:hously_flutter/utils/Keyboardshortcuts.dart';
+import 'package:hously_flutter/utils/internet_checker/internet_checker_widget.dart';
+import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/utils/api_services.dart';
+import 'package:hously_flutter/api_services/api_services.dart';
 import 'package:meta_seo/meta_seo.dart';
-import 'language/language_provider.dart';
-import 'routes/router.dart' as router;
+import 'widgets/language/language_provider.dart';
+import 'routing/router.dart' as router;
 
 final routerDelegate = router.generateRouterDelegate();
 

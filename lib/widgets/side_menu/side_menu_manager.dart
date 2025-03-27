@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hously_flutter/const/icons.dart';
-import 'package:hously_flutter/const/route_constant.dart';
-import 'package:hously_flutter/routes/navigation_history_provider.dart';
+import 'package:hously_flutter/theme/icons.dart';
+import 'package:hously_flutter/routing/route_constant.dart';
+import 'package:hously_flutter/routing/navigation_history_provider.dart';
 
-import 'package:hously_flutter/screens/settings/components/pc/components/settings_provider.dart';
-import 'package:hously_flutter/screens/settings/provider/settings_mobile_provider.dart';
+import 'package:hously_flutter/modules/settings/components/pc/components/settings_provider.dart';
+import 'package:hously_flutter/modules/settings/provider/settings_mobile_provider.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/data/design/button_style.dart';
-import 'package:hously_flutter/data/design/design.dart';
-import 'package:hously_flutter/state_managers/data/user_provider.dart'; // Upewnij się, że ścieżka do user_provider jest poprawna';
-import 'package:hously_flutter/state_managers/services/navigation_service.dart';
+import 'package:hously_flutter/theme/design/button_style.dart';
+import 'package:hously_flutter/theme/design/design.dart';
+import 'package:hously_flutter/api_services/auth.dart'; // Upewnij się, że ścieżka do user_provider jest poprawna';
+import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
-import '../../language/language_provider.dart';
+import '../language/language_provider.dart';
 
 class SideMenuManager {
   /// Toggles the side menu based on its current state
