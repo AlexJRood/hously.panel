@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/modules/leads/components/editable_button.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_api.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
 import 'package:hously_flutter/modules/leads/widgets/pc.dart';
+import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/theme/design/design.dart';
 import 'package:hously_flutter/widgets/bars/bar_manager.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
+import 'package:hously_flutter/routing/route_constant.dart';
+import 'package:hously_flutter/routing/navigation_service.dart';
+
+
+
+final patchApi= 'https://hously.cloud';
 class LeadDetailsPage extends ConsumerWidget {
   final int leadId;
 
@@ -27,7 +35,7 @@ class LeadDetailsPage extends ConsumerWidget {
                 builder: (context, constraints) {
                   final isWide = constraints.maxWidth > 800;
                   return isWide
-                      ? pcLeadDetails(context, lead)
+                      ? pcLeadDetails(context, lead, ref)
                       : mobileLeadDetails(context, lead);
                 },
               );
@@ -75,7 +83,7 @@ class LeadDetailsPage extends ConsumerWidget {
     );
   }
 
-  Widget pcLeadDetails(BuildContext context, Lead lead) {
+  Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -83,22 +91,62 @@ class LeadDetailsPage extends ConsumerWidget {
         Expanded(
           flex: 2,
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
             child: 
             
             Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    if (lead.status != null)
-      Text('Status: ${lead.status!.statusName}',
-          style: AppTextStyles.interMedium),
-    const SizedBox(height: 16),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            
+        Row(
+          children: [
+            Container(
+              height: 40, width: 120,
+              child: ElevatedButton(
+                style: elevatedButtonStyleRounded10,
+                onPressed: (){
+                      ref.read(navigationService).pushNamedScreen('${Routes.leadsPanel}/${lead.id}/email', data: lead);
+              }, 
+              child: Text('Email',
+                    style: AppTextStyles.interMedium),
+                  ),
+            )
+              ],
+            ),
+            if (lead.status != null)
+              Text('Status: ${lead.status!.statusName}',
+                  style: AppTextStyles.interMedium),
+            const SizedBox(height: 16),
 
     Row(
+      spacing: 20,
       children: [
+        Container(width:80, height:80, color: AppColors.light),
         Expanded(
           child:
-              Text('Imię: ${lead.name}', style: AppTextStyles.interBold),
+              Column(
+      spacing: 10,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  EditableTextButton(
+                    initialValue: lead.name,
+                    patchUrl: patchApi,
+                    fieldKey: 'name',
+                  ),
+                  EditableTextButton(
+                    initialValue: lead.companyName ?? '',
+                    patchUrl: patchApi,
+                    fieldKey: 'company',
+                  ),
+                  EditableTextButton(
+                    initialValue: lead.phones?.number ?? '',
+                    patchUrl: patchApi,
+                    fieldKey: 'number',
+                  ),
+
+
+                ],
+              ),
         ),
         IconButton(
           icon: const Icon(Icons.edit),
@@ -117,55 +165,6 @@ class LeadDetailsPage extends ConsumerWidget {
     ),
     const SizedBox(height: 8),
 
-    if (lead.companyName != null)
-      Row(
-        children: [
-          Expanded(
-            child: Text('Firma: ${lead.companyName}',
-                style: AppTextStyles.interMedium),
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              _showEditDialog(
-                context,
-                initialValue: lead.companyName!,
-                label: 'Firma',
-                onSave: (value) {
-                  // TODO: zapisz firmę
-                },
-              );
-            },
-          ),
-        ],
-      ),
-
-    const SizedBox(height: 24),
-    Text('Telefony:', style: AppTextStyles.interBold),
-    ...lead.phones.map((phone) => Text(
-          '${phone.label ?? "Telefon"}: ${phone.number} ${phone.isPrimary ? "(główny)" : ""}',
-          style: AppTextStyles.interMedium,
-        )),
-    const SizedBox(height: 16),
-
-    Text('E-maile:', style: AppTextStyles.interBold),
-    ...lead.emails.map((email) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (email.mailContent != null)
-                Text('Treść: ${email.mailContent}',
-                    style: AppTextStyles.interMedium),
-              if (email.isMailSent)
-                Text('Wysłano: ${email.mailSentDate ?? "-"}'),
-              if (email.isMailReceived)
-                Text(
-                    'Odpowiedź: ${email.receiveMailContent ?? "-"} (${email.mailResponseDate ?? "-"})'),
-            ],
-          ),
-        )),
-    const SizedBox(height: 16),
 
     if (lead.agreement != null)
       Column(
@@ -195,8 +194,6 @@ class LeadDetailsPage extends ConsumerWidget {
         ],
       ),
 
-    const SizedBox(height: 24),
-    Text('Interakcje:', style: AppTextStyles.interBold),
   ],
 ),
 

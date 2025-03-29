@@ -4,15 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:hously_flutter/modules/leads/screens/lead_list.dart';
 import 'package:hously_flutter/theme/icons.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
-import 'package:hously_flutter/theme/design/design.dart';
 import 'package:hously_flutter/routing/navigation_history_provider.dart';
 import 'package:hously_flutter/modules/chat/new_chat/chat_page.dart';
 import 'package:hously_flutter/modules/notification/notification_screen.dart';
-import 'package:hously_flutter/modules/ads_managment/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/utils/Keyboardshortcuts.dart';
 import 'package:hously_flutter/api_services/auth.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
@@ -35,10 +32,8 @@ class _SidebarState extends ConsumerState<Sidebar> {
   @override
   Widget build(BuildContext context) {
     final userAsyncValue = ref.watch(userProvider);
-    final GlobalKey coToMaRobicTopAppBar = GlobalKey();
     final isUserLoggedIn = ref.watch(authStateProvider);
     final navigationHistory = ref.watch(navigationHistoryProvider);
-    final iconcolor = Theme.of(context).iconTheme.color;
     final theme = ref.watch(themeColorsProvider);
 
     final currentRoute =
@@ -115,7 +110,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           ),
 
                           if (isUserLoggedIn) 
-                          const SizedBox(height: 105),
+                          const SizedBox(height: 150),
                           
                           if (!isUserLoggedIn)
                           const SizedBox(height: 15),
@@ -130,7 +125,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           BuildIconButton(
                             icon: SvgPicture.asset(AppIcons.home,
                                             height: 25, width: 25, color: color),
-                            label: 'Dashboard',
+                            label: 'Leads',
                             onPressed: () {
                               ref
                                   .read(navigationService)
@@ -146,14 +141,9 @@ class _SidebarState extends ConsumerState<Sidebar> {
                                             height: 25, width: 25, color: color),
                             label: 'Leads'.tr,
                             onPressed: () {
-                              String selectedFeedView = ref.read(
-                                  selectedFeedViewProvider); // Odczytaj wybrany widok
-                              ref
-                                  .read(navigationHistoryProvider.notifier)
-                                  .addPage(selectedFeedView);
                               ref
                                   .read(navigationService)
-                                  .pushNamedReplacementScreen(selectedFeedView);
+                                  .pushNamedReplacementScreen(Routes.NetworkMonitorigManagment);
                             },
                             currentRoute: currentRoute,
                           ),
@@ -191,6 +181,18 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           if (isUserLoggedIn) {
                             return Column(
                               children: [
+
+                                
+
+                          BuildIconButton(
+                            icon: Icon(Icons.mail_outline, size: 25, color: color),
+                            label: ''.tr,
+                            onPressed: () {
+                              ref.read(navigationService)
+                                  .pushNamedReplacementScreen(Routes.emailView);
+                            },
+                            currentRoute: currentRoute,
+                          ),
                                 ElevatedButton(
                                   style: elevatedButtonStyleRounded10,
                                   onPressed: () {

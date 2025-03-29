@@ -29,8 +29,8 @@ class Lead {
   final String name;
   final String? companyName;
   final String? note;
-  final List<PhoneNumber> phones;
-  final List<LeadEmail> emails;
+  final PhoneNumber? phones;
+  final LeadEmail? emails;
   final List<LeadInteraction> interactions;
   final LeadAgreement? agreement;
   final LeadRegister? register;
@@ -41,59 +41,61 @@ class Lead {
     required this.name,
     this.companyName,
     this.note,
-    this.phones = const [],
-    this.emails = const [],
+    this.phones,
+    this.emails,
     this.interactions = const [],
     this.agreement,
     this.register,
     this.status,
   });
-factory Lead.fromJson(Map<String, dynamic> json) {
-  return Lead(
-    id: json['id'],
-    name: json['name'],
-    companyName: json['company_name'],
-    note: json['note'],
-    phones: (json['phones'] ?? [])
-        .map<PhoneNumber>((e) => PhoneNumber.fromJson(e))
-        .toList(),
-    emails: (json['emails'] ?? [])
-        .map<LeadEmail>((e) => LeadEmail.fromJson(e))
-        .toList(),
-    interactions: (json['interactions'] ?? [])
-        .map<LeadInteraction>((e) => LeadInteraction.fromJson(e))
-        .toList(),
-    agreement: json['agreement'] != null
-        ? LeadAgreement.fromJson(json['agreement'])
-        : null,
-    register: json['register'] != null
-        ? LeadRegister.fromJson(json['register'])
-        : null,
-    status: json['status'] != null
-        ? LeadStatus.fromJson(json['status'])
-        : null,
-  );
-}
 
+  factory Lead.fromJson(Map<String, dynamic> json) {
+    return Lead(
+      id: json['id'],
+      name: json['name'],
+      companyName: json['company_name'],
+      note: json['note'],
+      phones: json['phones'] != null 
+        ? PhoneNumber.fromJson(json['phones']) 
+        : null,  // Domyślny pusty obiekt
+
+      emails: json['emails'] != null 
+        ? LeadEmail.fromJson(json['emails']) 
+        : null,  // Domyślny pusty obiekt
+
+      interactions: (json['interactions'] as List)
+          .map((e) => LeadInteraction.fromJson(e))
+          .toList(),
+      agreement: json['agreement'] != null
+          ? LeadAgreement.fromJson(json['agreement'])
+          : null,
+      register: json['register'] != null
+          ? LeadRegister.fromJson(json['register'])
+          : null,
+      status: json['status'] != null
+          ? LeadStatus.fromJson(json['status'])
+          : null,
+    );
+  }
 }
 
 
 class PhoneNumber {
   final String number;
   final String? label;
-  final bool isPrimary;
+  final bool isConfirmed;
 
   PhoneNumber({
     required this.number,
     this.label,
-    this.isPrimary = false,
+    this.isConfirmed = false,
   });
 
   factory PhoneNumber.fromJson(Map<String, dynamic> json) {
     return PhoneNumber(
       number: json['number'],
       label: json['label'],
-      isPrimary: json['is_primary'] ?? false,
+      isConfirmed: json['is_confirmed'] ?? false,
     );
   }
 }
@@ -101,6 +103,7 @@ class PhoneNumber {
 
 class LeadEmail {
   final String? mailContent;
+  final String? mail;
   final bool isMailSent;
   final String? mailSentDate;
   final bool isMailReceived;
@@ -109,6 +112,7 @@ class LeadEmail {
 
   LeadEmail({
     this.mailContent,
+    this.mail,
     this.isMailSent = false,
     this.mailSentDate,
     this.isMailReceived = false,
@@ -118,6 +122,7 @@ class LeadEmail {
 
   factory LeadEmail.fromJson(Map<String, dynamic> json) {
     return LeadEmail(
+      mail: json['mail'],
       mailContent: json['mail_content'],
       isMailSent: json['is_mail_sent'] ?? false,
       mailSentDate: json['mail_sent_date'],

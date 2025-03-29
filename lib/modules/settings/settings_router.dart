@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/modules/settings/pc/mail/settings_mail_pc.dart';
 import 'package:hously_flutter/widgets/language/values.dart';
 import 'package:hously_flutter/modules/settings/mobile/chats/settings_chats_mobile.dart';
 import 'package:hously_flutter/modules/settings/mobile/language/settings_language_mobile.dart';
@@ -18,6 +19,7 @@ import 'package:hously_flutter/modules/settings/pc/payments/settings_payment_pc.
 import 'package:hously_flutter/modules/settings/pc/profile/settings_profile_pc.dart';
 import 'package:hously_flutter/modules/settings/pc/support/settings_support_pc.dart';
 import 'package:hously_flutter/modules/settings/pc/themescreen/settings_theme_pc.dart';
+import 'package:hously_flutter/modules/settings/pc/mail/settings_mail_pc.dart';
 import 'package:hously_flutter/modules/settings/settings_mobile.dart';
 
 import 'package:hously_flutter/modules/settings/settings_pc.dart';
@@ -213,6 +215,27 @@ class SettingsLogoutPageRouter extends ConsumerWidget {
   }
 }
 
+
+class SettingsEmailPageRouter extends ConsumerWidget {
+  const SettingsEmailPageRouter({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth > 1080) {
+          return SettingsPc(
+            currentindex: 9,
+            page: settingsPages[9],
+          );
+        } else {
+          return const EmailScreenPc();
+        }
+      },
+    );
+  }
+}
+
 final List<Widget> settingsPages = [
   const ProfileScreenPc(),
   const NotificationScreenPc(),
@@ -222,5 +245,6 @@ final List<Widget> settingsPages = [
   const SettingsThemePc(),
   const SettingsChatsPc(),
   const SettingsSupportPc(),
-  const SettingslogoutPc()
+  const SettingslogoutPc(),
+  const EmailScreenPc(),
 ];

@@ -137,6 +137,18 @@ class _SettingsPcState extends ConsumerState<SettingsPc> {
                                                 selectedIndex:
                                                     widget.currentindex,
                                               ),
+                                              
+                                              ListTileWidget(
+                                                title: 'Email'.tr,
+                                                index: 9,
+                                                onTap: () {
+                                                  navService.pushNamedReplacementScreen(
+                                                          Routes.settingsEmail);
+                                                  ref.read(isDropdownOpenProvider.notifier)
+                                                      .closeDropdown();
+                                                },
+                                                selectedIndex: widget.currentindex,
+                                              ),
                                               ListTileWidget(
                                                 title: 'Powiadomienia'.tr,
                                                 index: 1,

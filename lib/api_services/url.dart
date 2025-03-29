@@ -6,6 +6,7 @@ class URLs {
   static const baseUrl = 'https://www.hously.cloud';
   static const baseUrlAdminPanel = 'https://www.hously.cloud/admin-panel/';
   static const baseUrlLeadsPanel = 'https://www.hously.cloud/admin-panel/leads-panel/';
+  static const baseUrlMail = 'https://www.hously.cloud/mail/';
   static const httpOrHttps = 'https';
   static const webSocketUrl = 'wss://www.hously.cloud';
   static const urlNetworkMonitoring = 'http://www.hously.space';
@@ -14,6 +15,7 @@ class URLs {
   static String appendBaseUrl(String url) => '$baseUrl$url';
   static String appendAdminPanelUrl(String url) => '$baseUrlAdminPanel$url';
   static String appendLeadsPanelUrl(String url) => '$baseUrlLeadsPanel$url';
+  static String appendMailUrl(String url) => '$baseUrlMail$url';
 
 
 ////////////////////////////////////////////////////ADMIN PANEL////////////////////////////////////////////////////
@@ -27,27 +29,27 @@ class URLs {
   static String leadChangeStatus(String leadId) => appendLeadsPanelUrl('leads/$leadId/change_status/');
 
   // EMAILS
-  static final emails = appendLeadsPanelUrl('emails/');
+  static final leadEmails = appendLeadsPanelUrl('emails/');
   static String singleEmail(String emailId) => appendLeadsPanelUrl('emails/$emailId/');
 
   // PHONES
-  static final phones = appendLeadsPanelUrl('phones/');
+  static final leadPhones = appendLeadsPanelUrl('phones/');
   static String singlePhone(String phoneId) => appendLeadsPanelUrl('phones/$phoneId/');
 
   // AGREEMENTS
-  static final agreements = appendLeadsPanelUrl('agreements/');
+  static final leadAgreements = appendLeadsPanelUrl('agreements/');
   static String singleAgreement(String agreementId) => appendLeadsPanelUrl('agreements/$agreementId/');
 
   // REGISTERS
-  static final registers = appendLeadsPanelUrl('registers/');
+  static final leadRegisters = appendLeadsPanelUrl('registers/');
   static String singleRegister(String registerId) => appendLeadsPanelUrl('registers/$registerId/');
 
   // CALLS
-  static final calls = appendLeadsPanelUrl('calls/');
+  static final leadCalls = appendLeadsPanelUrl('calls/');
   static String singleCall(String callId) => appendLeadsPanelUrl('calls/$callId/');
 
   // STATUSES
-  static final statuses = appendLeadsPanelUrl('statuses/');
+  static final leadStatuses = appendLeadsPanelUrl('statuses/');
   static String singleStatus(String statusId) => appendLeadsPanelUrl('statuses/$statusId/');
 
   /// GET indexes of status columns and transaction order (GET, POST)
@@ -80,6 +82,15 @@ class URLs {
 
 
 
+
+
+
+///////////////////////////////////EMAIL////////////////////////////////////
+///
+///
+  static final emails = appendMailUrl('emails/');
+  static final emailSearch = appendMailUrl('emails/');
+  static final emailAccount = appendMailUrl('email-accounts/');
 
 
 

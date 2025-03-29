@@ -46,6 +46,42 @@ final elevatedButtonStyleRounded10 = ElevatedButton.styleFrom(
   elevation: 0,
 );
 
+ButtonStyle buildEmailButtonStyle([bool? isSelected]) {
+  final selected = isSelected ?? false;
+
+  return ElevatedButton.styleFrom(
+    minimumSize: Size.zero,
+    shadowColor: Colors.transparent,
+    foregroundColor: selected ? AppColors.dark25 :  AppColors.dark,
+    backgroundColor: selected ? AppColors.dark50 : Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    ),
+    elevation: 0,
+  );
+}
+
+ButtonStyle buildSelectEmail([bool? isSelected]) {
+  final selected = isSelected ?? false;
+
+  return ElevatedButton.styleFrom(
+    minimumSize: Size.zero,
+    shadowColor: Colors.transparent,
+    foregroundColor: selected ? AppColors.dark25 :  AppColors.dark,
+    backgroundColor: selected ? AppColors.dark50 : Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+    
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    ),
+    elevation: 0,
+  );
+}
+
+
 final elevatedButtonStyleRounded10Vertical = ElevatedButton.styleFrom(
   minimumSize: Size.zero,
   shadowColor: Colors.transparent,

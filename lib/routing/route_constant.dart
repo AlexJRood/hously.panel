@@ -4,10 +4,19 @@ import 'package:hously_flutter/routing/strings_const.dart';
 
 class Routes {
   static const entry = '/';
+
   static const leadsPanel = '/leads-panel';
   static const addLead = '/leads-add';
   static const singleLead = '$leadsPanel/:id';
+  static const leadEmailView = '$singleLead/email';
+  static const emailView = '/email';
 
+
+  static const NetworkMonitorigManagment = '/nm-managment';
+
+
+  
+  static const emailVeiw = '/email';
 
 
 
@@ -24,6 +33,7 @@ class Routes {
      static const addpayment = '/addpayment';
       static const twostep = '/two-step';
   static const settingsprofile = '/settings/profile';
+  static const settingsEmail = '/settings/email';
   static const settingsnotification = '/settings/notification';
   static const settingssecurity = '/settings/security';
   static const settingspayments = '/settings/payments';

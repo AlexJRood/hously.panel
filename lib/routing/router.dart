@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/utils/extensions/seo.dart';
 import 'package:hously_flutter/modules/articles_managment/models/article_model.dart';
@@ -19,6 +20,14 @@ import 'package:hously_flutter/modules/leads/screens/lead_list.dart'
 import 'package:hously_flutter/modules/leads/screens/lead_details.dart'
     deferred as single_lead;
 
+import 'package:hously_flutter/modules/mail_view/lead_mail.dart'
+    deferred as lead_mail;
+
+import 'package:hously_flutter/modules/mail_view/mail.dart'
+    deferred as mail_admin;
+
+
+
 import 'package:hously_flutter/modules/leads/screens/lead_add.dart'
     deferred as add_lead;
 
@@ -31,6 +40,8 @@ import 'package:hously_flutter/modules/todo/todo_page.dart'
     deferred as todo_page;
 
 
+import 'package:hously_flutter/modules/nm_managment/pc.dart'
+    deferred as nm_managment;
 
 
 
@@ -73,6 +84,8 @@ import 'package:hously_flutter/modules/calendar/widgets/events/repeat_widget.dar
     deferred as repeat_widget;
 import 'package:hously_flutter/modules/settings/settings_router.dart'
     deferred as settings_page_router;
+
+    
 import 'package:meta_seo/meta_seo.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -159,6 +172,34 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
           },
 
 
+          Routes.leadEmailView: (context, state, data) {
+            final id = int.parse(state.pathParameters['id']!);
+            final lead = data is Lead ? data : null;
+
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.leadEmailView),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                  mail_admin.loadLibrary, () => mail_admin.EmailView(leadId: id, lead: lead)),
+            );
+          },
+
+
+          Routes.emailView: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.emailView),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                  mail_admin.loadLibrary, () => mail_admin.EmailView()),
+            );
+          },
+
+
+
+
+
           Routes.addLead: (context, state, data) {
 
             setupMetaTag(context);
@@ -198,6 +239,17 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
 
 
 
+          Routes.NetworkMonitorigManagment: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.NetworkMonitorigManagment),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                  nm_managment.loadLibrary, () => nm_managment.NetworkMonitoringManagment()),
+            );
+          },
+
+
 
 
 
@@ -224,6 +276,14 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
                 title: Routes.getWebsiteTitle(context),
                 child: _buildDeferredScreen(settings_page_router.loadLibrary,
                     () => settings_page_router.ProfilePageRouter()));
+          },
+          Routes.settingsEmail: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+                key: const ValueKey(Routes.settingsEmail),
+                title: Routes.getWebsiteTitle(context),
+                child: _buildDeferredScreen(settings_page_router.loadLibrary,
+                    () => settings_page_router.SettingsEmailPageRouter()));
           },
           Routes.settingsnotification: (context, state, data) {
             setupMetaTag(context);

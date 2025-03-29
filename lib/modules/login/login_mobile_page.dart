@@ -220,6 +220,18 @@ class _LoginMobilePageState extends ConsumerState<LoginMobilePage> {
                   ),
                 ],
 
+
+                
+                          ElevatedButton(
+                            onPressed: () {
+                              ref
+                                  .read(navigationService)
+                                  .pushNamedReplacementScreen(Routes.leadsPanel);
+                            },
+                            child: Text('go to leads'),
+                          ),
+                        
+
                 const Expanded(child: SizedBox()),
               ],
             ),
