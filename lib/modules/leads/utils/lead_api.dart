@@ -13,6 +13,7 @@ final leadDetailsProvider = FutureProvider.family<Lead, int>((ref, leadId) async
   return await LeadService.getLeadDetails(ref: ref, leadId: leadId);
 });
 
+
 class LeadService {
   // Paginowana lista leadów
   static Future<PaginatedLeadResponse> fetchPaginatedLeads({

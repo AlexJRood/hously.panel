@@ -12,9 +12,8 @@ import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 
+final patchApi = 'https://hously.cloud';
 
-
-final patchApi= 'https://hously.cloud';
 class LeadDetailsPage extends ConsumerWidget {
   final int leadId;
 
@@ -92,111 +91,125 @@ class LeadDetailsPage extends ConsumerWidget {
           flex: 2,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
-            child: 
-            
-            Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            
-        Row(
-          children: [
-            Container(
-              height: 40, width: 120,
-              child: ElevatedButton(
-                style: elevatedButtonStyleRounded10,
-                onPressed: (){
-                      ref.read(navigationService).pushNamedScreen('${Routes.leadsPanel}/${lead.id}/email', data: lead);
-              }, 
-              child: Text('Email',
-                    style: AppTextStyles.interMedium),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 120,
+                      child: ElevatedButton(
+                        style: elevatedButtonStyleRounded10,
+                        onPressed: () {
+                          ref.read(navigationService).pushNamedScreen(
+                              '${Routes.leadsPanel}/${lead.id}/email',
+                              data: lead);
+                        },
+                        child: Text('Email', style: AppTextStyles.interMedium),
+                      ),
+                    )
+                  ],
+                ),
+                if (lead.status != null)
+                  Text('Status: ${lead.status!.statusName}',
+                      style: AppTextStyles.interMedium),
+                const SizedBox(height: 16),
+                Row(
+                  spacing: 20,
+                  children: [
+                    Container(width: 80, height: 80, color: AppColors.light),
+                    Expanded(
+                      child: Column(
+                        spacing: 10,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          EditableTextButton(
+                            initialValue: lead.name,
+                            patchUrl: patchApi,
+                            fieldKey: 'name',
+                          ),
+                          EditableTextButton(
+                            initialValue: lead.companyName ?? '',
+                            patchUrl: patchApi,
+                            fieldKey: 'company',
+                          ),
+                          EditableTextButton(
+                            initialValue: lead.phones?.number ?? '',
+                            patchUrl: patchApi,
+                            fieldKey: 'number',
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        _showEditDialog(
+                          context,
+                          initialValue: lead.name,
+                          label: 'Imię',
+                          onSave: (value) {
+                            // TODO: zapisz imię
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                if (lead.agreement != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ElevatedButton(
+                        style: elevatedButtonStyleRounded10,
+                        onPressed: () {
+                          LeadService.updateLead(ref: ref, leadId: leadId, data: data)
+                        },
+                        child: Text('Umowa:', style: AppTextStyles.interBold),
+                      ),
+                      ElevatedButton(
+                        style: elevatedButtonStyleRounded10,
+                        onPressed: () {},
+                        child: Text(
+                            'Ma umowę: ${lead.agreement!.hasAgreement == true ? "Tak" : "Nie"}'),
+                      ),
+                      if (lead.agreement!.agreementStatus != null)
+                        ElevatedButton(
+                          style: elevatedButtonStyleRounded10,
+                          onPressed: () {},
+                          child: Text(
+                              'Status: ${lead.agreement!.agreementStatus}'),
+                        ),
+                      ElevatedButton(
+                        style: elevatedButtonStyleRounded10,
+                        onPressed: () {},
+                        child: Text(
+                            'Spotkanie: ${lead.agreement!.isMeetingScheduled == true ? "Zaplanowane" : "Nie"}'),
+                      ),
+                    ],
                   ),
-            )
+                const SizedBox(height: 16),
+                if (lead.register != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Rejestracja:', style: AppTextStyles.interBold),
+                      Text(
+                          'Zarejestrowany: ${lead.register!.isRegister ? "Tak" : "Nie"}'),
+                      if (lead.register!.registerUser != null)
+                        Text('Użytkownik ID: ${lead.register!.registerUser}'),
+                    ],
+                  ),
+                if (lead.register == null)
+                  ElevatedButton(
+                    style: elevatedButtonStyleRounded10,
+                    onPressed: () {},
+                    child: Text('Utwórz konto dla uytkownika'),
+                  ),
               ],
             ),
-            if (lead.status != null)
-              Text('Status: ${lead.status!.statusName}',
-                  style: AppTextStyles.interMedium),
-            const SizedBox(height: 16),
-
-    Row(
-      spacing: 20,
-      children: [
-        Container(width:80, height:80, color: AppColors.light),
-        Expanded(
-          child:
-              Column(
-      spacing: 10,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  EditableTextButton(
-                    initialValue: lead.name,
-                    patchUrl: patchApi,
-                    fieldKey: 'name',
-                  ),
-                  EditableTextButton(
-                    initialValue: lead.companyName ?? '',
-                    patchUrl: patchApi,
-                    fieldKey: 'company',
-                  ),
-                  EditableTextButton(
-                    initialValue: lead.phones?.number ?? '',
-                    patchUrl: patchApi,
-                    fieldKey: 'number',
-                  ),
-
-
-                ],
-              ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: () {
-            _showEditDialog(
-              context,
-              initialValue: lead.name,
-              label: 'Imię',
-              onSave: (value) {
-                // TODO: zapisz imię
-              },
-            );
-          },
-        ),
-      ],
-    ),
-    const SizedBox(height: 8),
-
-
-    if (lead.agreement != null)
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Umowa:', style: AppTextStyles.interBold),
-          Text(
-              'Ma umowę: ${lead.agreement!.hasAgreement == true ? "Tak" : "Nie"}'),
-          if (lead.agreement!.agreementStatus != null)
-            Text('Status: ${lead.agreement!.agreementStatus}'),
-          Text(
-              'Spotkanie: ${lead.agreement!.isMeetingScheduled == true ? "Zaplanowane" : "Nie"}'),
-        ],
-      ),
-
-    const SizedBox(height: 16),
-
-    if (lead.register != null)
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Rejestracja:', style: AppTextStyles.interBold),
-          Text(
-              'Zarejestrowany: ${lead.register!.isRegister ? "Tak" : "Nie"}'),
-          if (lead.register!.registerUser != null)
-            Text('Użytkownik ID: ${lead.register!.registerUser}'),
-        ],
-      ),
-
-  ],
-),
-
           ),
         ),
 
