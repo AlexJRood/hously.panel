@@ -27,6 +27,29 @@ class EmailListWithPreview extends ConsumerStatefulWidget {
 class _EmailListWithPreviewState extends ConsumerState<EmailListWithPreview> {
   int? selectedEmailId;
 
+@override
+void initState() {
+  super.initState();
+
+  // Poczekaj na zakończenie cyklu budowania i ustaw/wyczyść leadId
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final notifier = ref.read(mailLeadIdProvider.notifier);
+    if (widget.leadId != null) {
+      notifier.state = widget.leadId;
+    } else {
+      notifier.state = null;
+    }
+  });
+}
+
+
+@override
+void dispose() {
+  ref.read(mailLeadIdProvider.notifier).state = null;
+  super.dispose();
+}
+
+
   @override
   Widget build(BuildContext context) {
     final emailsAsync = ref.watch(filteredEmailsProvider);

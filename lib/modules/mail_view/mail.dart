@@ -10,7 +10,6 @@ import 'package:hously_flutter/theme/design/design.dart';
 import 'package:hously_flutter/theme/icons.dart';
 import 'package:hously_flutter/widgets/bars/bar_manager.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
-import 'package:hously_flutter/modules/mail_view/components/mail_top_bar.dart';
 import 'package:hously_flutter/modules/mail_view/utils/api_services.dart';
 
 
@@ -34,8 +33,6 @@ class EmailView extends ConsumerWidget {
 
     final sync = ref.watch(syncEmailsProvider);
     final selectedType = ref.watch(mailTypeProvider);
-    if(leadId != null)
-      final emailsAsync = ref.watch(emailsByLeadProvider(leadId!));
 
     
     Widget buildFilterButton(String label, String value) {

@@ -107,196 +107,201 @@ class _AddLeadPageState extends ConsumerState<AddLeadPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double sizeWidth = MediaQuery.of(context).size.width;
+    
     return BarManager(
       sideMenuKey: sideMenuKey,
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-                key: formKey,
-                child: Column(
-                  spacing: 10,
-                  children: [
-                    // Imię, firma, notatka
-                    TextFormField(
-                      controller: form.nameController,
-                      decoration: const InputDecoration(labelText: 'Imię'),
-                      validator: (v) =>
-                          v == null || v.isEmpty ? 'Wymagane' : null,
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: form.companyNameController,
-                      decoration: const InputDecoration(labelText: 'Firma'),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: form.noteController,
-                      decoration: const InputDecoration(labelText: 'Notatka'),
-                      maxLines: 4,
-                    ),
-
-                    const Divider(height: 32),
-                    Text('Telefony', style: AppTextStyles.interMedium18),
-                    for (var phone in form.phoneControllers)
-                      Column(
-                        spacing: 20,
-                        children: [
-                          TextFormField(
-                            controller: phone.number,
-                            decoration: const InputDecoration(
-                                labelText: 'Numer telefonu'),
-                          ),
-                          TextFormField(
-                            controller: phone.label,
-                            decoration:
-                                const InputDecoration(labelText: 'Etykieta'),
-                          ),
-                          SwitchListTile(
-                            title: Text('Główny numer',
-                                style: AppTextStyles.interSemiBold),
-                            value: phone.isPrimary,
-                            onChanged: (val) {
-                              setState(() => phone.isPrimary = val);
-                            },
-                          ),
-                        ],
+          child: SizedBox(
+            width: sizeWidth/2,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                  key: formKey,
+                  child: Column(
+                    spacing: 10,
+                    children: [
+                      // Imię, firma, notatka
+                      TextFormField(
+                        controller: form.nameController,
+                        decoration: const InputDecoration(labelText: 'Imię'),
+                        validator: (v) =>
+                            v == null || v.isEmpty ? 'Wymagane' : null,
                       ),
-
-                    const Divider(height: 32),
-                    Text('E-maile', style: AppTextStyles.interMedium18),
-                    for (var email in form.emailControllers)
-                      Column(
-                        spacing: 20,
-                        children: [
-                          TextFormField(
-                            controller: email.mailContent,
-                            decoration:
-                                const InputDecoration(labelText: 'Treść maila'),
-                          ),
-                          DatePickerTextField(
-                            controller: email.mailSentDate,
-                            label: 'Data wysłania',
-                          ),
-                          SwitchListTile(
-                            title: Text('Wysłano',
-                                style: AppTextStyles.interSemiBold),
-                            value: email.isMailSent,
-                            onChanged: (val) {
-                              setState(() => email.isMailSent = val);
-                            },
-                          ),
-                          TextFormField(
-                            controller: email.receiveMailContent,
-                            decoration: const InputDecoration(
-                                labelText: 'Treść odpowiedzi'),
-                          ),
-                          DatePickerTextField(
-                            controller: email.mailResponseDate,
-                            label: 'Data odpowiedzi',
-                          ),
-                          SwitchListTile(
-                            title: Text('Odebrano',
-                                style: AppTextStyles.interSemiBold),
-                            value: email.isMailReceived,
-                            onChanged: (val) {
-                              setState(() => email.isMailReceived = val);
-                            },
-                          ),
-                          const Divider(),
-                        ],
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: form.companyNameController,
+                        decoration: const InputDecoration(labelText: 'Firma'),
                       ),
-
-                    const Divider(height: 32),
-                    Text('Interakcje', style: AppTextStyles.interMedium18),
-                    for (var interaction in form.interactionControllers)
-                      Column(
-                        spacing: 20,
-                        children: [
-                          TextFormField(
-                            controller: interaction.interactionType,
-                            decoration: const InputDecoration(
-                                labelText: 'Typ interakcji'),
-                          ),
-                          TextFormField(
-                            controller: interaction.content,
-                            decoration:
-                                const InputDecoration(labelText: 'Treść'),
-                          ),
-                          const Divider(),
-                        ],
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: form.noteController,
+                        decoration: const InputDecoration(labelText: 'Notatka'),
+                        maxLines: 4,
                       ),
-
-                    const Divider(height: 32),
-                    Text('Status', style: AppTextStyles.interMedium18),
-                    TextFormField(
-                      controller: form.statusController.statusId,
-                      decoration:
-                          const InputDecoration(labelText: 'ID statusu'),
-                    ),
-                    TextFormField(
-                      controller: form.statusController.statusName,
-                      decoration:
-                          const InputDecoration(labelText: 'Nazwa statusu'),
-                    ),
-                    TextFormField(
-                      controller: form.statusController.statusIndex,
-                      decoration:
-                          const InputDecoration(labelText: 'Index statusu'),
-                    ),
-
-                    const Divider(height: 32),
-                    Text('Umowa', style: AppTextStyles.interMedium18),
-                    SwitchListTile(
-                      title: Text('Czy jest umowa?',
-                          style: AppTextStyles.interSemiBold),
-                      value: form.agreementController.hasAgreement ?? false,
-                      onChanged: (val) {
-                        setState(
-                            () => form.agreementController.hasAgreement = val);
-                      },
-                    ),
-                    TextFormField(
-                      controller: form.agreementController.agreementStatus,
-                      decoration:
-                          const InputDecoration(labelText: 'Status umowy'),
-                    ),
-                    SwitchListTile(
-                      title: Text('Zaplanowano spotkanie',
-                          style: AppTextStyles.interSemiBold),
-                      value:
-                          form.agreementController.isMeetingScheduled ?? false,
-                      onChanged: (val) {
-                        setState(() =>
-                            form.agreementController.isMeetingScheduled = val);
-                      },
-                    ),
-
-                    const Divider(height: 32),
-                    Text('Rejestracja', style: AppTextStyles.interMedium18),
-                    SwitchListTile(
-                      title: Text('Zarejestrowany?',
-                          style: AppTextStyles.interSemiBold),
-                      value: form.registerController.isRegister,
-                      onChanged: (val) {
-                        setState(
-                            () => form.registerController.isRegister = val);
-                      },
-                    ),
-                    TextFormField(
-                      controller: form.registerController.registerUser,
-                      decoration: const InputDecoration(
-                          labelText: 'ID użytkownika rejestracji'),
-                    ),
-
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: saveLead,
-                      child: const Text('Zapisz'),
-                    ),
-                  ],
-                )),
+          
+                      const Divider(height: 32),
+                      Text('Telefony', style: AppTextStyles.interMedium18),
+                      for (var phone in form.phoneControllers)
+                        Column(
+                          spacing: 20,
+                          children: [
+                            TextFormField(
+                              controller: phone.number,
+                              decoration: const InputDecoration(
+                                  labelText: 'Numer telefonu'),
+                            ),
+                            TextFormField(
+                              controller: phone.label,
+                              decoration:
+                                  const InputDecoration(labelText: 'Etykieta'),
+                            ),
+                            SwitchListTile(
+                              title: Text('Główny numer',
+                                  style: AppTextStyles.interSemiBold),
+                              value: phone.isPrimary,
+                              onChanged: (val) {
+                                setState(() => phone.isPrimary = val);
+                              },
+                            ),
+                          ],
+                        ),
+          
+                      const Divider(height: 32),
+                      Text('E-maile', style: AppTextStyles.interMedium18),
+                      for (var email in form.emailControllers)
+                        Column(
+                          spacing: 20,
+                          children: [
+                            TextFormField(
+                              controller: email.mailContent,
+                              decoration:
+                                  const InputDecoration(labelText: 'Treść maila'),
+                            ),
+                            DatePickerTextField(
+                              controller: email.mailSentDate,
+                              label: 'Data wysłania',
+                            ),
+                            SwitchListTile(
+                              title: Text('Wysłano',
+                                  style: AppTextStyles.interSemiBold),
+                              value: email.isMailSent,
+                              onChanged: (val) {
+                                setState(() => email.isMailSent = val);
+                              },
+                            ),
+                            TextFormField(
+                              controller: email.receiveMailContent,
+                              decoration: const InputDecoration(
+                                  labelText: 'Treść odpowiedzi'),
+                            ),
+                            DatePickerTextField(
+                              controller: email.mailResponseDate,
+                              label: 'Data odpowiedzi',
+                            ),
+                            SwitchListTile(
+                              title: Text('Odebrano',
+                                  style: AppTextStyles.interSemiBold),
+                              value: email.isMailReceived,
+                              onChanged: (val) {
+                                setState(() => email.isMailReceived = val);
+                              },
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+          
+                      const Divider(height: 32),
+                      Text('Interakcje', style: AppTextStyles.interMedium18),
+                      for (var interaction in form.interactionControllers)
+                        Column(
+                          spacing: 20,
+                          children: [
+                            TextFormField(
+                              controller: interaction.interactionType,
+                              decoration: const InputDecoration(
+                                  labelText: 'Typ interakcji'),
+                            ),
+                            TextFormField(
+                              controller: interaction.content,
+                              decoration:
+                                  const InputDecoration(labelText: 'Treść'),
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+          
+                      const Divider(height: 32),
+                      Text('Status', style: AppTextStyles.interMedium18),
+                      TextFormField(
+                        controller: form.statusController.statusId,
+                        decoration:
+                            const InputDecoration(labelText: 'ID statusu'),
+                      ),
+                      TextFormField(
+                        controller: form.statusController.statusName,
+                        decoration:
+                            const InputDecoration(labelText: 'Nazwa statusu'),
+                      ),
+                      TextFormField(
+                        controller: form.statusController.statusIndex,
+                        decoration:
+                            const InputDecoration(labelText: 'Index statusu'),
+                      ),
+          
+                      const Divider(height: 32),
+                      Text('Umowa', style: AppTextStyles.interMedium18),
+                      SwitchListTile(
+                        title: Text('Czy jest umowa?',
+                            style: AppTextStyles.interSemiBold),
+                        value: form.agreementController.hasAgreement ?? false,
+                        onChanged: (val) {
+                          setState(
+                              () => form.agreementController.hasAgreement = val);
+                        },
+                      ),
+                      TextFormField(
+                        controller: form.agreementController.agreementStatus,
+                        decoration:
+                            const InputDecoration(labelText: 'Status umowy'),
+                      ),
+                      SwitchListTile(
+                        title: Text('Zaplanowano spotkanie',
+                            style: AppTextStyles.interSemiBold),
+                        value:
+                            form.agreementController.isMeetingScheduled ?? false,
+                        onChanged: (val) {
+                          setState(() =>
+                              form.agreementController.isMeetingScheduled = val);
+                        },
+                      ),
+          
+                      const Divider(height: 32),
+                      Text('Rejestracja', style: AppTextStyles.interMedium18),
+                      SwitchListTile(
+                        title: Text('Zarejestrowany?',
+                            style: AppTextStyles.interSemiBold),
+                        value: form.registerController.isRegister,
+                        onChanged: (val) {
+                          setState(
+                              () => form.registerController.isRegister = val);
+                        },
+                      ),
+                      TextFormField(
+                        controller: form.registerController.registerUser,
+                        decoration: const InputDecoration(
+                            labelText: 'ID użytkownika rejestracji'),
+                      ),
+          
+                      const SizedBox(height: 24),
+                      ElevatedButton(
+                        onPressed: saveLead,
+                        child: const Text('Zapisz'),
+                      ),
+                    ],
+                  )),
+            ),
           ),
         ),
       ],

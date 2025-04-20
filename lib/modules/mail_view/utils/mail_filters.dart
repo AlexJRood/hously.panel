@@ -5,6 +5,9 @@ final mailTypeProvider = StateProvider<String>((ref) => 'all');
 final mailSearchProvider = StateProvider<String>((ref) => '');
 final mailPageProvider = StateProvider<int>((ref) => 1);
 final mailPageSizeProvider = StateProvider<int>((ref) => 10);
+final mailLeadIdProvider = StateProvider<int?>((ref) => null); // ✅ pozwala na null
+
+
 
 
 
@@ -13,7 +16,8 @@ class EmailFilterParams {
   final bool? isOutgoing;
   final int? page;
   final int? pageSize;
-  final String? ordering; // np. -received_at, subject
+  final String? ordering;
+  final int? leadId; // ✅ DODANE
 
   EmailFilterParams({
     this.searchQuery,
@@ -21,5 +25,6 @@ class EmailFilterParams {
     this.page,
     this.pageSize,
     this.ordering,
+    this.leadId,
   });
 }

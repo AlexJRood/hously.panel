@@ -192,7 +192,7 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
               key: const ValueKey(Routes.emailView),
               title: Routes.getWebsiteTitle(context),
               child: _buildDeferredScreen(
-                  mail_admin.loadLibrary, () => mail_admin.EmailView()),
+                  mail_admin.loadLibrary, () => mail_admin.EmailView(leadId: null)),
             );
           },
 

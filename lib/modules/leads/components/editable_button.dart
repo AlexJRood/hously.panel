@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:hously_flutter/modules/leads/utils/lead_api.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EditableTextButton extends StatefulWidget {
+class EditableTextButton extends ConsumerStatefulWidget {
   final String initialValue;
-  final String patchUrl;
+  final int leadId;
   final String fieldKey;
 
   const EditableTextButton({
     super.key,
     required this.initialValue,
-    required this.patchUrl,
+    required this.leadId,
     required this.fieldKey,
   });
 
   @override
-  State<EditableTextButton> createState() => _EditableTextButtonState();
+  ConsumerState<EditableTextButton> createState() => _EditableTextButtonState();
 }
 
-class _EditableTextButtonState extends State<EditableTextButton> {
+class _EditableTextButtonState extends ConsumerState<EditableTextButton> {
   late String _value;
   late TextEditingController _controller;
   late FocusNode _focusNode;
@@ -42,20 +43,18 @@ class _EditableTextButtonState extends State<EditableTextButton> {
     if (_controller.text != _value) {
       final updatedValue = _controller.text;
       try {
-        final response = await http.patch(
-          Uri.parse(widget.patchUrl),
-          headers: {'Content-Type': 'application/json'},
-          body: '{"${widget.fieldKey}": "${updatedValue}"}',
+        await LeadService.updateLead(
+          leadId: widget.leadId,
+          ref: ref,
+          data: {
+            widget.fieldKey: updatedValue,
+          },
         );
-        if (response.statusCode == 200) {
-          setState(() {
-            _value = updatedValue;
-          });
-        } else {
-          // Obsługa błędu np. poprzez pokazanie komunikatu
-        }
+        setState(() {
+          _value = updatedValue;
+        });
       } catch (e) {
-        // Obsługa błędu połączenia
+        debugPrint("Błąd podczas aktualizacji: $e");
       }
     }
   }
@@ -64,7 +63,8 @@ class _EditableTextButtonState extends State<EditableTextButton> {
   Widget build(BuildContext context) {
     return _isEditing
         ? SizedBox(
-            width: 200,
+      width: 400,
+      height: 70,
             child: TextField(
               controller: _controller,
               focusNode: _focusNode,
@@ -83,7 +83,7 @@ class _EditableTextButtonState extends State<EditableTextButton> {
             },
             child: Text(
               _value.isEmpty ? '[Kliknij aby edytować]' : _value,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.blue,
                 decoration: TextDecoration.underline,
               ),
