@@ -15,6 +15,8 @@ import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 
+
+
 class LeadDetailsPage extends ConsumerWidget {
   final int leadId;
 
@@ -65,6 +67,7 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
   final isMailSent = lead.emails?.isMailSent ?? false;
   final isMailReceived = lead.emails?.isMailReceived ?? false;
 
+
   return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -92,20 +95,40 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                     )
                ],
               ),
-              const SizedBox(height: 12),
-              Text('🧾 DANE PODSTAWOWE', style: AppTextStyles.interBold),
-              const SizedBox(height: 8),
-              EditableTextButton(
-                initialValue: lead.name,
-                leadId: lead.id,
-                fieldKey: 'name',
-              ),
-              EditableTextButton(
-                initialValue: lead.companyName ?? '',
-                leadId: lead.id,
-                fieldKey: 'company_name',
-              ),
+              Row(
+                children: [
 
+                  Container(
+                    color: AppColors.light25,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                  // child:
+                  // Image.network(lead.avatar),
+                  ),
+
+                  const SizedBox(width:25),
+
+                  Column(
+                    children: [
+                            
+                    const SizedBox(height: 12),
+                    Text('🧾 DANE PODSTAWOWE', style: AppTextStyles.interBold),
+                    const SizedBox(height: 8),
+                    EditableTextButton(
+                      initialValue: lead.name,
+                      leadId: lead.id,
+                      fieldKey: 'name',
+                    ),
+                    EditableTextButton(
+                      initialValue: lead.companyName ?? '',
+                      leadId: lead.id,
+                      fieldKey: 'company_name',
+                    ),
+                    ],
+                  )
+                ],
+              ),
               const SizedBox(height: 16),
               Text('📞 TELEFON', style: AppTextStyles.interBold),
               EditableTextButton(
@@ -282,8 +305,8 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
             Text('Notatka:', style: AppTextStyles.interBold),
 
 
-        // PRAWA KOLUMNA – notatka i interakcje
-        LeadNoteField(lead: lead, leadId: leadId),
+            // PRAWA KOLUMNA – notatka i interakcje
+            LeadNoteField(lead: lead, leadId: leadId),
 
             const SizedBox(height: 24),
             Text('Interakcje:', style: AppTextStyles.interBold),
