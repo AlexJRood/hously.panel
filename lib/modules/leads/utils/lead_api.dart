@@ -54,6 +54,8 @@ class LeadService {
     }
   }
 
+  
+
   // Edycja (PATCH)
   static Future<void> updateLead({
     required WidgetRef ref,
@@ -70,6 +72,8 @@ class LeadService {
       throw Exception('Nie udało się zaktualizować leada');
     }
   }
+
+
 
   // Usuwanie leada
   static Future<void> deleteLead({

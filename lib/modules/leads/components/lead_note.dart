@@ -52,11 +52,11 @@ class _LeadNoteFieldState extends ConsumerState<LeadNoteField> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Notatka:', style: AppTextStyles.interBold),
+            // Text('Notatka:', style: AppTextStyles.interBold),
             const SizedBox(height: 8),
             TextFormField(
               initialValue: widget.lead.note ?? '',
-              maxLines: 20,
+              maxLines: 30,
               style: const TextStyle(color: Colors.white), // kolor tekstu
               decoration: InputDecoration(
                 filled: true,

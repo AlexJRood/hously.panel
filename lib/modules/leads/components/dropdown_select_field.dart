@@ -35,11 +35,9 @@ class _DropdownSelectFieldState extends ConsumerState<DropdownSelectField> {
 
 @override
 Widget build(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: SizedBox(
-      width: 400,
-      height: 70,
+  return SizedBox(
+      width: 200,
+      height: 50,
       child: DropdownButtonFormField<String>(
         value: selected,
         decoration: InputDecoration(
@@ -58,7 +56,6 @@ Widget build(BuildContext context) {
           );
         },
       ),
-    ),
   );
 }
 
