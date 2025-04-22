@@ -17,7 +17,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/design/design.dart';
 import 'package:hously_flutter/utils/firebase_options.dart';
-import 'package:hously_flutter/utils/install_popup.dart';
 import 'package:hously_flutter/widgets/language/translation.dart';
 import 'package:hously_flutter/utils/Keyboardshortcuts.dart';
 import 'package:hously_flutter/utils/internet_checker/internet_checker_widget.dart';
@@ -77,12 +76,6 @@ class _HouslyState extends ConsumerState<Hously> {
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(const Duration(minutes: 3), () {
-      if (!mounted) return;
-      print("Setting popupVisibleProvider to true.");
-      ref.read(popupVisibleProvider.notifier).state = true;
-    });
 
     /// ---- TEMP -------------
     analytics.logEvent(

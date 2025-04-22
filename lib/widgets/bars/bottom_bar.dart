@@ -5,10 +5,10 @@ import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/routing/navigation_history_provider.dart';
-import 'package:hously_flutter/modules/ads_managment/pop_pages/view_pop_changer_page.dart';
 import 'package:hously_flutter/api_services/auth.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/api_services/api_services.dart';
+import 'package:hously_flutter/theme/icons2.dart';
 import 'package:hously_flutter/utils/loading_widgets.dart';
 import 'dart:ui' as ui;
 
@@ -47,16 +47,15 @@ class BottomBarMobile extends ConsumerWidget {
                 Container(
                   width: 60,
                   height: 55,
-                  child: BuildIconButton(
-                    icon: Icons.home_outlined,
-                    label: 'Home',
-                    onPressed: () {
+                            child: BuildIconButton(
+                              icon: AppIcons.home(),
+                              onPressed: () {
                       ref
                           .read(navigationHistoryProvider.notifier)
-                          .addPage(Routes.homepage);
+                          .addPage(Routes.leadsPanel);
                       ref
                           .read(navigationService)
-                          .pushNamedScreen(Routes.homepage);
+                          .pushNamedScreen(Routes.leadsPanel);
                     },
                     currentRoute: currentRoute,
                   ),
@@ -64,18 +63,10 @@ class BottomBarMobile extends ConsumerWidget {
                 Container(
                   width: 60,
                   height: 55,
-                  child: BuildIconButton(
-                    icon: Icons.add,
-                    label: 'Szukaj'.tr,
-                    onPressed: () {
-                      String selectedFeedView = ref.read(
-                          selectedFeedViewProvider); // Odczytaj wybrany widok
-                      ref
-                          .read(navigationHistoryProvider.notifier)
-                          .addPage(selectedFeedView);
-                      ref
-                          .read(navigationService)
-                          .pushNamedScreen(selectedFeedView);
+                            child: BuildIconButton(
+                              icon: AppIcons.arrowTrendUp(),
+                              onPressed: () {
+                   
                     },
                     currentRoute: currentRoute,
                   ),
@@ -84,11 +75,10 @@ class BottomBarMobile extends ConsumerWidget {
                   Container(
                     width: 60,
                     height: 55,
-                    child: BuildIconButton(
-                      icon: Icons.favorite_border,
-                      label: 'Ulubione'.tr,
-                      onPressed: () {
-                        ref.read(navigationService).pushNamedScreen(Routes.fav);
+                            child: BuildIconButton(
+                              icon: AppIcons.magic(),
+                              onPressed: () {
+                        // ref.read(navigationService).pushNamedScreen(Routes.fav);
                       },
                       currentRoute: currentRoute,
                     ),
@@ -97,11 +87,10 @@ class BottomBarMobile extends ConsumerWidget {
                 Container(
                   width: 60,
                   height: 55,
-                  child: BuildIconButton(
-                    icon: Icons.add_box_outlined,
-                    label: 'Dodaj'.tr,
-                    onPressed: () {
-                      ref.read(navigationService).pushNamedScreen(Routes.add);
+                            child: BuildIconButton(
+                              icon: AppIcons.message(),
+                              onPressed: () {
+                      ref.read(navigationService).pushNamedScreen(Routes.emailView);
                     },
                     currentRoute: currentRoute,
                   ),
@@ -137,11 +126,6 @@ class BottomBarMobile extends ConsumerWidget {
                                                 'assets/images/default_avatar.webp'),
                                             radius: 12.5,
                                           ),
-                                          const SizedBox(height: 3.0),
-                                          Text('Profil'.tr,
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.white)),
                                         ],
                                       ),
                                     ),
@@ -175,8 +159,7 @@ class BottomBarMobile extends ConsumerWidget {
                             width: 60,
                             height: 55,
                             child: BuildIconButton(
-                              icon: Icons.person,
-                              label: 'Login',
+                              icon: AppIcons.person(),
                               onPressed: () {
                                 ref
                                     .read(navigationService)
@@ -204,62 +187,27 @@ class BuildIconButton extends ConsumerWidget {
   const BuildIconButton({
     super.key,
     required this.icon,
-    required this.label,
     required this.onPressed,
     required this.currentRoute,
   });
 
-  final IconData icon;
-  final String label;
+  final Widget icon;
   final VoidCallback onPressed;
   final String currentRoute;
 
   @override
   Widget build(BuildContext context, ref) {
-    final isActive = currentRoute == _getPageRouteForIcon(icon);
-    final currentthememode = ref.watch(themeProvider); // Current theme mode
-
-    // Define color settings based on theme mode and selection state
-    final Color color = currentthememode == ThemeMode.system
-        ? (isActive ? Colors.white : Colors.grey.shade400)
-        : currentthememode == ThemeMode.light
-            ? (isActive
-                ? Colors.white
-                : Colors.white.withOpacity(0.5)) // Light theme
-            : (isActive
-                ? Colors.black
-                : Colors.black.withOpacity(0.5)); // Dark theme
 
     return ElevatedButton(
-      onPressed: onPressed,
       style: elevatedButtonStyleRounded10,
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color, size: 25.0),
-          const SizedBox(height: 3.0),
-          Text(label, style: TextStyle(fontSize: 10, color: color)),
+          icon,
         ],
       ),
     );
   }
 
-  String _getPageRouteForIcon(IconData icon) {
-    switch (icon) {
-      case Icons.home_outlined:
-        return '/homepage';
-      case Icons.add_box_outlined:
-        return '/add';
-      case Icons.add:
-        return '/feedview';
-      case Icons.search:
-        return '/search'; // Adjust this to the correct route
-      case Icons.favorite_border:
-        return '/fav';
-      case Icons.person:
-        return '/login';
-      default:
-        return '';
-    }
-  }
 }

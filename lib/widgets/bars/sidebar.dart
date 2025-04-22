@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:hously_flutter/theme/icons.dart';
+import 'package:hously_flutter/theme/icons2.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/routing/navigation_history_provider.dart';
@@ -95,12 +95,10 @@ class _SidebarState extends ConsumerState<Sidebar> {
                       Column(
                         children: [
                           BuildIconButton(
-                            icon: Transform.rotate(
-                                          angle:
-                                              -90 * 3.141592653589793238 / 180,
-                              child: SvgPicture.asset(AppIcons.moreVertical,
-                                              height: 25, width: 25, color: color),
-                            ),
+                              icon: Transform.rotate(
+                                angle: -90 * 3.141592653589793238 / 180,
+                                child: AppIcons.moreVertical(height: 25, width: 25, color: color),
+                              ),
                             label: '',
                             onPressed: () {
                               SideMenuManager.toggleMenu(
@@ -123,8 +121,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                       Column(
                         children: [
                           BuildIconButton(
-                            icon: SvgPicture.asset(AppIcons.home,
-                                            height: 25, width: 25, color: color),
+                          icon: AppIcons.home(height: 25, width: 25, color: color),
                             label: 'Leads',
                             onPressed: () {
                               ref
@@ -137,7 +134,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           const SizedBox(height: 2.0),
 
                           BuildIconButton(
-                            icon: SvgPicture.asset(AppIcons.arrowTrendUp,
+                            icon: AppIcons.arrowTrendUp(
                                             height: 25, width: 25, color: color),
                             label: 'Leads'.tr,
                             onPressed: () {
@@ -151,7 +148,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           const SizedBox(height: 2.0),
 
                           BuildIconButton(
-                            icon: SvgPicture.asset(AppIcons.calendar,
+                            icon: AppIcons.calendar(
                                             height: 25, width: 25, color: color),
                             label: 'calendar'.tr,
                             onPressed: () {
@@ -164,7 +161,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                           const SizedBox(height: 2.0),
 
                           BuildIconButton(
-                            icon: SvgPicture.asset(AppIcons.task,
+                            icon: AppIcons.task(
                                             height: 25, width: 25, color: color),
                             label: 'todo'.tr,
                             onPressed: () {
@@ -214,8 +211,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
-                                            icon: SvgPicture.asset(
-                                              AppIcons.sendAbove,
+                                            icon: AppIcons.sendAbove(
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color,
@@ -246,7 +242,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
 
                                           
                             BuildIconButton(
-                            icon: SvgPicture.asset(AppIcons.notification,
+                            icon: AppIcons.notification(
                                             height: 25, width: 25, color: color),
                             label: '',
                             onPressed: () {
@@ -320,7 +316,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             return Column(
                               children: [
                                 BuildIconButton(
-                                  icon: SvgPicture.asset(AppIcons.person,
+                                  icon: AppIcons.person(
                                             height: 25, width: 25, color: color),
                                   label: '',
                                   onPressed: () {

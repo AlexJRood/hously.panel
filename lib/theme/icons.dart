@@ -26,7 +26,7 @@ class AppIcons{
   static const expand = 'assets/icons/frame_(2).svg';
   static const simpleArrowBack = 'assets/icons/frame_(3).svg';
   static const simpleArrowForward = 'assets/icons/frame_(4).svg';
-  static const arrowTrendUp = 'assets/icons/frame_(5).svg';
+  static const arrowTrendUp = 'assets/icons/trending_up.svg';
   static const arrowTrendDown = 'assets/icons/frame_(6).svg';
   static const swapVert = 'assets/icons/frame_(7).svg';
   static const decrease = 'assets/icons/frame_(8).svg';

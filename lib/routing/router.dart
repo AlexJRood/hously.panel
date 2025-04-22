@@ -16,6 +16,8 @@ import 'package:hously_flutter/modules/login/login_page.dart'
 import 'package:hously_flutter/modules/leads/screens/lead_list.dart'
     deferred as lead_page;
 
+import 'package:hously_flutter/modules/leads/screens/board_screen.dart'
+    deferred as lead_board;
 
 import 'package:hously_flutter/modules/leads/screens/lead_details.dart'
     deferred as single_lead;
@@ -158,6 +160,30 @@ BeamerDelegate generateRouterDelegate() => BeamerDelegate(
                   lead_page.loadLibrary, () => lead_page.LeadsPage()),
             );
           },
+
+          Routes.leadsBoard: (context, state, data) {
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.leadsBoard),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                  lead_board.loadLibrary, () => lead_board.DraggableBoardPc()),
+            );
+          },
+
+          
+          Routes.singleLeadBoard: (context, state, data) {
+            final id = int.parse(state.pathParameters['id']!);
+
+            setupMetaTag(context);
+            return BeamPage(
+              key: const ValueKey(Routes.singleLead),
+              title: Routes.getWebsiteTitle(context),
+              child: _buildDeferredScreen(
+                  single_lead.loadLibrary, () => single_lead.LeadDetailsPage(leadId: id)),
+            );
+          },
+
 
           Routes.singleLead: (context, state, data) {
             final id = int.parse(state.pathParameters['id']!);

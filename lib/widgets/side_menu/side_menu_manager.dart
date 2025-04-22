@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hously_flutter/theme/icons.dart';
-import 'package:hously_flutter/routing/route_constant.dart';
-import 'package:hously_flutter/routing/navigation_history_provider.dart';
-
+import 'package:hously_flutter/api_services/auth.dart';
 import 'package:hously_flutter/modules/settings/components/pc/components/settings_provider.dart';
 import 'package:hously_flutter/modules/settings/provider/settings_mobile_provider.dart';
+import 'package:hously_flutter/routing/navigation_history_provider.dart';
+import 'package:hously_flutter/routing/navigation_service.dart';
+import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/theme/design/design.dart';
-import 'package:hously_flutter/api_services/auth.dart'; // Upewnij się, że ścieżka do user_provider jest poprawna';
-import 'package:hously_flutter/routing/navigation_service.dart';
+import 'package:hously_flutter/theme/icons2.dart';
+import 'package:hously_flutter/widgets/language/language_provider.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
-
-import '../language/language_provider.dart';
 
 class SideMenuManager {
   /// Toggles the side menu based on its current state
@@ -55,6 +53,8 @@ class SideMenuManager {
   }
 }
 
+final selectedRouteProvider = StateProvider<String>((ref) => '/');
+
 class SideMenuOpen extends ConsumerWidget {
   final GlobalKey<SideMenuState> sideMenuKey;
   const SideMenuOpen({super.key, required this.sideMenuKey});
@@ -69,6 +69,7 @@ class SideMenuOpen extends ConsumerWidget {
     double dynamicSizedBox = 5;
     final themecolors = ref.watch(themeColorsProvider);
     final textFieldColor = themecolors.textFieldColor;
+    final selectedRoute = ref.watch(selectedRouteProvider);
     double radiusSize = 60;
 
     return Stack(
@@ -94,8 +95,9 @@ class SideMenuOpen extends ConsumerWidget {
                       height: 60,
                       child: IconButton(
                         style: elevatedButtonStyleRounded10,
-                        icon: SvgPicture.asset(AppIcons.iosArrowRight,
-                            height: 25,width: 25, color: Theme.of(context).iconTheme.color),
+                        icon: AppIcons.iosArrowRight(height: 25,
+                            width: 25,
+                            color: Theme.of(context).iconTheme.color),
                         onPressed: () {
                           sideMenuKey.currentState?.closeSideMenu();
                         },
@@ -108,14 +110,22 @@ class SideMenuOpen extends ConsumerWidget {
                     child: Column(
                       children: [
                         ElevatedButton(
-                          style: elevatedButtonStyleRounded10,
-                          onPressed: () {
+                          style: elevatedButtonStyleRounded10.copyWith(
+                            backgroundColor: selectedRoute == ''
+                                ? WidgetStatePropertyAll(
+                                    Color.fromRGBO(255, 255, 255, 0.1))
+                                : null,
+                          ),
+                          onPressed: () {                            
+                            ref.read(selectedRouteProvider.notifier).state = Routes.entry;
                             ref
                                 .read(navigationHistoryProvider.notifier)
-                                .addPage(Routes.homepage);
+                                .addPage(Routes.entry);
                             ref
                                 .read(navigationService)
-                                .pushNamedReplacementScreen(Routes.homepage);
+                                .pushNamedReplacementScreen(Routes.entry);
+                                
+                          sideMenuKey.currentState?.closeSideMenu();
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -126,7 +136,7 @@ class SideMenuOpen extends ConsumerWidget {
                                     color: Theme.of(context).iconTheme.color),
                                 const SizedBox(width: 10),
                                 Expanded(
-                                  child: Text('Portal',
+                                  child: Text('Leads',
                                       style: AppTextStyles.interRegular
                                           .copyWith(
                                               fontSize: dynamicFontSize,
@@ -140,8 +150,17 @@ class SideMenuOpen extends ConsumerWidget {
                         ),
                         SizedBox(height: dynamicSizedBox),
                         ElevatedButton(
-                          style: elevatedButtonStyleRounded10,
+                          style: elevatedButtonStyleRounded10.copyWith(
+                            backgroundColor: selectedRoute == Routes.reports
+                                ? WidgetStatePropertyAll(
+                                Color.fromRGBO(255, 255, 255, 0.1))
+                                : null,
+                          ),
                           onPressed: () {
+                            ref.read(selectedRouteProvider.notifier).state = Routes.reports;
+                            ref
+                                .read(navigationHistoryProvider.notifier)
+                                .addPage(Routes.reports);
                             ref
                                 .read(navigationService)
                                 .pushNamedReplacementScreen(Routes.reports);
@@ -169,44 +188,17 @@ class SideMenuOpen extends ConsumerWidget {
                         ),
                         if (isUserLoggedIn && isProUser) ...[
                           SizedBox(height: dynamicSizedBox),
-                          ElevatedButton(
-                            style: elevatedButtonStyleRounded10,
-                            onPressed: () {
-                              ref
-                                  .read(navigationHistoryProvider.notifier)
-                                  .addPage(Routes.networkMonitoring);
-                              ref
-                                  .read(navigationService)
-                                  .pushNamedReplacementScreen(Routes.networkMonitoring);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                spacing: 5,
-                                children: [
-                                  SvgPicture.asset(AppIcons.setting,
-                                      height: 25,
-                                      width: 25,
-                                      color: Theme.of(context).iconTheme.color),
-                                  Expanded(
-                                    child: Text(
-                                      'Network monitoring',
-                                      style: AppTextStyles.interRegular
-                                          .copyWith(
-                                              fontSize: dynamicFontSize,
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                         
                           SizedBox(height: dynamicSizedBox),
                           ElevatedButton(
-                            style: elevatedButtonStyleRounded10,
+                            style: elevatedButtonStyleRounded10.copyWith(
+                              backgroundColor: selectedRoute == Routes.proDashboard
+                                  ? WidgetStatePropertyAll(
+                                  Color.fromRGBO(255, 255, 255, 0.1))
+                                  : null,
+                            ),
                             onPressed: () {
+                              ref.read(selectedRouteProvider.notifier).state = Routes.proDashboard;
                               ref
                                   .read(navigationHistoryProvider.notifier)
                                   .addPage(Routes.proDashboard);
@@ -233,8 +225,17 @@ class SideMenuOpen extends ConsumerWidget {
                         ] else ...[
                           SizedBox(height: dynamicSizedBox),
                           ElevatedButton(
-                            style: elevatedButtonStyleRounded10,
+                            style: elevatedButtonStyleRounded10.copyWith(
+                              backgroundColor: selectedRoute == Routes.goPro
+                                  ? WidgetStatePropertyAll(
+                                  Color.fromRGBO(255, 255, 255, 0.1))
+                                  : null,
+                            ),
                             onPressed: () {
+                              ref.read(selectedRouteProvider.notifier).state = Routes.goPro;
+                              ref
+                                  .read(navigationHistoryProvider.notifier)
+                                  .addPage(Routes.goPro);
                               ref
                                   .read(navigationService)
                                   .pushNamedReplacementScreen(Routes.goPro);
@@ -243,8 +244,7 @@ class SideMenuOpen extends ConsumerWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(AppIcons.verifiedUser,
-                                      height: 25,
+                                  AppIcons.verifiedUser(height: 25,
                                       width: 25,
                                       color: AppColors.superbee),
                                   const SizedBox(width: 10),
@@ -267,37 +267,17 @@ class SideMenuOpen extends ConsumerWidget {
                   IntrinsicWidth(
                     child: Column(
                       children: [
+
                         ElevatedButton(
-                          style: elevatedButtonStyleRounded10,
-                          onPressed: () {
-                            ref
-                                .read(navigationService)
-                                .pushNamedReplacementScreen(Routes.learnCenter);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              spacing: 5,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.emoji_objects_outlined,
-                                    size: 25,
-                                    color: Theme.of(context).iconTheme.color),
-                                Expanded(
-                                  child: Text('Learn center'.tr,
-                                      style: AppTextStyles.interRegular
-                                          .copyWith(fontSize: dynamicFontSize)),
-                                ),
-                              ],
-                            ),
+                          style: elevatedButtonStyleRounded10.copyWith(
+                            backgroundColor: selectedRoute == Routes.settings
+                                ? WidgetStatePropertyAll(
+                                Color.fromRGBO(255, 255, 255, 0.1))
+                                : null,
                           ),
-                        ),
-                        SizedBox(height: dynamicSizedBox),
-                        ElevatedButton(
-                          style: elevatedButtonStyleRounded10,
                           onPressed: () {
-                            ref
-                                .read(navigationService);
+                            ref.read(selectedRouteProvider.notifier).state = Routes.settings;
+                            ref.read(navigationService);
                             ref
                                 .read(selectedIndexProvidermobile.notifier)
                                 .setIndex(-1);
@@ -306,16 +286,14 @@ class SideMenuOpen extends ConsumerWidget {
                                 .updateIndex(0);
                             ref
                                 .read(navigationService)
-                                .pushNamedScreen(
-                                    Routes.settings);
+                                .pushNamedScreen(Routes.settings);
                             sideMenuKey.currentState?.closeSideMenu();
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                SvgPicture.asset(AppIcons.setting,
-                                    width: 25,
+                                AppIcons.setting(width: 25,
                                     height: 25,
                                     color: Theme.of(context).iconTheme.color),
                                 const SizedBox(width: 10),
@@ -396,13 +374,14 @@ class SideMenuOpen extends ConsumerWidget {
                                         onPressed: () {
                                           ref
                                               .read(authStateProvider.notifier)
-                                              .logOut(ref).whenComplete(
+                                              .logOut(ref)
+                                              .whenComplete(
                                             () {
                                               ref.invalidate(userProvider);
                                               ref
                                                   .read(navigationService)
                                                   .pushNamedReplacementScreen(
-                                                  Routes.login);
+                                                      Routes.login);
                                             },
                                           );
                                         },

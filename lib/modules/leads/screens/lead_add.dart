@@ -108,13 +108,14 @@ class _AddLeadPageState extends ConsumerState<AddLeadPage> {
   @override
   Widget build(BuildContext context) {
     final double sizeWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = sizeWidth < 800;
     
     return BarManager(
       sideMenuKey: sideMenuKey,
       children: [
         Expanded(
           child: SizedBox(
-            width: sizeWidth/2,
+            width: isMobile ? sizeWidth : sizeWidth/2,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Form(

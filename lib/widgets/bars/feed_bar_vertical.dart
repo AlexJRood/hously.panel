@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
-import 'package:hously_flutter/modules/ads_managment/pop_pages/mobile_pop_appbar_page.dart';
-import 'package:hously_flutter/modules/ads_managment/pop_pages/sort_pop_mobile_page.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/theme/backgroundgradient.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
@@ -77,16 +75,8 @@ class FeedBarVerticalMobile extends ConsumerWidget {
               tag:  tag,
               icon: Icons.sort,
               label: 'view'.tr,
-              onTap: () => 
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const SortPopMobilePage(),
-                        transitionsBuilder: (_, anim, __, child) {
-                          return FadeTransition(opacity: anim, child: child);
-                        },
-                      ),
-                    ),
+              onTap: () {},
+                  
               heroValue: '4',
             ),
           ),
@@ -110,16 +100,7 @@ class FeedBarVerticalMobile extends ConsumerWidget {
               heroValue: "sortPopFeedBarVertical",
               icon: Icons.view_comfortable_rounded,
               label: 'Sortuj'.tr,
-              onTap: () => 
-                    Navigator.of(context).push(
-                      PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const MobilePopAppBarPage(),
-                        transitionsBuilder: (_, anim, __, child) {
-                          return FadeTransition(opacity: anim, child: child);
-                        },
-                      ),
-                    ),
+              onTap: () {},
             ),
           ),
           

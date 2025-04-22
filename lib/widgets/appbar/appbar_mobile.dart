@@ -6,7 +6,6 @@ import 'package:hously_flutter/theme/icons.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/modules/chat/new_chat/chat_page.dart';
 import 'package:hously_flutter/modules/notification/notification_screen.dart';
-import 'package:hously_flutter/modules/ads_managment/pop_pages/mobile_pop_appbar_page.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/theme/design/design.dart';
@@ -82,16 +81,7 @@ class AppBarMobile extends ConsumerWidget {
                   ElevatedButton(
                     style: elevatedButtonStyleRounded10,
                     onPressed: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (_, __, ___) =>
-                              const MobilePopAppBarPage(),
-                          transitionsBuilder: (_, anim, __, child) {
-                            return FadeTransition(opacity: anim, child: child);
-                          },
-                        ),
-                      );
+                      
                     },
                     child: Hero(
                       tag: 'MobilePopAppBar_${UniqueKey()}',

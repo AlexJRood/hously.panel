@@ -14,9 +14,6 @@ import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/modules/notification/notification_service.dart';
 import 'package:hously_flutter/api_services/api_services.dart';
 import 'package:hously_flutter/utils/secure_storage.dart';
-
-import 'package:hously_flutter/utils/install_popup.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
@@ -47,8 +44,7 @@ class _LoginMobilePageState extends ConsumerState<LoginMobilePage> {
     // Clamp to ensure padding stays within min/max range
     dynamicPadding = dynamicPadding.clamp(minPadding, maxPadding);
 
-    return PopupListener(
-      child: SafeArea(
+    return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Center(
@@ -237,7 +233,7 @@ class _LoginMobilePageState extends ConsumerState<LoginMobilePage> {
             ),
           ),
         ),
-      ),
+      
     );
   }
 

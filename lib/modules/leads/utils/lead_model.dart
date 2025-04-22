@@ -23,115 +23,138 @@ class PaginatedLeadResponse {
   }
 }
 
-
 class Lead {
   final int id;
   final String name;
+  final String? avatar;
   final String? companyName;
+
+  final String? city;
+  final String? state;
+  final String? country;
+
+  final String? label;
   final String? note;
-  final PhoneNumber? phones;
-  final LeadEmail? emails;
+  final String? lastNoteUpdate;
+
+  final bool isLinkOpened;
+  final String? followUpDate;
+
+  final String? email;
+  final String? aditionalEmail;
+  final String? mailContent;
+  final bool isMailSent;
+  final String? mailSentDate;
+  final bool isMailReceived;
+  final String? receiveMailContent;
+  final String? mailResponseDate;
+  final bool isMailScheduled;
+  final String? scheduledMailDate;
+
+  final bool? hasAgreement;
+  final String? agreementStatus;
+  final int? leadStatus; // ID relacji
+  final bool? isMeetingScheduled;
+
+  final bool isRegister;
+  final int? registerUser;
+
+  final String? number;
+  final String? aditionalNumber;
+  final bool isNumberConfirmed;
+
+  final String? source;
+  final int? owner;
+
+  final String createdAt;
+  final String updatedAt;
+  
   final List<LeadInteraction> interactions;
-  final LeadAgreement? agreement;
-  final LeadRegister? register;
-  final LeadStatus? status;
 
   Lead({
     required this.id,
     required this.name,
+    this.avatar,
     this.companyName,
+    this.city,
+    this.state,
+    this.country,
+    this.label,
     this.note,
-    this.phones,
-    this.emails,
+    this.lastNoteUpdate,
+    required this.isLinkOpened,
+    this.followUpDate,
+    this.email,
+    this.aditionalEmail,
+    this.mailContent,
+    required this.isMailSent,
+    this.mailSentDate,
+    required this.isMailReceived,
+    this.receiveMailContent,
+    this.mailResponseDate,
+    required this.isMailScheduled,
+    this.scheduledMailDate,
+    this.hasAgreement,
+    this.agreementStatus,
+    this.leadStatus,
+    this.isMeetingScheduled,
+    required this.isRegister,
+    this.registerUser,
+    this.number,
+    this.aditionalNumber,
+    required this.isNumberConfirmed,
+    this.source,
+    this.owner,
+    required this.createdAt,
+    required this.updatedAt,
     this.interactions = const [],
-    this.agreement,
-    this.register,
-    this.status,
   });
 
   factory Lead.fromJson(Map<String, dynamic> json) {
     return Lead(
       id: json['id'],
       name: json['name'],
+      avatar: json['avatar'],
       companyName: json['company_name'],
-      note: json['note'],
-      phones: json['phones'] != null 
-        ? PhoneNumber.fromJson(json['phones']) 
-        : null,  // Domyślny pusty obiekt
-
-      emails: json['emails'] != null 
-        ? LeadEmail.fromJson(json['emails']) 
-        : null,  // Domyślny pusty obiekt
-
-      interactions: (json['interactions'] as List)
-          .map((e) => LeadInteraction.fromJson(e))
-          .toList(),
-      agreement: json['agreement'] != null
-          ? LeadAgreement.fromJson(json['agreement'])
-          : null,
-      register: json['register'] != null
-          ? LeadRegister.fromJson(json['register'])
-          : null,
-      status: json['status'] != null
-          ? LeadStatus.fromJson(json['status'])
-          : null,
-    );
-  }
-}
-
-
-class PhoneNumber {
-  final String number;
-  final String? label;
-  final bool isConfirmed;
-
-  PhoneNumber({
-    required this.number,
-    this.label,
-    this.isConfirmed = false,
-  });
-
-  factory PhoneNumber.fromJson(Map<String, dynamic> json) {
-    return PhoneNumber(
-      number: json['number'],
+      city: json['city'],
+      state: json['state'],
+      country: json['country'],
       label: json['label'],
-      isConfirmed: json['is_confirmed'] ?? false,
-    );
-  }
-}
-
-
-class LeadEmail {
-  final String? mailContent;
-  final String? mail;
-  final bool isMailSent;
-  final String? mailSentDate;
-  final bool isMailReceived;
-  final String? receiveMailContent;
-  final String? mailResponseDate;
-
-  LeadEmail({
-    this.mailContent,
-    this.mail,
-    this.isMailSent = false,
-    this.mailSentDate,
-    this.isMailReceived = false,
-    this.receiveMailContent,
-    this.mailResponseDate,
-  });
-
-  factory LeadEmail.fromJson(Map<String, dynamic> json) {
-    return LeadEmail(
-      mail: json['mail'],
+      note: json['note'],
+      lastNoteUpdate: json['last_note_update'],
+      isLinkOpened: json['is_link_opened'] ?? false,
+      followUpDate: json['follow_up_date'],
+      email: json['email'],
+      aditionalEmail: json['aditional_email'],
       mailContent: json['mail_content'],
       isMailSent: json['is_mail_sent'] ?? false,
       mailSentDate: json['mail_sent_date'],
       isMailReceived: json['is_mail_received'] ?? false,
       receiveMailContent: json['receive_mail_content'],
       mailResponseDate: json['mail_response_date'],
+      isMailScheduled: json['is_mail_scheduled'] ?? false,
+      scheduledMailDate: json['scheduled_mail_date'],
+      hasAgreement: json['has_agreement'],
+      agreementStatus: json['agreement_status'],
+      leadStatus: json['lead_status'],
+      isMeetingScheduled: json['is_meeting_scheduled'],
+      isRegister: json['is_register'] ?? false,
+      registerUser: json['register_user'],
+      number: json['number'],
+      aditionalNumber: json['aditional_number'],
+      isNumberConfirmed: json['is_number_confirmed'] ?? false,
+      source: json['source'],
+      owner: json['owner'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],      
+
+      interactions: (json['interactions'] as List)
+          .map((e) => LeadInteraction.fromJson(e))
+          .toList(),
     );
   }
 }
+
 
 class LeadInteraction {
   final String interactionType;
@@ -154,61 +177,50 @@ class LeadInteraction {
 }
 
 
-class LeadAgreement {
-  final bool? hasAgreement;
-  final String? agreementStatus;
-  final bool? isMeetingScheduled;
-
-  LeadAgreement({
-    this.hasAgreement,
-    this.agreementStatus,
-    this.isMeetingScheduled,
-  });
-
-  factory LeadAgreement.fromJson(Map<String, dynamic> json) {
-    return LeadAgreement(
-      hasAgreement: json['has_agreement'],
-      agreementStatus: json['agreement_status'],
-      isMeetingScheduled: json['is_meeting_scheduled'],
-    );
-  }
-}
-
-
-class LeadRegister {
-  final bool isRegister;
-  final int? registerUser;
-
-  LeadRegister({
-    required this.isRegister,
-    this.registerUser,
-  });
-
-  factory LeadRegister.fromJson(Map<String, dynamic> json) {
-    return LeadRegister(
-      isRegister: json['is_register'] ?? false,
-      registerUser: json['register_user'],
-    );
-  }
-}
-
-
 class LeadStatus {
   final int id;
   final String statusName;
   final int statusIndex;
+  final List<int> leadIndex;
 
-  LeadStatus({
+  const LeadStatus({
     required this.id,
     required this.statusName,
     required this.statusIndex,
+    required this.leadIndex,
   });
 
   factory LeadStatus.fromJson(Map<String, dynamic> json) {
+    final leadIndex = json['lead_index'];
     return LeadStatus(
       id: json['id'],
       statusName: json['status_name'],
       statusIndex: json['status_index'],
+      leadIndex: (leadIndex is List) ? List<int>.from(leadIndex) : [],
+    );
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'status_name': statusName,
+      'status_index': statusIndex,
+      'lead_index': leadIndex,
+    };
+  }
+
+  LeadStatus copyWith({
+    int? id,
+    String? statusName,
+    int? statusIndex,
+    List<int>? leadIndex,
+  }) {
+    return LeadStatus(
+      id: id ?? this.id,
+      statusName: statusName ?? this.statusName,
+      statusIndex: statusIndex ?? this.statusIndex,
+      leadIndex: leadIndex ?? this.leadIndex,
     );
   }
 }

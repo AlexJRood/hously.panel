@@ -7,10 +7,10 @@ class CustomVerticalDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 700, // Full height
+      height: 850, // Full height
       width: 2, // Thickness of the divider
       child: DottedBorder(
-        color: Colors.grey.shade600, // Dashed line color
+        color: const Color.fromARGB(135, 117, 117, 117), // Dashed line color
         strokeWidth: 1.5,
         dashPattern: const [9, 9], // Adjusted for better spacing
         borderType: BorderType.Rect,

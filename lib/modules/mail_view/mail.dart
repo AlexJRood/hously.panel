@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
 import 'package:hously_flutter/modules/mail_view/components/mail_list.dart';
+import 'package:hously_flutter/modules/mail_view/components/mail_list_mobile.dart';
 import 'package:hously_flutter/modules/mail_view/send_mail/send_mail.dart';
 import 'package:hously_flutter/modules/mail_view/utils/mail_filters.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
@@ -33,6 +34,8 @@ class EmailView extends ConsumerWidget {
 
     final sync = ref.watch(syncEmailsProvider);
     final selectedType = ref.watch(mailTypeProvider);
+    final double screenSize = MediaQuery.of(context).size.width;
+    final bool isMobile = screenSize < 800;
 
     
     Widget buildFilterButton(String label, String value) {
@@ -47,6 +50,7 @@ class EmailView extends ConsumerWidget {
               onPressed: () {
                 ref.read(mailTypeProvider.notifier).state = value;
                 ref.read(mailPageProvider.notifier).state = 1;
+                ref.read(filteredEmailsProvider);
               },
               
               child: Text(label, style: AppTextStyles.interLight14),
@@ -88,7 +92,50 @@ class EmailView extends ConsumerWidget {
         return BarManager(
           sideMenuKey: sideMenuKey,
           children: [
-            Expanded(
+            isMobile
+            ? Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Container(
+                      width: screenSize / 3 * 1,
+                      color: AppColors.light15,
+                      child: Column(
+                        children: [
+                          buildSortButton(),
+                            buildFilterButton("Wszystkie", "all"),
+                            buildFilterButton("Odebrane", "inbox"),
+                            buildFilterButton("Wysłane", "sent"),
+                            Spacer(), 
+                            Container(
+                              height: 50,
+                              child: ElevatedButton(  
+                                style: elevatedButtonStyleRounded10,
+                                  onPressed: () => showEmailOverlay(context, ref),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(AppIcons.newChat,
+                                                height: 25, width: 25, color: AppColors.light),
+                                      const SizedBox(width:25),
+                                      Text( 'Nowa wiadomość', style: AppTextStyles.interLight14),
+                                    ],
+                                  ),
+                                ),
+                            ),
+                            const SizedBox(height: 60)
+                        ],
+                      ),
+                    ),
+                    
+                     EmailListWithPreviewMobile(leadId: leadId, lead: lead),
+                    
+                    
+                  ],
+                ),
+              ),
+            )
+          :  Expanded(
               child: Row(
                 children: [
                   Container(
@@ -125,7 +172,9 @@ class EmailView extends ConsumerWidget {
                   
                 ],
               ),
-            ),
+            )
+
+
           ],
         );
       },

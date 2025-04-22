@@ -10,6 +10,7 @@ final emailDetailsProvider = FutureProvider.family<EmailMessage, int>((ref, emai
 });
 
 final syncEmailsProvider = FutureProvider.autoDispose<void>((ref) async {
+  print('🟡 Wywołuję POST /emails/sync/');
   final response = await ApiServices.post(
     '${URLs.emails}sync/',
     hasToken: true,
@@ -21,12 +22,15 @@ final syncEmailsProvider = FutureProvider.autoDispose<void>((ref) async {
 });
 
 final filteredEmailsProvider = FutureProvider.autoDispose<PaginatedEmailResponse>((ref) async {
+  // 🔄 Poczekaj na synchronizację
+  await ref.watch(syncEmailsProvider.future);
+
   final type = ref.watch(mailTypeProvider);
   final search = ref.watch(mailSearchProvider);
   final page = ref.watch(mailPageProvider);
   final pageSize = ref.watch(mailPageSizeProvider);
   final sort = ref.watch(mailSortProvider);
-  final leadId = ref.watch(mailLeadIdProvider); // ✅ Upewnij się, że masz taki provider
+  final leadId = ref.watch(mailLeadIdProvider);
 
   String? ordering;
 
@@ -53,10 +57,11 @@ final filteredEmailsProvider = FutureProvider.autoDispose<PaginatedEmailResponse
       page: page,
       pageSize: pageSize,
       ordering: ordering,
-      leadId: leadId != 0 ? leadId : null, // lub null gdy brak leada
+      leadId: leadId != 0 ? leadId : null,
     ),
   );
 });
+
 
 class EmailService {
   static Future<PaginatedEmailResponse> fetchFilteredEmails({

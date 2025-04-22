@@ -10,7 +10,6 @@ import 'package:hously_flutter/api_services/url.dart';
 import 'package:hously_flutter/theme/design/design.dart';
 import 'package:hously_flutter/api_services/api_services.dart';
 import 'package:hously_flutter/widgets/appbar/appbar_mobile.dart';
-import 'package:hously_flutter/utils/install_popup.dart';
 import 'package:hously_flutter/widgets/side_menu/slide_rotate_menu.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -92,8 +91,7 @@ class ChatScreenMobilePageState extends ConsumerState<ChatScreenMobilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopupListener(
-        child: SafeArea(
+    return SafeArea(
           child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Stack(
@@ -184,7 +182,6 @@ class ChatScreenMobilePageState extends ConsumerState<ChatScreenMobilePage> {
             ],
           ),
                 ),
-        ),
     );
   }
 

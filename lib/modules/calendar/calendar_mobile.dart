@@ -15,9 +15,6 @@ import 'package:hously_flutter/api_services/api_services.dart';
 import 'package:hously_flutter/widgets/appbar/appbar_mobile.dart';
 import 'package:hously_flutter/widgets/bars/bottom_bar.dart';
 import 'package:hously_flutter/modules/calendar/widgets/calendar_widget.dart';
-
-import 'package:hously_flutter/utils/install_popup.dart';
-
 import 'package:hously_flutter/widgets/side_menu/side_menu_manager.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

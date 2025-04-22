@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hously_flutter/modules/board/board_state.dart';
 import 'package:hously_flutter/modules/leads/components/dropdown_select_field.dart';
 import 'package:hously_flutter/modules/leads/components/editable_button.dart';
 import 'package:hously_flutter/modules/leads/components/editable_checkbox.dart';
 import 'package:hously_flutter/modules/leads/components/editable_date_field.dart';
 import 'package:hously_flutter/modules/leads/components/lead_note.dart';
+import 'package:hously_flutter/modules/leads/components/lead_status_dropdown_field.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_api.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
 import 'package:hously_flutter/modules/leads/widgets/pc.dart';
@@ -53,19 +55,46 @@ class LeadDetailsPage extends ConsumerWidget {
   }
 
 
+String? getLeadStatusName(int leadId, List<LeadStatus> statuses) {
+  for (final status in statuses) {
+    if (status.leadIndex.contains(leadId)) {
+      return status.statusName;
+    }
+  }
+  return null;
+}
 
-
+int? getLeadStatusIndex(int leadId, List<LeadStatus> statuses) {
+  for (final status in statuses) {
+    if (status.leadIndex.contains(leadId)) {
+      return status.statusIndex;
+    }
+  }
+  return null;
+}
 
 
 
 
 Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
-  final hasAgreement = lead.agreement?.hasAgreement ?? false;
-  final isMeeting = lead.agreement?.isMeetingScheduled ?? false;
-  final isRegistered = lead.register?.isRegister ?? false;
-  final isConfirmed = lead.phones?.isConfirmed ?? false;
-  final isMailSent = lead.emails?.isMailSent ?? false;
-  final isMailReceived = lead.emails?.isMailReceived ?? false;
+  final hasAgreement = lead.hasAgreement ?? false;
+  final isMeeting = lead.isMeetingScheduled ?? false;
+  final isRegistered = lead.isRegister ?? false;
+  final isConfirmed = lead.isNumberConfirmed ?? false;
+  final isMailSent = lead.isMailSent ?? false;
+  final isMailReceived = lead.isMailReceived ?? false;
+
+
+final boardStateAsync = ref.watch(leadProvider);
+final statusName = boardStateAsync.maybeWhen(
+  data: (data) => getLeadStatusName(lead.id, data.statuses),
+  orElse: () => null,
+);
+final statusIndex = boardStateAsync.maybeWhen(
+  data: (data) => getLeadStatusIndex(lead.id, data.statuses),
+  orElse: () => null,
+);
+
 
 
   return Row(
@@ -112,30 +141,9 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                           child: Text('Chat', style: AppTextStyles.interMedium),
                         ),
                       ),
-            
+            Spacer(),
                       
-                      Container(
-                        height: 40,
-                        width: 100,
-                        child: ElevatedButton(
-                          style: elevatedButtonStyleRounded10,
-                          onPressed: () {
-                            // ref.read(navigationService).pushNamedScreen(
-                            //     '${Routes.leadsPanel}/${lead.id}/email',
-                            //     data: lead);
-                          },
-                          child: Text('Chat', style: AppTextStyles.interMedium),
-                        ),
-                      ),
-
-                      
-                      DropdownSelectField(
-                        label: 'Status umowy',
-                        value: lead.agreement?.agreementStatus,
-                        leadId: lead.id,
-                        fieldKey: 'agreement_status',
-                        options: const ['Nowa', 'W trakcie', 'Podpisana', 'Zakończona'],
-                      ),
+                  LeadStatusDropdownField(leadId: lead.id),
 
 
                  ],
@@ -219,20 +227,20 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                       Text('TELEFON', style: AppTextStyles.interBold))
                       ),
                 EditableTextButton(
-                  initialValue: lead.phones?.number ?? '',
+                  initialValue: lead.number ?? '',
                   leadId: lead.id,
-                  fieldKey: 'phones.number',
+                  fieldKey: 'number',
                 ),
                 EditableTextButton(
-                  initialValue: lead.phones?.label ?? '',
+                  initialValue: lead.label ?? '',
                   leadId: lead.id,
-                  fieldKey: 'phones.label',
+                  fieldKey: 'label',
                 ),
                 EditableCheckbox(
                   label: 'Potwierdzony',
                   value: isConfirmed,
                   leadId: lead.id,
-                  fieldKey: 'phones.is_confirmed',
+                  fieldKey: 'is_number_confirmed',
                 ),
             
                 const SizedBox(height: 16),
@@ -245,12 +253,12 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   ),
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.mail ?? '',
+                  initialValue: lead.email ?? '',
                   leadId: lead.id,
                   fieldKey: 'mail',
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.mailContent ?? '',
+                  initialValue: lead.mailContent ?? '',
                   leadId: lead.id,
                   fieldKey: 'mail_content',
                 ),
@@ -267,19 +275,19 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   fieldKey: 'is_mail_received',
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.receiveMailContent ?? '',
+                  initialValue: lead.receiveMailContent ?? '',
                   leadId: lead.id,
                   fieldKey: 'receive_mail_content',
                 ),
                 EditableDateField(
                   label: 'Data wysłania',
-                  initialDate: lead.emails?.mailSentDate,
+                  initialDate: lead.mailSentDate,
                   leadId: lead.id,
                   fieldKey: 'mail_sent_date',
                 ),
                 EditableDateField(
                   label: 'Data odpowiedzi',
-                  initialDate: lead.emails?.mailResponseDate,
+                  initialDate: lead.mailResponseDate,
                   leadId: lead.id,
                   fieldKey: 'mail_response_date',
                 ),
@@ -291,8 +299,9 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   color: AppColors.light25,
                   child: Center(
                     child: Text('STATUS & UMOWA', style: AppTextStyles.interBold)),),
-                Text('Status: ${lead.status?.statusName ?? "-"}'),
-                Text('Indeks statusu: ${lead.status?.statusIndex ?? "-"}'),
+                Text('Status: ${statusName ?? "-"}'),
+                Text('Indeks statusu: ${statusIndex?.toString() ?? "-"}'),
+
                 EditableCheckbox(
                   label: 'Ma umowę',
                   value: hasAgreement,
@@ -324,7 +333,7 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   fieldKey: 'is_register',
                 ),
                 EditableTextButton(
-                  initialValue: lead.register?.registerUser?.toString() ?? '',
+                  initialValue: lead.registerUser?.toString() ?? '',
                   leadId: lead.id,
                   fieldKey: 'register_user',
                 ),
@@ -360,12 +369,22 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
 
   Widget mobileLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
     
-  final hasAgreement = lead.agreement?.hasAgreement ?? false;
-  final isMeeting = lead.agreement?.isMeetingScheduled ?? false;
-  final isRegistered = lead.register?.isRegister ?? false;
-  final isConfirmed = lead.phones?.isConfirmed ?? false;
-  final isMailSent = lead.emails?.isMailSent ?? false;
-  final isMailReceived = lead.emails?.isMailReceived ?? false;
+  final hasAgreement = lead.hasAgreement ?? false;
+  final isMeeting = lead.isMeetingScheduled ?? false;
+  final isRegistered = lead.isRegister ?? false;
+  final isConfirmed = lead.isNumberConfirmed ?? false;
+  final isMailSent = lead.isMailSent ?? false;
+  final isMailReceived = lead.isMailReceived ?? false;
+
+  final boardStateAsync = ref.watch(leadProvider);
+  final statusName = boardStateAsync.maybeWhen(
+    data: (data) => getLeadStatusName(lead.id, data.statuses),
+    orElse: () => null,
+  );
+  final statusIndex = boardStateAsync.maybeWhen(
+    data: (data) => getLeadStatusIndex(lead.id, data.statuses),
+    orElse: () => null,
+  );
 
 
   return Column(
@@ -427,16 +446,7 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                           child: Text('Chat', style: AppTextStyles.interMedium),
                         ),
                       ),
-
-                      
-                      DropdownSelectField(
-                        label: 'Status umowy',
-                        value: lead.agreement?.agreementStatus,
-                        leadId: lead.id,
-                        fieldKey: 'agreement_status',
-                        options: const ['Nowa', 'W trakcie', 'Podpisana', 'Zakończona'],
-                      ),
-
+                  LeadStatusDropdownField(leadId: lead.id),
 
                  ],
                 ),
@@ -519,20 +529,20 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                       Text('TELEFON', style: AppTextStyles.interBold))
                       ),
                 EditableTextButton(
-                  initialValue: lead.phones?.number ?? '',
+                  initialValue: lead.number ?? '',
                   leadId: lead.id,
-                  fieldKey: 'phones.number',
+                  fieldKey: 'number',
                 ),
                 EditableTextButton(
-                  initialValue: lead.phones?.label ?? '',
+                  initialValue: lead.label ?? '',
                   leadId: lead.id,
-                  fieldKey: 'phones.label',
+                  fieldKey: 'label',
                 ),
                 EditableCheckbox(
                   label: 'Potwierdzony',
                   value: isConfirmed,
                   leadId: lead.id,
-                  fieldKey: 'phones.is_confirmed',
+                  fieldKey: 'is_number_confirmed',
                 ),
             
                 const SizedBox(height: 16),
@@ -545,12 +555,12 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   ),
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.mail ?? '',
+                  initialValue: lead.email ?? '',
                   leadId: lead.id,
                   fieldKey: 'mail',
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.mailContent ?? '',
+                  initialValue: lead.mailContent ?? '',
                   leadId: lead.id,
                   fieldKey: 'mail_content',
                 ),
@@ -567,19 +577,19 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   fieldKey: 'is_mail_received',
                 ),
                 EditableTextButton(
-                  initialValue: lead.emails?.receiveMailContent ?? '',
+                  initialValue: lead.receiveMailContent ?? '',
                   leadId: lead.id,
                   fieldKey: 'receive_mail_content',
                 ),
                 EditableDateField(
                   label: 'Data wysłania',
-                  initialDate: lead.emails?.mailSentDate,
+                  initialDate: lead.mailSentDate,
                   leadId: lead.id,
                   fieldKey: 'mail_sent_date',
                 ),
                 EditableDateField(
                   label: 'Data odpowiedzi',
-                  initialDate: lead.emails?.mailResponseDate,
+                  initialDate: lead.mailResponseDate,
                   leadId: lead.id,
                   fieldKey: 'mail_response_date',
                 ),
@@ -591,8 +601,9 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   color: AppColors.light25,
                   child: Center(
                     child: Text('STATUS & UMOWA', style: AppTextStyles.interBold)),),
-                Text('Status: ${lead.status?.statusName ?? "-"}'),
-                Text('Indeks statusu: ${lead.status?.statusIndex ?? "-"}'),
+                Text('Status: ${statusName ?? "-"}'),
+                Text('Indeks statusu: ${statusIndex?.toString() ?? "-"}'),
+
                 EditableCheckbox(
                   label: 'Ma umowę',
                   value: hasAgreement,
@@ -624,7 +635,7 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
                   fieldKey: 'is_register',
                 ),
                 EditableTextButton(
-                  initialValue: lead.register?.registerUser?.toString() ?? '',
+                  initialValue: lead.registerUser?.toString() ?? '',
                   leadId: lead.id,
                   fieldKey: 'register_user',
                 ),

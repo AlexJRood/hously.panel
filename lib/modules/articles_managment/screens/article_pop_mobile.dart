@@ -12,7 +12,7 @@ import 'package:hously_flutter/utils/custom_error_handler.dart';
 import 'package:hously_flutter/api_services/auth.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/utils/secure_storage.dart';
-import 'package:hously_flutter/utils/install_popup.dart';
+
 
 void copyToClipboard(BuildContext context, String listingUrl) {
   Clipboard.setData(ClipboardData(text: listingUrl)).then((_) {
@@ -82,8 +82,7 @@ class ArticlePopMobileState extends ConsumerState<ArticlePopMobile> {
 
     return userAsyncValue.when(
       data: (user) {
-        return PopupListener(
-        child: SafeArea(
+        return SafeArea(
           child: Scaffold(
               backgroundColor: Colors.transparent,
               body: NotificationListener<OverscrollIndicatorNotification>(
@@ -240,7 +239,6 @@ class ArticlePopMobileState extends ConsumerState<ArticlePopMobile> {
                     ],
                   ),
                 ),
-              ),
             ),
         ),
         );

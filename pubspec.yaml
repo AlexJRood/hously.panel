@@ -110,6 +110,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/view/
+    - assets/images/deafult/
     - assets/countries.json
     - assets/icons/
 

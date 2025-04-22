@@ -6,8 +6,10 @@ class Routes {
   static const entry = '/';
 
   static const leadsPanel = '/leads-panel';
+  static const leadsBoard = '/leads-board';
   static const addLead = '/leads-add';
   static const singleLead = '$leadsPanel/:id';
+  static const singleLeadBoard = '$leadsBoard/:id';
   static const leadEmailView = '$singleLead/email';
   static const emailView = '/email';
 

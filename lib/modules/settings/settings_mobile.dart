@@ -14,7 +14,6 @@ import 'package:hously_flutter/modules/settings/provider/logout_provider.dart';
 import 'package:hously_flutter/api_services/auth.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/theme/apptheme.dart';
-import 'package:hously_flutter/utils/install_popup.dart';
 
 class SettingsMobile extends ConsumerStatefulWidget {
   const SettingsMobile({super.key});
@@ -31,8 +30,7 @@ class _SettingsMobileState extends ConsumerState<SettingsMobile> {
     final isToggled = ref.watch(toggleProviderlogout);
 
     final navService = ref.read(navigationService);
-    return PopupListener(
-      child: Scaffold(
+    return Scaffold(
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
@@ -273,7 +271,6 @@ class _SettingsMobileState extends ConsumerState<SettingsMobile> {
               ]
             ],
           ),
-        ),
       ),
     );
   }

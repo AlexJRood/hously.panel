@@ -10,8 +10,6 @@ import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/modules/login/components_mobile.dart';
 import 'package:hously_flutter/modules/login/providers/reset_password_provider.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
-import 'package:hously_flutter/utils/install_popup.dart';
-
 class ForgotPasswordMobilePage extends ConsumerStatefulWidget {
   const ForgotPasswordMobilePage({Key? key}) : super(key: key);
 
@@ -40,8 +38,7 @@ class _ForgotPasswordMobilePageState
         minPadding;
     dynamicPadding = dynamicPadding.clamp(minPadding, maxPadding);
 
-    return PopupListener(
-      child: SafeArea(
+    return  SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
           body: Center(
@@ -136,7 +133,6 @@ class _ForgotPasswordMobilePageState
             ),
           ),
         ),
-      ),
     );
   }
 }
