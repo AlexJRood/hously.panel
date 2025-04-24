@@ -63,6 +63,9 @@ class URLs {
 
 
 
+  /// Register lead
+  static final leadRegister = appendLeadsPanelUrl('/admin-register/');
+
 
 
 

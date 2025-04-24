@@ -7,8 +7,10 @@ import 'package:hously_flutter/modules/leads/components/editable_checkbox.dart';
 import 'package:hously_flutter/modules/leads/components/editable_date_field.dart';
 import 'package:hously_flutter/modules/leads/components/lead_note.dart';
 import 'package:hously_flutter/modules/leads/components/lead_status_dropdown_field.dart';
+import 'package:hously_flutter/modules/leads/speech/speech_to_text.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_api.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
+import 'package:hously_flutter/modules/leads/utils/lead_register.dart';
 import 'package:hously_flutter/modules/leads/widgets/pc.dart';
 import 'package:hously_flutter/theme/design/button_style.dart';
 import 'package:hously_flutter/theme/design/design.dart';
@@ -28,6 +30,7 @@ class LeadDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sideMenuKey = GlobalKey<SideMenuState>();
     final asyncLead = ref.watch(leadDetailsProvider(leadId));
+
 
     return BarManager(
       sideMenuKey: sideMenuKey,
@@ -83,6 +86,7 @@ Widget pcLeadDetails(BuildContext context, Lead lead, WidgetRef ref) {
   final isConfirmed = lead.isNumberConfirmed ?? false;
   final isMailSent = lead.isMailSent ?? false;
   final isMailReceived = lead.isMailReceived ?? false;
+    final TextEditingController _noteController = TextEditingController();
 
 
 final boardStateAsync = ref.watch(leadProvider);
@@ -128,6 +132,7 @@ final statusIndex = boardStateAsync.maybeWhen(
                       ),
             
                       
+                      if(isRegistered)
                       Container(
                         height: 40,
                         width: 100,
@@ -141,7 +146,46 @@ final statusIndex = boardStateAsync.maybeWhen(
                           child: Text('Chat', style: AppTextStyles.interMedium),
                         ),
                       ),
-            Spacer(),
+                      
+                      
+                      if(isRegistered)
+                      Container(
+                        height: 40,
+                        width: 100,
+                        child: ElevatedButton(
+                          style: elevatedButtonStyleRounded10,
+                          onPressed: () {
+                            // ref.read(navigationService).pushNamedScreen(
+                            //     '${Routes.leadsPanel}/${lead.id}/email',
+                            //     data: lead);
+                          },
+                          child: Text('Pokaż konto', style: AppTextStyles.interMedium),
+                        ),
+                      ),
+
+                      if(!isRegistered)
+                      Container(
+                        height: 40,
+                        width: 100,
+                        child: ElevatedButton(
+                          style: elevatedButtonStyleRounded10,
+                          onPressed: () {
+                           showRegisterPopup(context, lead: lead); // ← przekaż lead
+                          },
+                          child: Text('Zarejestruj', style: AppTextStyles.interMedium),
+                        ),
+                      ),
+
+                      
+VoiceNoteWidget(
+  onResult: (text) {
+    _noteController.text += (text.isNotEmpty ? '\n$text' : '');
+  },
+),
+
+
+
+                  Spacer(),
                       
                   LeadStatusDropdownField(leadId: lead.id),
 
@@ -155,31 +199,30 @@ final statusIndex = boardStateAsync.maybeWhen(
                 const SizedBox(height:5),
                 Stack(
                   children: [
+                      Positioned(
+                      top: 0, 
+                      right:0,
+                      left:0,
+            
+                      child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          color: AppColors.light25,
+                            child: 
+                          EditableTextButton(
+                            isTitle: true,
+                            initialValue: lead.companyName ?? '',
+                            leadId: lead.id,
+                            fieldKey: 'company_name',
+                          ),
+                             ),),
                     
                     Row(
                       spacing: 20,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        
-                            const SizedBox(height: 30),
-                    
-                        Column(
-                          children: [
-                            const SizedBox(height: 25),
-                            Container(
-                              width: 150,
-                              height:150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),                          
-                              color: AppColors.light,
-                              ),
-                            // child:
-                            // Image.network(lead.avatar),
-                            ),
-                          ],
-                        ),
-                    
+                                            
                     
                     Column(
                       spacing: 10,
@@ -189,96 +232,179 @@ final statusIndex = boardStateAsync.maybeWhen(
             
                             const SizedBox(height: 50),
                                   
-                          EditableTextButton(
-                            initialValue: lead.name,
-                            leadId: lead.id,
-                            fieldKey: 'name',
+                          Row(
+                            spacing:20,
+                            children: [
+                              
+                            const SizedBox(width: 40),
+                            SizedBox(
+                              width:120,
+                              child: Text('IMIĘ I NAZWISKO', style: AppTextStyles.interBold),
+                            ),
+
+                              EditableTextButton(
+                                initialValue: lead.name,
+                                leadId: lead.id,
+                                fieldKey: 'name',
+                              ),
+                            ],
                           ),
-                          EditableTextButton(
-                            initialValue: lead.companyName ?? '',
-                            leadId: lead.id,
-                            fieldKey: 'company_name',
-                          ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Positioned(
-                      top: 0, 
-                      right:0,
-                      left:0,
-            
-                      child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          color: AppColors.light25,
-                          child: Center(
-                            child: 
-                              Text('DANE PODSTAWOWE', style: AppTextStyles.interBold)),),)
-                          ],
-                        ),
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: AppColors.light25,
-                  child: Center(
-                    child: 
-                      Text('TELEFON', style: AppTextStyles.interBold))
-                      ),
-                EditableTextButton(
-                  initialValue: lead.number ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'number',
-                ),
-                EditableTextButton(
-                  initialValue: lead.label ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'label',
-                ),
-                EditableCheckbox(
-                  label: 'Potwierdzony',
-                  value: isConfirmed,
-                  leadId: lead.id,
-                  fieldKey: 'is_number_confirmed',
-                ),
-            
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: AppColors.light25,
-                  child: Center(
-                  child: Text('EMAIL', style: AppTextStyles.interBold)
+
+                Row(
+                  spacing: 20,
+                  children: [
+                    
+                SizedBox(
+                  width: 40,
+                  child: EditableCheckbox(
+                    label: '',
+                    value: isConfirmed,
+                    leadId: lead.id,
+                    fieldKey: 'is_number_confirmed',
                   ),
                 ),
-                EditableTextButton(
-                  initialValue: lead.email ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'mail',
+                      SizedBox(
+                        width:120,
+                        child: Text('TELEFON', style: AppTextStyles.interBold),
+                      ),
+
+                    EditableTextButton(
+                      initialValue: lead.number ?? '',
+                      leadId: lead.id,
+                      fieldKey: 'number',
+                    ),
+                    EditableTextButton(
+                      initialValue: lead.aditionalNumber ?? '',
+                      leadId: lead.id,
+                      fieldKey: 'aditional_number',
+                    ),
+                    
+
+                  ],
                 ),
-                EditableTextButton(
-                  initialValue: lead.mailContent ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'mail_content',
+                Row(
+                  spacing: 20,
+                  children: [
+                SizedBox(
+                  width:40,
+                  child: EditableCheckbox(
+                    label: '',
+                    value: isConfirmed,
+                    leadId: lead.id,
+                    fieldKey: 'is_mail_confirmed',
+                  ),
                 ),
-                EditableCheckbox(
-                  label: 'Wysłany',
-                  value: isMailSent,
-                  leadId: lead.id,
-                  fieldKey: 'is_mail_sent',
+                      SizedBox(
+                        width:120,
+                        child: Text('MAIL', style: AppTextStyles.interBold)
+                        ),
+                    EditableTextButton(
+                      initialValue: lead.email ?? '',
+                      leadId: lead.id,
+                      fieldKey: 'mail',
+                    ),
+                    EditableTextButton(
+                      initialValue: lead.aditionalEmail ?? '',
+                      leadId: lead.id,
+                      fieldKey: 'aditional_mail',
+                    ),
+                  ],
                 ),
-                EditableCheckbox(
-                  label: 'Odebrany',
-                  value: isMailReceived,
-                  leadId: lead.id,
-                  fieldKey: 'is_mail_received',
+                Row(
+                  spacing: 20,
+                  children: [
+                    SizedBox(
+                      width:40,
+                      child: EditableCheckbox(
+                        label: '',
+                        value: hasAgreement,
+                        leadId: lead.id,
+                        fieldKey: 'has_agreement',
+                      ),
+                    ),
+                    
+                      SizedBox(
+                        width:120,
+                        child: Text('AGREEMENT', style: AppTextStyles.interBold),
+                      ),
+                      Text('Dropdown with agrement types to select', style: AppTextStyles.interBold),
+
+                  ],
                 ),
-                EditableTextButton(
-                  initialValue: lead.receiveMailContent ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'receive_mail_content',
+            
+            
+
+
+                          ],
+                        ),
+                        Spacer(),
+
+                    
+                        Column(
+                          children: [
+                            const SizedBox(height: 25),
+                              Container(
+                            width: 150,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (lead.isRegister ?  AppColors.revenueGreen : AppColors.expensesRed ),
+                                  blurRadius: 12,
+                                  spreadRadius: 2,
+                                  offset: const Offset(0,0),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(12), // opcjonalnie
+                            ),
+                              child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      child: Container(
+                                                        width: 150,
+                                                        height: 150,
+                                                        color: Colors.grey.shade200, // opcjonalne tło
+                                                        child: lead.avatar == null
+                                ? Image.asset('assets/images/deafult/man.webp',
+                                    fit: BoxFit.cover)
+                                : Image.network(lead.avatar!, fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                            ),
+                            const SizedBox(height: 10),
+                      
+                SizedBox(
+                  width: 150,
+                  child: EditableTextButton(
+                    isCenter: true,
+                    initialValue: lead.label ?? '',
+                    leadId: lead.id,
+                    fieldKey: 'label',
+                  ),
                 ),
+                      
+                          ],
+                        ),
+                const SizedBox(width: 5),
+                        
+                      ],
+                    ),
+
+                
+                          ],
+                        ),
+                          
+                
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  color: AppColors.light25,
+                  child: Center(
+                  child: Text('MAIL SCHEDULER', style: AppTextStyles.interBold)
+                  ),
+                ),
+                
                 EditableDateField(
                   label: 'Data wysłania',
                   initialDate: lead.mailSentDate,
@@ -291,52 +417,36 @@ final statusIndex = boardStateAsync.maybeWhen(
                   leadId: lead.id,
                   fieldKey: 'mail_response_date',
                 ),
-            
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: AppColors.light25,
-                  child: Center(
-                    child: Text('STATUS & UMOWA', style: AppTextStyles.interBold)),),
-                Text('Status: ${statusName ?? "-"}'),
-                Text('Indeks statusu: ${statusIndex?.toString() ?? "-"}'),
 
-                EditableCheckbox(
-                  label: 'Ma umowę',
-                  value: hasAgreement,
-                  leadId: lead.id,
-                  fieldKey: 'has_agreement',
-                ),
-                EditableCheckbox(
-                  label: 'Spotkanie zaplanowane',
-                  value: isMeeting,
-                  leadId: lead.id,
-                  fieldKey: 'is_meeting_scheduled',
-                ),
-            
                 const SizedBox(height: 16),
-                
                 Container(
                   width: double.infinity,
                   height: 50,
                   color: AppColors.light25,
                   child: Center(
                     child: 
-                 Text('REJESTRACJA', style: AppTextStyles.interBold)
-                  ),
-                ),
+                      Text('SCHEDULER', style: AppTextStyles.interBold),
+                      )
+                      ),
+                      
                 EditableCheckbox(
-                  label: 'Zarejestrowany',
-                  value: isRegistered,
+                  label: 'Spotkanie zaplanowane',
+                  value: isMeeting,
                   leadId: lead.id,
-                  fieldKey: 'is_register',
+                  fieldKey: 'is_meeting_scheduled',
                 ),
-                EditableTextButton(
-                  initialValue: lead.registerUser?.toString() ?? '',
-                  leadId: lead.id,
-                  fieldKey: 'register_user',
-                ),
+
+                TextField(
+  controller: _noteController,
+  maxLines: null,
+  decoration: InputDecoration(
+    labelText: 'Notatka',
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+  ),
+),
+
+
+            
               ],
             ),
           ),
@@ -345,6 +455,8 @@ final statusIndex = boardStateAsync.maybeWhen(
         
         
         LeadNoteField(lead: lead, leadId: lead.id),
+
+        
 
 
         LeadInteractionsPcWidget(

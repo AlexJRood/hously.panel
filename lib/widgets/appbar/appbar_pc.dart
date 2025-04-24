@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hously_flutter/modules/leads/components/view_pop_changer_page.dart';
+import 'package:hously_flutter/modules/leads/utils/lead_filters.dart';
+import 'package:hously_flutter/modules/leads/utils/lead_sort.dart';
 import 'package:hously_flutter/routing/navigation_service.dart';
 import 'package:hously_flutter/routing/route_constant.dart';
 import 'package:hously_flutter/theme/icons.dart';
@@ -74,41 +76,6 @@ class TopAppBar extends ConsumerWidget {
                 ),
 
 
-                    ElevatedButton(
-                      style: elevatedButtonStyleRounded10,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => LeadViewPopChangerPage(),
-                            transitionsBuilder: (_, anim, __, child) {
-                              return FadeTransition(
-                                  opacity: anim, child: child);
-                            },
-                          ),
-                        );
-                       
-                      },
-                      child: Hero(
-                        tag:
-                            'ViewChangerBarButton-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag
-                        child: Container(
-                          key: viewChangerButtonTopAppBar,
-                          height: boxHeight,
-                          width: boxSize,
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.view_comfortable_rounded,
-                                  size: iconSize , color: iconcolor),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-
 
                 ElevatedButton(
                   style: elevatedButtonStyleRounded10,
@@ -139,6 +106,8 @@ class TopAppBar extends ConsumerWidget {
                       style: elevatedButtonStyleRounded10,
                       onPressed: () {
                         
+    showDialog(context: context, builder: (_) => const LeadSortingDialog());
+                        
                       },
                       child: Hero(
                         tag:
@@ -163,16 +132,10 @@ class TopAppBar extends ConsumerWidget {
                     ElevatedButton(
                       style: elevatedButtonStyleRounded10,
                       onPressed: () {
-                        // Navigator.of(context).push(
-                        //   PageRouteBuilder(
-                        //     opaque: false,
-                        //     pageBuilder: (_, __, ___) => FiltersPage(),
-                        //     transitionsBuilder: (_, anim, __, child) {
-                        //       return FadeTransition(
-                        //           opacity: anim, child: child);
-                        //     },
-                        //   ),
-                        // );
+                          showDialog(
+                            context: context,
+                            builder: (context) => const LeadFilterDialog(),
+                          );
                       },
                       child: Hero(
                         tag:'searchbar-${UniqueKey().toString()}', // need to be change both sides of hero need the same tag

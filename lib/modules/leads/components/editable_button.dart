@@ -8,12 +8,16 @@ class EditableTextButton extends ConsumerStatefulWidget {
   final String initialValue;
   final int leadId;
   final String fieldKey;
+  final bool isTitle;
+  final bool isCenter;
 
   const EditableTextButton({
     super.key,
     required this.initialValue,
     required this.leadId,
     required this.fieldKey,
+    this.isTitle = false,
+    this.isCenter = false,
   });
 
   @override
@@ -112,10 +116,16 @@ Widget build(BuildContext context) {
               _controller.text = _value;
               _focusNode.requestFocus();
             },
-            child: Text(
-              _value.isEmpty ? '[Kliknij aby edytować]' : _value,
-              style: AppTextStyles.interLight14,
-            ),
+            child: Row(
+              mainAxisAlignment: widget.isCenter ?  MainAxisAlignment.center : MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _value.isEmpty ? 'EDYTUJ' : _value,
+                  style: widget.isTitle ? AppTextStyles.interSemiBold18 : AppTextStyles.interLight14,
+                ),
+              ],
+            )
           ),
         );
 

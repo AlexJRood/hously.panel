@@ -107,8 +107,29 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             currentRoute: currentRoute,
                           ),
 
+
+                                          
+                            BuildIconButton(
+                            icon: AppIcons.notification(
+                                            height: 25, width: 25, color: color),
+                            label: '',
+                            onPressed: () {
+                            Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (_, __, ___) =>
+                                        const NotificationScreen(),
+                                    transitionsBuilder: (_, anim, __, child) {
+                                      return FadeTransition(
+                                          opacity: anim, child: child);
+                                    },
+                                  ),);
+                            },
+                            currentRoute: currentRoute,
+                          ),
+
                           if (isUserLoggedIn) 
-                          const SizedBox(height: 150),
+                          const SizedBox(height: 105),
                           
                           if (!isUserLoggedIn)
                           const SizedBox(height: 15),
@@ -130,9 +151,28 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             },
                             currentRoute: currentRoute,
                           ),
-                        
-                          const SizedBox(height: 2.0),
+                          BuildIconButton(
+                          icon: AppIcons.viewList(height: 25, width: 25, color: color),
+                            label: 'Leads',
+                            onPressed: () {
+                              ref
+                                  .read(navigationService)
+                                  .pushNamedReplacementScreen(Routes.leadsBoard);
+                            },
+                            currentRoute: currentRoute,
+                          ),
 
+                          BuildIconButton(
+                          icon: AppIcons.gridView(height: 25, width: 25, color: color),
+                            label: 'Leads',
+                            onPressed: () {
+                              ref
+                                  .read(navigationService)
+                                  .pushNamedReplacementScreen(Routes.leadsPanel);
+                            },
+                            currentRoute: currentRoute,
+                          ),
+                          
                           BuildIconButton(
                             icon: AppIcons.arrowTrendUp(
                                             height: 25, width: 25, color: color),
@@ -145,8 +185,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             currentRoute: currentRoute,
                           ),
                           
-                          const SizedBox(height: 2.0),
-
                           BuildIconButton(
                             icon: AppIcons.calendar(
                                             height: 25, width: 25, color: color),
@@ -157,8 +195,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             },
                             currentRoute: currentRoute,
                           ),
-                          
-                          const SizedBox(height: 2.0),
 
                           BuildIconButton(
                             icon: AppIcons.task(
@@ -170,6 +206,9 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             },
                             currentRoute: currentRoute,
                           ),
+
+                          
+
                         ],
                       ),
                       LayoutBuilder(
@@ -180,7 +219,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
                               children: [
 
                                 
-
                           BuildIconButton(
                             icon: Icon(Icons.mail_outline, size: 25, color: color),
                             label: ''.tr,
@@ -240,25 +278,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
                                   ),
                                 ),
 
-                                          
-                            BuildIconButton(
-                            icon: AppIcons.notification(
-                                            height: 25, width: 25, color: color),
-                            label: '',
-                            onPressed: () {
-                            Navigator.of(context).push(
-                                  PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder: (_, __, ___) =>
-                                        const NotificationScreen(),
-                                    transitionsBuilder: (_, anim, __, child) {
-                                      return FadeTransition(
-                                          opacity: anim, child: child);
-                                    },
-                                  ),);
-                            },
-                            currentRoute: currentRoute,
-                          ),
                                       
                                 
                                 userAsyncValue.when(

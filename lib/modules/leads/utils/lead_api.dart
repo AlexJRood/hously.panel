@@ -4,25 +4,58 @@ import 'package:hously_flutter/api_services/api_services.dart';
 import 'package:hously_flutter/api_services/url.dart';
 import 'package:hously_flutter/modules/leads/utils/lead_model.dart';
 
-final paginatedLeadsProvider = FutureProvider.family
-    .autoDispose<PaginatedLeadResponse, int>((ref, page) async {
-  return await LeadService.fetchPaginatedLeads(ref: ref, page: page);
+final leadFiltersProvider = StateProvider<Map<String, dynamic>>((ref) => {});
+final leadOrderingProvider = StateProvider<String?>((ref) => null);
+final leadSearchProvider = StateProvider<String>((ref) => '');
+
+final leadPageSizeProvider = StateProvider<int>((ref) => 17);
+
+
+final paginatedLeadsProvider = FutureProvider.family.autoDispose<PaginatedLeadResponse, int>((ref, page) async {
+  final filters = ref.watch(leadFiltersProvider);
+  final search = ref.watch(leadSearchProvider);
+  final ordering = ref.watch(leadOrderingProvider);
+  final pageSize = ref.watch(leadPageSizeProvider);
+
+  return await LeadService.fetchPaginatedLeads(
+    ref: ref,
+    page: page,
+    pageSize: pageSize,
+    filters: filters,
+    search: search,
+    ordering: ordering,
+  );
 });
 
 final leadDetailsProvider = FutureProvider.family<Lead, int>((ref, leadId) async {
   return await LeadService.getLeadDetails(ref: ref, leadId: leadId);
 });
 
-
 class LeadService {
-  // Paginowana lista leadów
   static Future<PaginatedLeadResponse> fetchPaginatedLeads({
     required Ref ref,
     int page = 1,
-    int pageSize = 10,
+    required int pageSize,
+    Map<String, dynamic>? filters,
+    String? search,
+    String? ordering,
   }) async {
+    final filterString = filters != null
+        ? filters.entries
+            .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}')
+            .join('&')
+        : '';
+
+    final queryParams = [
+      'page=$page',
+      'page_size=$pageSize',
+      if (ordering != null && ordering.isNotEmpty) 'ordering=$ordering',
+      if (search != null && search.isNotEmpty) 'search=${Uri.encodeComponent(search)}',
+      if (filterString.isNotEmpty) filterString,
+    ].join('&');
+
     final response = await ApiServices.get(
-      '${URLs.leads}?page=$page&page_size=$pageSize',
+      '${URLs.leads}?$queryParams',
       hasToken: true,
       ref: ref,
     );
@@ -35,7 +68,6 @@ class LeadService {
     }
   }
 
-  // Pobranie szczegółów leada
   static Future<Lead> getLeadDetails({
     required Ref ref,
     required int leadId,
@@ -54,9 +86,6 @@ class LeadService {
     }
   }
 
-  
-
-  // Edycja (PATCH)
   static Future<void> updateLead({
     required WidgetRef ref,
     required int leadId,
@@ -73,9 +102,6 @@ class LeadService {
     }
   }
 
-
-
-  // Usuwanie leada
   static Future<void> deleteLead({
     required WidgetRef ref,
     required int leadId,
@@ -90,10 +116,6 @@ class LeadService {
     }
   }
 
-  
-
-
-  // Dodawanie leada
   static Future<Lead> createLead({
     required WidgetRef ref,
     required Map<String, dynamic> data,

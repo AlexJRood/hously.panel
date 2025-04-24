@@ -16,7 +16,7 @@ class LeadInteractionsPcWidget extends StatefulWidget {
 }
 
 class _LeadInteractionsPcWidgetState extends State<LeadInteractionsPcWidget> {
-  bool _isHidden = false;
+  bool _isHidden = true;
 
   void _toggleWidget() {
     setState(() {

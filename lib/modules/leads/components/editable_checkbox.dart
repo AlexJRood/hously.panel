@@ -36,7 +36,7 @@ class _EditableCheckboxState extends ConsumerState<EditableCheckbox> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('${widget.label}: ', style: AppTextStyles.interMedium),
+        Text('${widget.label}', style: AppTextStyles.interMedium),
         Checkbox(
           value: currentValue,
           onChanged: (newValue) async {

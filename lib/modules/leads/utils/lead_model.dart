@@ -28,6 +28,7 @@ class Lead {
   final String name;
   final String? avatar;
   final String? companyName;
+  final String? companyType;
 
   final String? city;
   final String? state;
@@ -76,6 +77,7 @@ class Lead {
     required this.name,
     this.avatar,
     this.companyName,
+    this.companyType,
     this.city,
     this.state,
     this.country,
@@ -116,6 +118,7 @@ class Lead {
       name: json['name'],
       avatar: json['avatar'],
       companyName: json['company_name'],
+      companyType: json['company_type'],
       city: json['city'],
       state: json['state'],
       country: json['country'],
@@ -140,7 +143,7 @@ class Lead {
       isMeetingScheduled: json['is_meeting_scheduled'],
       isRegister: json['is_register'] ?? false,
       registerUser: json['register_user'],
-      number: json['number'],
+      number: json['phone_number'],
       aditionalNumber: json['aditional_number'],
       isNumberConfirmed: json['is_number_confirmed'] ?? false,
       source: json['source'],
