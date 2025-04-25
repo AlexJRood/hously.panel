@@ -13,7 +13,6 @@ class VoiceNoteWidget extends StatefulWidget {
 class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
   late stt.SpeechToText _speech;
   bool _isListening = false;
-  bool _manuallyStopped = false;
   String _fullText = '';
 
   @override
@@ -26,16 +25,12 @@ class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
   Future<void> _initSpeech() async {
     await _speech.initialize(
       onError: (error) {
-        print('🎙️ Speech error: $error');
+        print('Speech error: $error');
       },
       onStatus: (status) {
-        print('🎙️ Speech status: $status');
-        if ((status == 'done' || status == 'notListening') && !_manuallyStopped) {
+        print('Speech status: $status');
+        if (status == 'done' || status == 'notListening') {
           setState(() => _isListening = false);
-          // Restartuj nasłuch po upłynięciu limitu czasu
-          Future.delayed(const Duration(milliseconds: 500), () {
-            if (mounted) _startListening();
-          });
         }
       },
     );
@@ -46,12 +41,12 @@ class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
     if (available) {
       setState(() {
         _isListening = true;
-        _manuallyStopped = false; // resetujemy ręczne zatrzymanie
+        _fullText = '';
       });
 
       _speech.listen(
-        listenFor: const Duration(minutes: 1), // każda sesja trwa max 1 minutę
-        pauseFor: const Duration(seconds: 0),
+        listenFor: const Duration(minutes: 5),
+        pauseFor: const Duration(seconds: 10),
         listenOptions: stt.SpeechListenOptions(
           listenMode: stt.ListenMode.dictation,
           partialResults: true,
@@ -64,13 +59,10 @@ class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
           widget.onResult(_fullText);
         },
       );
-    } else {
-      print('❌ Speech not available');
     }
   }
 
   void _stopListening() {
-    _manuallyStopped = true; // użytkownik sam kliknął stop
     _speech.stop();
     setState(() => _isListening = false);
   }
