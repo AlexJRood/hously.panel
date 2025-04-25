@@ -143,11 +143,9 @@ class _SidebarState extends ConsumerState<Sidebar> {
                         children: [
                           BuildIconButton(
                           icon: AppIcons.home(height: 25, width: 25, color: color),
-                            label: 'Leads',
+                            label: 'Dashboard',
                             onPressed: () {
-                              ref
-                                  .read(navigationService)
-                                  .pushNamedReplacementScreen(Routes.leadsPanel);
+                              
                             },
                             currentRoute: currentRoute,
                           ),
@@ -157,18 +155,18 @@ class _SidebarState extends ConsumerState<Sidebar> {
                             onPressed: () {
                               ref
                                   .read(navigationService)
-                                  .pushNamedReplacementScreen(Routes.leadsBoard);
+                                  .pushNamedReplacementScreen(Routes.leadsPanel);
                             },
                             currentRoute: currentRoute,
                           ),
 
                           BuildIconButton(
                           icon: AppIcons.gridView(height: 25, width: 25, color: color),
-                            label: 'Leads',
+                            label: 'Board',
                             onPressed: () {
                               ref
                                   .read(navigationService)
-                                  .pushNamedReplacementScreen(Routes.leadsPanel);
+                                  .pushNamedReplacementScreen(Routes.leadsBoard);
                             },
                             currentRoute: currentRoute,
                           ),

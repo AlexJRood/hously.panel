@@ -17,6 +17,8 @@
         <base href="/">
         <meta charset="UTF-8">
         <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+        <meta name="viewport" content="width=device-width, initial-scale=0.85">
+
         <meta name="description" content="A new Real estate portal. Every thing you need on the palm of your hand.">
         <!-- iOS meta tags & icons -->
         <meta name="mobile-web-app-capable" content="yes">
@@ -39,7 +41,6 @@
             gtag('config', 'G-DCDZ9KPSQ8');>
         </script>
 
-        <title>FCM Web App</title>
         <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
         <script>
@@ -448,7 +449,12 @@
 
 
 
-
+         <script>
+            if (!('webkitSpeechRecognition' in window)) {
+              alert('Twoja przeglądarka nie wspiera rozpoznawania mowy. Użyj Chrome.');
+            }
+          </script>
+          
 
     </body>
 </html>

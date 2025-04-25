@@ -178,9 +178,10 @@ final statusIndex = boardStateAsync.maybeWhen(
 
                       
 VoiceNoteWidget(
-  onResult: (text) {
-    _noteController.text += (text.isNotEmpty ? '\n$text' : '');
-  },
+onResult: (text) {
+  _noteController.text = text;
+},
+
 ),
 
 
