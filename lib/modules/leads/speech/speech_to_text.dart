@@ -22,6 +22,7 @@ class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
     _initSpeech();
   }
 
+
   Future<void> _initSpeech() async {
     await _speech.initialize(
       onError: (error) {
@@ -35,6 +36,7 @@ class _VoiceNoteWidgetState extends State<VoiceNoteWidget> {
       },
     );
   }
+  
 
   void _startListening() async {
     bool available = await _speech.initialize();
